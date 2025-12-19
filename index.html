@@ -9,7 +9,11 @@
 									background-color: white; /* Ensure the iframe has a white background */
 								}
 
-								
+								.grooming-date {
+    background: #e3f2fd;
+    color: #1976d2;
+    /* Klar erkennbar mit Datums-Icon */
+}
 							</style>
                         </head>
                         <body>
@@ -39,7 +43,6 @@
             position: relative;
             overflow-x: hidden;
         }
-        /* Schneeflocken Animation */
         .snowflake {
             position: fixed;
             top: -10px;
@@ -880,7 +883,7 @@
         }
         .trail-item {
             background: white;
-            padding: 10px;
+            padding: 12px;
             margin: 8px 0;
             border-radius: 8px;
             border-left: 4px solid #ddd;
@@ -929,6 +932,7 @@
             font-size: 0.8em;
             color: #666;
             flex-wrap: wrap;
+            margin-bottom: 8px;
         }
         .trail-info span {
             display: flex;
@@ -944,6 +948,49 @@
         .trail-status-icon.open { background: #28a745; }
         .trail-status-icon.closed { background: #dc3545; }
         .trail-status-icon.partial { background: #ffc107; }
+        
+        /* PRÄPARIERUNGS-STATUS - ANGEPASST */
+        .trail-grooming-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #e9ecef;
+        }
+        .grooming-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+        .grooming-badge.groomed {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        .grooming-badge.not-groomed {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        .grooming-badge.grooming-soon {
+            background: #fff9c4;
+            color: #f57f17;
+        }
+        .grooming-date {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            background: #e3f2fd;
+            border-radius: 12px;
+            font-size: 0.75em;
+            color: #1976d2;
+            font-weight: 600;
+        }
+        
         .weather-forecast {
             display: flex;
             gap: 8px;
@@ -1557,7 +1604,7 @@
                         ⛷️ Technik
                         <span class="slider-value technique" id="techniqueValue">Skating</span>
                     </label>
-                    <input type="range" id="techniqueSlider" min="0" max="3" value="2" step="1">
+                    <input type="range" id="techniqueSlider" min="0" max="2" value="2" step="1">
                 </div>
             </div>
             <div class="filter-info" id="filterInfo">
@@ -1689,7 +1736,6 @@
         
         function saveNotificationSettings() {
             localStorage.setItem('langlaufNotifications', JSON.stringify(notificationSettings));
-            console.log('💾 Notification settings saved', notificationSettings);
         }
 
         function loadNotificationSettings() {
@@ -1697,11 +1743,9 @@
             if (saved) {
                 try {
                     notificationSettings = JSON.parse(saved);
-                    console.log('✅ Notification settings loaded', notificationSettings);
                     updateNotificationUI();
                 } catch (error) {
-                    console.error('❌ Error loading notification settings:', error);
-                    showToast('⚠️ Fehler beim Laden der Einstellungen', 'warning');
+                    console.error('Error loading settings:', error);
                 }
             }
         }
@@ -1767,12 +1811,11 @@
             return false;
         }
 
-        function sendNotification(title, body, icon = '❄️') {
+        function sendNotification(title, body) {
             if (Notification.permission === 'granted') {
                 const notification = new Notification(title, {
                     body: body,
                     icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="75" font-size="75">❄️</text></svg>',
-                    badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="75" font-size="75">⛷️</text></svg>',
                     tag: 'snow-alert',
                     requireInteraction: false,
                     vibrate: [200, 100, 200]
@@ -1789,10 +1832,8 @@
         }
 
         async function checkSnowAlerts() {
-            if (!notificationSettings.enabled) return;
-            if (notificationSettings.favorites.length === 0) return;
+            if (!notificationSettings.enabled || notificationSettings.favorites.length === 0) return;
 
-            console.log('🔍 Checking snow alerts...');
             const alerts = [];
 
             for (const areaName of notificationSettings.favorites) {
@@ -1811,7 +1852,7 @@
                         });
                     }
                 } catch (error) {
-                    console.error(`❌ Error checking snow for ${areaName}:`, error);
+                    console.error(`Error checking snow for ${areaName}:`, error);
                 }
             }
 
@@ -1819,12 +1860,8 @@
                 const areasList = alerts.map(a => `${a.area} (${a.snow}cm)`).join(', ');
                 sendNotification(
                     `❄️ Neuschnee-Alarm!`,
-                    `${alerts.length} Gebiet${alerts.length > 1 ? 'e' : ''} mit Neuschnee: ${areasList}`,
-                    '❄️'
+                    `${alerts.length} Gebiet${alerts.length > 1 ? 'e' : ''} mit Neuschnee: ${areasList}`
                 );
-                console.log('🔔 Snow alerts sent:', alerts);
-            } else {
-                console.log('✅ No snow alerts');
             }
 
             notificationSettings.lastCheck = new Date().toISOString();
@@ -1839,7 +1876,6 @@
             }
             
             notificationCheckInterval = setInterval(checkSnowAlerts, NOTIFICATION_CHECK_INTERVAL);
-            console.log('🔔 Notification checks started');
         }
 
         // ========================================
@@ -1987,20 +2023,6 @@
                     url: 'https://www.liftverbund-feldberg.de/Winter/Webcams',
                     type: 'img',
                     imgUrl: 'https://www.foto-webcam.eu/webcam/feldberg/current/400.jpg'
-                },
-                {
-                    location: 'Seebuck',
-                    url: 'https://www.liftverbund-feldberg.de/Winter/Webcams',
-                    type: 'img',
-                    imgUrl: 'https://www.foto-webcam.eu/webcam/feldberg-seebuck/current/400.jpg'
-                }
-            ],
-            'Seefeld': [
-                {
-                    location: 'Olympiaregion',
-                    url: 'https://www.seefeld.com/de/winter/webcams',
-                    type: 'img',
-                    imgUrl: 'https://images.webcams.travel/thumbnail/1234567890.jpg'
                 }
             ]
         };
@@ -2082,7 +2104,7 @@
                 return data;
 
             } catch (error) {
-                console.error('❌ Weather API Error:', error);
+                console.error('Weather API Error:', error);
                 
                 const apiStatus = document.getElementById('apiStatus');
                 if (apiStatus) {
@@ -2292,6 +2314,76 @@
             }));
         }
 
+        // ========================================
+        // NEU: PRÄPARIERUNGS-DATUM GENERATION
+        // ========================================
+        
+        function generateGroomingInfo() {
+            const groomingStatus = ['groomed', 'groomed', 'groomed', 'not-groomed', 'grooming-soon'][Math.floor(Math.random() * 5)];
+            
+            let groomingText = '';
+            let groomingEmoji = '';
+            let groomingDate = '';
+            
+            const now = new Date();
+            
+            if (groomingStatus === 'groomed') {
+                groomingText = 'Präpariert';
+                groomingEmoji = '✅';
+                
+                // Generiere realistisches Datum (letzte 24 Stunden)
+                const hoursAgo = Math.floor(Math.random() * 20) + 1;
+                const groomingTime = new Date(now.getTime() - hoursAgo * 60 * 60 * 1000);
+                
+                if (hoursAgo < 6) {
+                    groomingDate = `Heute, ${groomingTime.getHours()}:${String(groomingTime.getMinutes()).padStart(2, '0')} Uhr`;
+                } else if (hoursAgo < 24) {
+                    groomingDate = `Heute, ${groomingTime.getHours()}:00 Uhr`;
+                } else {
+                    groomingDate = 'Gestern';
+                }
+                
+            } else if (groomingStatus === 'not-groomed') {
+                groomingText = 'Nicht präpariert';
+                groomingEmoji = '❌';
+                
+                // Vor mehreren Tagen
+                const daysAgo = Math.floor(Math.random() * 4) + 2;
+                const groomingTime = new Date(now.getTime() - daysAgo * 24 * 60 * 60 * 1000);
+                
+                groomingDate = `${groomingTime.getDate()}.${groomingTime.getMonth() + 1}.${groomingTime.getFullYear()}`;
+                
+            } else {
+                groomingText = 'Wird präpariert';
+                groomingEmoji = '🚜';
+                groomingDate = 'In Arbeit';
+            }
+            
+            return {
+                status: groomingStatus,
+                text: groomingText,
+                emoji: groomingEmoji,
+                date: groomingDate
+            };
+        }
+
+        function createGroomingHTML(groomingInfo) {
+            return `
+                <div class="trail-grooming-info">
+                    <div class="grooming-badge ${groomingInfo.status}">
+                        <span>${groomingInfo.emoji}</span>
+                        <span>${groomingInfo.text}</span>
+                    </div>
+                    ${groomingInfo.date ? `
+                        <div class="grooming-date">
+                            <span>📅</span>
+                            <span>${groomingInfo.date}</span>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
         function generateTrails(areaName) {
             const areaTrails = trailLinksDatabase[areaName];
             const techniques = ['Klassisch', 'Skating', 'Beide'];
@@ -2310,7 +2402,8 @@
                         status: ['open', 'open', 'open', 'partial', 'closed'][Math.floor(Math.random() * 5)],
                         technique: techniques[Math.floor(Math.random() * techniques.length)],
                         elevation: Math.floor(Math.random() * 300) + 50,
-                        url: areaTrails[trailName]
+                        url: areaTrails[trailName],
+                        grooming: generateGroomingInfo()
                     });
                 });
             } else {
@@ -2329,7 +2422,8 @@
                         status: ['open', 'open', 'open', 'partial', 'closed'][Math.floor(Math.random() * 5)],
                         technique: techniques[Math.floor(Math.random() * techniques.length)],
                         elevation: Math.floor(Math.random() * 300) + 50,
-                        url: getAreaLink(areaName)
+                        url: getAreaLink(areaName),
+                        grooming: generateGroomingInfo()
                     });
                 }
             }
@@ -2575,6 +2669,7 @@
                         <span>📏 ${trail.length}km</span>
                         <span>⛷️ ${trail.technique}</span>
                     </div>
+                    ${createGroomingHTML(trail.grooming)}
                 </a>
             `;
         }
@@ -2723,8 +2818,6 @@
                 }, LOCAL_WEBCAM_REFRESH_INTERVAL);
                 localWebcamRefreshIntervals.push(randenhausInterval);
             }
-
-            console.log('📹 Local webcams auto-refresh started (30s interval)');
         }
 
         function clearLocalWebcamIntervals() {
@@ -2834,8 +2927,7 @@
             if (techniqueValue > 0) {
                 const labels = { 
                     1: 'Nur Klassisch', 
-                    2: 'Nur Skating', 
-                    3: 'Skating & Klassisch' 
+                    2: 'Nur Skating'
                 };
                 badges.push(`⛷️ ${labels[techniqueValue]}`);
             }
@@ -2858,7 +2950,6 @@
             const radius = parseInt(document.getElementById('radiusSlider').value);
             const weatherFilter = parseInt(document.getElementById('weatherSlider').value);
             const snowFilter = parseInt(document.getElementById('snowSlider').value);
-            const techniqueFilter = parseInt(document.getElementById('techniqueSlider').value);
 
             document.getElementById('radiusValue').textContent = radius + 'km';
 
@@ -2868,7 +2959,9 @@
             const snowLabels = { 0: 'Alle', 25: '≥ Mäßig', 50: '≥ Gut', 75: 'Top', 100: 'Perfekt' };
             document.getElementById('snowValue').textContent = snowLabels[snowFilter];
 
-            const techniqueLabels = { 0: 'Alle', 1: 'Klassisch', 2: 'Skating', 3: 'Skating & Klassisch' };
+            // ANGEPASST: Technik-Filter nur noch 0-2
+            const techniqueLabels = { 0: 'Alle', 1: 'Klassisch', 2: 'Skating' };
+            const techniqueFilter = parseInt(document.getElementById('techniqueSlider').value);
             document.getElementById('techniqueValue').textContent = techniqueLabels[techniqueFilter];
 
             updateFilterInfo();
@@ -2912,7 +3005,7 @@
                     startWebcamAutoRefresh();
                 }
             } catch (error) {
-                console.error('❌ Error updating ski areas:', error);
+                console.error('Error updating ski areas:', error);
                 showToast('❌ Fehler beim Laden der Gebiete', 'error');
             }
         }
@@ -3155,8 +3248,6 @@
     </script>
 </body>
 </html>
-
-
 
 							<script>
                             	
