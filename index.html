@@ -9,36 +9,13 @@
 									background-color: white; /* Ensure the iframe has a white background */
 								}
 
-								
-							</style>
-                        </head>
-                        <body>
-                            <!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Loipen Finder - Detaillierte Loipeninformationen für CH, D, A">
-    <title>Loipen Finder - CH, D, A</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎿</text></svg>">
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+								* { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #2196F3;
-            --secondary: #1976D2;
-            --success: #4CAF50;
-            --warning: #FF9800;
-            --danger: #F44336;
+            --primary: #2196f3;
+            --secondary: #1976d2;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
             --light: #f5f5f5;
             --dark: #333;
             --border-radius: 10px;
@@ -52,35 +29,28 @@
             line-height: 1.6;
             position: relative;
         }
-        
-        /* Verschneite Berglandschaft Hintergrund */
+        /* Hintergrund Berge */
         body::before {
             content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(to bottom, rgba(135, 206, 235, 0.3) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.8) 100%),
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%2387CEEB;stop-opacity:1" /><stop offset="100%" style="stop-color:%23E0F6FF;stop-opacity:1" /></linearGradient></defs><rect fill="url(%23sky)" width="1200" height="600"/><path fill="%23FFFFFF" d="M0 450 Q 150 350, 300 380 T 600 420 T 900 400 T 1200 450 L 1200 600 L 0 600 Z" opacity="0.9"/><path fill="%23F0F8FF" d="M0 480 Q 200 420, 400 460 T 800 480 T 1200 500 L 1200 600 L 0 600 Z" opacity="0.8"/><path fill="%23E8F4F8" d="M0 400 L 200 320 L 350 380 L 500 300 L 650 360 L 800 280 L 1000 340 L 1200 300 L 1200 600 L 0 600 Z" opacity="0.7"/><circle fill="%23FFFFFF" cx="100" cy="50" r="3" opacity="0.6"/><circle fill="%23FFFFFF" cx="250" cy="80" r="2" opacity="0.7"/><circle fill="%23FFFFFF" cx="400" cy="60" r="2.5" opacity="0.5"/><circle fill="%23FFFFFF" cx="600" cy="90" r="3" opacity="0.6"/><circle fill="%23FFFFFF" cx="800" cy="70" r="2" opacity="0.7"/><circle fill="%23FFFFFF" cx="950" cy="100" r="2.5" opacity="0.6"/><circle fill="%23FFFFFF" cx="1100" cy="60" r="3" opacity="0.5"/></svg>');
+            position: fixed; inset: 0;
+            background:
+                linear-gradient(to bottom, rgba(135,206,235,0.3) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.8) 100%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%2387CEEB;stop-opacity:1" /><stop offset="100%" style="stop-color:%23E0F6FF;stop-opacity:1" /></linearGradient></defs><rect fill="url(%23sky)" width="1200" height="600"/><path fill="%23FFFFFF" d="M0 450 Q 150 350, 300 380 T 600 420 T 900 400 T 1200 450 L 1200 600 L 0 600 Z" opacity="0.9"/><path fill="%23F0F8FF" d="M0 480 Q 200 420, 400 460 T 800 480 T 1200 500 L 1200 600 L 0 600 Z" opacity="0.8"/><path fill="%23E8F4F8" d="M0 400 L 200 320 L 350 380 L 500 300 L 650 360 L 800 280 L 1000 340 L 1200 300 L 1200 600 L 0 600 Z" opacity="0.7"/></svg>');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             z-index: -1;
             opacity: 0.6;
         }
-        
         .container {
             max-width: 1600px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.98);
+            background: rgba(255,255,255,0.98);
             border-radius: 15px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
             backdrop-filter: blur(10px);
         }
-        
         header {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
@@ -88,8 +58,7 @@
             position: relative;
             overflow: hidden;
         }
-        
-        /* ========== ANIMIERTE SCHNEEFLOCKEN ========== */
+        /* Schneeflocken */
         .snowflake {
             position: absolute;
             top: -10px;
@@ -98,27 +67,14 @@
             opacity: 0.8;
             pointer-events: none;
             animation: fall linear infinite;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
         }
-        
         @keyframes fall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.8;
-            }
-            90% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(110vh) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
-        
-        /* Verschiedene Schneeflocken mit unterschiedlichen Eigenschaften */
         .snowflake:nth-child(1) { left: 5%; animation-duration: 8s; animation-delay: 0s; font-size: 18px; }
         .snowflake:nth-child(2) { left: 15%; animation-duration: 12s; animation-delay: 2s; font-size: 24px; }
         .snowflake:nth-child(3) { left: 25%; animation-duration: 10s; animation-delay: 1s; font-size: 16px; }
@@ -139,2482 +95,252 @@
         .snowflake:nth-child(18) { left: 80%; animation-duration: 14s; animation-delay: 0.6s; font-size: 20px; }
         .snowflake:nth-child(19) { left: 90%; animation-duration: 11s; animation-delay: 3.2s; font-size: 26px; }
         .snowflake:nth-child(20) { left: 3%; animation-duration: 10s; animation-delay: 1.5s; font-size: 16px; }
-        
-        .header-content {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        h1 {
-            font-size: 2.5em;
-            text-align: center;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            font-weight: 700;
-            flex: 1;
-        }
-        
+
+        .header-content { position: relative; z-index: 1; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        h1 { font-size: 2.5em; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); font-weight: 700; flex: 1; }
         .datetime-display {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 12px 20px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            text-align: center;
-            min-width: 200px;
+            background: rgba(255,255,255,0.15);
+            padding: 12px 20px; border-radius: 10px; backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3); text-align: center; min-width: 200px;
         }
-        
-        .datetime-display .date {
-            font-size: 1em;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .datetime-display .time {
-            font-size: 1.4em;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        
-        .subtitle {
-            text-align: center;
-            opacity: 0.95;
-            margin-bottom: 20px;
-            font-size: 1.1em;
-        }
-        
+        .datetime-display .date { font-size: 1em; font-weight: 600; margin-bottom: 5px; }
+        .datetime-display .time { font-size: 1.4em; font-weight: 700; letter-spacing: 1px; }
+        .subtitle { text-align: center; opacity: 0.95; margin-bottom: 20px; font-size: 1.1em; }
+
         /* Standort-Eingabe */
         .location-input-container {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 20px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            margin-top: 20px;
+            background: rgba(255,255,255,0.15);
+            padding: 20px; border-radius: 10px; backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3); margin-top: 20px;
         }
-        
-        .location-input-wrapper {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .location-input-wrapper label {
-            font-weight: 600;
-            font-size: 1em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
+        .location-input-wrapper { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .location-input-wrapper label { font-weight: 600; font-size: 1em; display: flex; align-items: center; gap: 8px; }
         .location-input-wrapper input {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px 15px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            font-size: 1em;
-            background: rgba(255, 255, 255, 0.95);
-            transition: var(--transition);
+            flex: 1; min-width: 200px; padding: 12px 15px; border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px; font-size: 1em; background: rgba(255,255,255,0.95); transition: var(--transition);
         }
-        
-        .location-input-wrapper input:focus {
-            outline: none;
-            border-color: white;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
-        }
-        
+        .location-input-wrapper input:focus { outline: none; border-color: white; box-shadow: 0 0 0 3px rgba(255,255,255,0.2); }
         .location-input-wrapper button {
-            padding: 12px 20px;
-            background: white;
-            color: var(--primary);
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            padding: 12px 20px; background: white; color: var(--primary); border: none; border-radius: 8px;
+            font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 8px;
         }
-        
-        .location-input-wrapper button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        
-        .current-location-display {
-            margin-top: 10px;
-            padding: 10px;
-            background: rgba(76, 175, 80, 0.2);
-            border-radius: 6px;
-            font-size: 0.9em;
-            display: none;
-        }
-        
-        .current-location-display.active {
-            display: block;
-        }
-        
-        .location-warning {
-            margin-top: 10px;
-            padding: 10px;
-            background: rgba(255, 152, 0, 0.2);
-            border-radius: 6px;
-            font-size: 0.9em;
-            display: none;
-        }
-        
-        .location-warning.active {
-            display: block;
-        }
-        
-        .webcam-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .webcam-item {
-            position: relative;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            aspect-ratio: 4/3;
-        }
-        .webcam-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-        .webcam-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .webcam-label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            color: white;
-            padding: 15px;
-            font-size: 0.95em;
-            font-weight: 600;
-        }
-        .webcam-live-indicator {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #F44336;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.75em;
-            font-weight: 700;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-        .webcam-refresh {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255,255,255,0.95);
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2em;
-            transition: var(--transition);
-        }
-        .webcam-refresh:hover {
-            transform: rotate(180deg);
-        }
-        
-        /* Route Info */
-        .route-info {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            padding: 15px 20px;
-            border-radius: var(--border-radius);
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
-        
-        .route-info-item {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        
-        .route-info-label {
-            font-size: 0.85em;
-            opacity: 0.9;
-            font-weight: 500;
-        }
-        
-        .route-info-value {
-            font-size: 1.4em;
-            font-weight: 700;
-        }
-        
-        .route-button {
-            padding: 12px 24px;
-            background: white;
-            color: #4CAF50;
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1em;
-        }
-        
-        .route-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        /* MAP */
-        .map-section {
-            padding: 30px;
-            background: var(--light);
-            border-bottom: 3px solid #e0e0e0;
-            transition: var(--transition);
-        }
-        .map-section.collapsed {
-            padding: 20px 30px;
-        }
-        .map-section.collapsed #map {
-            display: none;
-        }
-        .map-section.collapsed .map-controls {
-            display: none;
-        }
+        .location-input-wrapper button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .current-location-display { margin-top: 10px; padding: 10px; background: rgba(76,175,80,0.2); border-radius: 6px; font-size: 0.9em; display: none; }
+        .current-location-display.active { display: block; }
+        .location-warning { margin-top: 10px; padding: 10px; background: rgba(255,152,0,0.2); border-radius: 6px; font-size: 0.9em; display: none; }
+        .location-warning.active { display: block; }
+
+        /* Webcams im Header */
+        .webcam-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0; }
+        .webcam-item { position: relative; border-radius: var(--border-radius); overflow: hidden; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 10px rgba(0,0,0,0.2); aspect-ratio: 4/3; }
+        .webcam-item:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .webcam-item img { width: 100%; height: 100%; object-fit: cover; }
+        .webcam-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); color: white; padding: 15px; font-size: 0.95em; font-weight: 600; }
+        .webcam-live-indicator { position: absolute; top: 10px; right: 10px; background: #f44336; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.75em; font-weight: 700; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.8; } }
+        .webcam-refresh { position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.95); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2em; transition: var(--transition); }
+        .webcam-refresh:hover { transform: rotate(180deg); }
+
+        /* Karte */
+        .map-section { padding: 30px; background: var(--light); border-bottom: 3px solid #e0e0e0; transition: var(--transition); }
+        .map-section.collapsed { padding: 20px 30px; }
+        .map-section.collapsed #map { display: none; }
+        .map-section.collapsed .map-controls { display: none; }
         .map-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-            cursor: pointer;
-            transition: var(--transition);
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+            flex-wrap: wrap; gap: 15px; cursor: pointer; transition: var(--transition);
         }
-        .map-header:hover .map-title-wrapper h2 {
-            color: var(--primary);
-        }
-        .map-title-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .map-title-wrapper h2 {
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: var(--transition);
-        }
+        .map-header:hover .map-title-wrapper h2 { color: var(--primary); }
+        .map-title-wrapper { display: flex; align-items: center; gap: 10px; }
+        .map-title-wrapper h2 { color: var(--dark); display: flex; align-items: center; gap: 10px; transition: var(--transition); }
         .map-toggle-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: var(--transition);
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+            background: var(--primary); color: white; border: none; font-size: 1.2em; cursor: pointer; transition: var(--transition);
+            padding: 8px 15px; border-radius: 6px; font-weight: 600; box-shadow: 0 2px 8px rgba(33,150,243,0.3);
         }
-        .map-toggle-btn:hover {
-            background: var(--secondary);
-            transform: scale(1.05);
+        .map-toggle-btn:hover { background: var(--secondary); transform: scale(1.05); }
+        .map-toggle-btn.rotated { transform: rotate(180deg); }
+        .map-toggle-btn.rotated:hover { transform: rotate(180deg) scale(1.05); }
+        .map-controls { display: flex; gap: 10px; flex-wrap: wrap; }
+        .map-btn { padding: 8px 16px; border: 2px solid var(--primary); background: white; color: var(--primary); border-radius: 6px; cursor: pointer; font-weight: 600; transition: var(--transition); }
+        .map-btn:hover { background: var(--primary); color: white; }
+        .map-btn.active { background: var(--primary); color: white; }
+        #map { height: 500px; border-radius: var(--border-radius); box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 3px solid #ddd; z-index: 1; }
+
+        .custom-marker {
+            background: white; border: 3px solid var(--primary); border-radius: 50% 50% 50% 0; width: 35px; height: 35px;
+            transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.3); transition: var(--transition);
         }
-        .map-toggle-btn.rotated {
-            transform: rotate(180deg);
-        }
-        .map-toggle-btn.rotated:hover {
-            transform: rotate(180deg) scale(1.05);
-        }
-        .map-controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .map-btn {
-            padding: 8px 16px;
-            border: 2px solid var(--primary);
-            background: white;
-            color: var(--primary);
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-        .map-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-        .map-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-        #map {
-            height: 500px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border: 3px solid #ddd;
-            z-index: 1;
-        }
-        
+        .custom-marker:hover { transform: rotate(-45deg) scale(1.2); }
+        .marker-icon { transform: rotate(45deg); font-size: 18px; }
+        .marker-favorite { border-color: var(--warning); background: #fff8e1; }
+
         .mobile-map-hint {
             background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 10px;
-            text-align: center;
-            font-size: 0.9em;
-            color: #1565c0;
-            animation: fadeIn 0.5s ease;
-            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+            padding: 12px; border-radius: 8px; margin-top: 10px; text-align: center; font-size: 0.9em; color: #1565c0;
+            animation: fadeIn 0.5s ease; box-shadow: 0 2px 8px rgba(33,150,243,0.2);
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .custom-marker {
-            background: white;
-            border: 3px solid var(--primary);
-            border-radius: 50% 50% 50% 0;
-            width: 35px;
-            height: 35px;
-            transform: rotate(-45deg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-            transition: var(--transition);
-        }
-        .custom-marker:hover {
-            transform: rotate(-45deg) scale(1.2);
-        }
-        .marker-icon {
-            transform: rotate(45deg);
-            font-size: 18px;
-        }
-        .marker-favorite {
-            border-color: var(--warning);
-            background: #fff8e1;
-        }
-        .popup-content {
-            padding: 15px;
-        }
-        .popup-title {
-            font-size: 1.2em;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .popup-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin: 10px 0;
-        }
-        .popup-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-        }
-        .popup-btn {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .popup-btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        
-        /* FILTERS */
-        .filters {
-            background: var(--light);
-            padding: 25px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            border-bottom: 3px solid #e0e0e0;
-        }
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .filter-group label {
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 0.9em;
-            display: flex;
-            justify-content: space-between;
-        }
-        .slider-value {
-            background: var(--primary);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-weight: 700;
-            min-width: 80px;
-            text-align: center;
-        }
-        input[type="range"] {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: #ddd;
-            outline: none;
-            -webkit-appearance: none;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Filter */
+        .filters { background: var(--light); padding: 25px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 20px; border-bottom: 3px solid #e0e0e0; }
+        .filter-group { display: flex; flex-direction: column; gap: 8px; }
+        .filter-group label { font-weight: 600; color: var(--dark); font-size: 0.9em; display: flex; justify-content: space-between; }
+        .slider-value { background: var(--primary); color: white; padding: 4px 12px; border-radius: 12px; font-weight: 700; min-width: 80px; text-align: center; }
+        input[type="range"] { width: 100%; height: 8px; border-radius: 4px; background: #ddd; outline: none; -webkit-appearance: none; }
         input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid var(--primary);
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.4);
+            -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: white; border: 3px solid var(--primary);
+            cursor: pointer; box-shadow: 0 2px 8px rgba(33,150,243,0.4);
         }
         input[type="range"]::-moz-range-thumb {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid var(--primary);
-            cursor: pointer;
+            width: 22px; height: 22px; border-radius: 50%; background: white; border: 3px solid var(--primary); cursor: pointer;
         }
-        .slider-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75em;
-            color: #666;
-            margin-top: 5px;
-        }
-        .favorites-toggle {
-            background: var(--warning);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-        .favorites-toggle:hover {
-            background: #e68900;
-        }
-        .favorites-toggle.active {
-            background: #e68900;
-        }
-        
-        /* ========== FAVORITEN-LISTE ========== */
-        .favorites-list {
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(255, 152, 0, 0.1);
-            border-radius: 8px;
-            border: 2px solid rgba(255, 152, 0, 0.3);
-            display: none;
-        }
-        
-        .favorites-list.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .favorites-list-header {
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .favorites-list-items {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
+        .slider-labels { display: flex; justify-content: space-between; font-size: 0.75em; color: #666; margin-top: 5px; }
+        .favorites-toggle { background: var(--warning); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: var(--transition); }
+        .favorites-toggle:hover { background: #e68900; }
+        .favorites-toggle.active { background: #e68900; }
+
+        /* Favoriten-Liste */
+        .favorites-list { margin-top: 15px; padding: 15px; background: rgba(255,152,0,0.1); border-radius: 8px; border: 2px solid rgba(255,152,0,0.3); display: none; }
+        .favorites-list.active { display: block; animation: fadeIn 0.3s ease; }
+        .favorites-list-header { font-weight: 700; margin-bottom: 10px; color: var(--dark); display: flex; align-items: center; gap: 8px; }
+        .favorites-list-items { display: flex; flex-direction: column; gap: 8px; }
         .favorite-list-item {
-            background: white;
-            padding: 12px 15px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: var(--transition);
-            border: 2px solid transparent;
-            cursor: pointer;
-        }
-        
-        .favorite-list-item:hover {
-            border-color: var(--warning);
-            transform: translateX(5px);
-            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
-        }
-        
-        .favorite-list-item-name {
-            font-weight: 600;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .favorite-list-item-distance {
-            font-size: 0.9em;
-            color: #666;
-            font-weight: 500;
-        }
-        
-        .favorites-empty {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-style: italic;
-        }
-        
-        /* CONTENT */
-        .content {
-            padding: 30px;
-        }
-        .trail-card {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: var(--border-radius);
-            padding: 25px;
-            margin-bottom: 25px;
-            transition: var(--transition);
-            scroll-margin-top: 20px;
-        }
-        .trail-card:hover {
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-            transform: translateY(-3px);
-            border-color: var(--primary);
-        }
-        .trail-card.favorite {
-            border-color: var(--warning);
-            background: linear-gradient(to bottom, #fff8e1 0%, white 100%);
-        }
-        .trail-card.highlighted {
-            border-color: var(--primary);
-            background: linear-gradient(to bottom, #e3f2fd 0%, white 100%);
-            box-shadow: 0 8px 30px rgba(33, 150, 243, 0.3);
-            animation: highlight-pulse 1.5s;
-        }
-        @keyframes highlight-pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-        .trail-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .trail-title {
-            font-size: 1.6em;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .trail-title:hover {
-            color: var(--primary);
-        }
-        .favorite-btn {
-            background: none;
-            border: none;
-            font-size: 1.8em;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .favorite-btn:hover {
-            transform: scale(1.2) rotate(10deg);
-        }
-        .reliability-badge {
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-        .reliability-high {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-        }
-        .trail-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .info-box {
-            background: var(--light);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-            transition: var(--transition);
-        }
-        .info-box.clickable:hover {
-            background: #e8e8e8;
-            transform: translateX(5px);
-            cursor: pointer;
-        }
-        .info-label {
-            font-size: 0.85em;
-            color: #666;
-            margin-bottom: 6px;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-        .info-value {
-            font-size: 1.3em;
-            font-weight: 700;
-            color: var(--dark);
-        }
-        .technique-badges {
-            display: flex;
-            gap: 10px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-        .badge {
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 600;
-        }
-        .badge-skating {
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-            color: #1565c0;
-            border: 2px solid #90caf9;
-        }
-        .badge-classic {
-            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
-            color: #6a1b9a;
-            border: 2px solid #ce93d8;
-        }
-        
-        .trail-webcams {
-            margin-top: 20px;
-        }
-        
-        .trail-webcams h4 {
-            margin-bottom: 15px;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .trail-webcam-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-        
-        .trail-webcam-item {
-            position: relative;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            aspect-ratio: 16/9;
-        }
-        
-        .trail-webcam-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-        
-        .trail-webcam-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .trail-webcam-label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            color: white;
-            padding: 10px;
-            font-size: 0.85em;
-            font-weight: 600;
-        }
-        
-        .sections-container {
-            margin-top: 25px;
-            padding: 20px;
-            background: linear-gradient(135deg, #f5f5f5 0%, #e8eaf6 100%);
-            border-radius: var(--border-radius);
-            border: 2px solid #c5cae9;
-        }
-        .sections-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            cursor: pointer;
-            padding: 10px;
-            background: white;
-            border-radius: 8px;
-            transition: var(--transition);
-        }
-        .sections-header:hover {
-            background: #f5f5f5;
-        }
-        .sections-header h3 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--dark);
-        }
-        .toggle-icon {
-            font-size: 1.5em;
-            transition: transform 0.3s;
-        }
-        .toggle-icon.rotated {
-            transform: rotate(180deg);
-        }
-        .sections-list {
-            display: grid;
-            gap: 15px;
-            margin-top: 15px;
-        }
-        .sections-list.collapsed {
-            display: none;
-        }
-        .section-item {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 18px;
-            transition: var(--transition);
-        }
-        .section-item:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.15);
-            transform: translateX(5px);
-        }
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .section-name {
-            font-size: 1.2em;
-            font-weight: 700;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .section-badges {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .section-badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            font-weight: 600;
-        }
-        .badge-open {
-            background: #c8e6c9;
-            color: #2e7d32;
-        }
-        .badge-closed {
-            background: #ffcdd2;
-            color: #c62828;
-        }
-        .badge-difficulty-easy {
-            background: #e8f5e9;
-            color: #4CAF50;
-        }
-        .badge-difficulty-medium {
-            background: #fff3e0;
-            color: #FF9800;
-        }
-        .badge-difficulty-hard {
-            background: #ffebee;
-            color: #F44336;
-        }
-        .section-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-top: 12px;
-        }
-        .section-detail {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .section-detail-label {
-            font-size: 0.8em;
-            color: #666;
-            font-weight: 600;
-        }
-        .section-detail-value {
-            font-size: 1.1em;
-            font-weight: 700;
-            color: var(--dark);
-        }
-        .section-description {
-            margin-top: 12px;
-            padding: 10px;
-            background: var(--light);
-            border-radius: 6px;
-            font-size: 0.9em;
-            color: #555;
-            line-height: 1.5;
-        }
-        .weather-forecast {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: var(--border-radius);
-            margin-top: 20px;
-        }
-        .forecast-days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 12px;
-            margin-top: 15px;
-        }
-        .forecast-day {
-            text-align: center;
-            padding: 12px 8px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            transition: var(--transition);
-        }
-        .forecast-day:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-3px);
-        }
-        .fog-indicator {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 18px;
-            border-radius: var(--border-radius);
-            margin-top: 20px;
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border: 2px solid #90caf9;
-        }
-        .fog-icon {
-            font-size: 2.5em;
-        }
-        .data-sources {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 2px solid #f0f0f0;
-        }
-        .source-link {
-            background: var(--light);
-            padding: 6px 14px;
-            border-radius: 6px;
-            text-decoration: none;
-            color: var(--primary);
-            transition: var(--transition);
-            font-size: 0.9em;
-        }
-        .source-link:hover {
-            background: var(--primary);
-            color: white;
-        }
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
+            background: white; padding: 12px 15px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;
+            transition: var(--transition); border: 2px solid transparent; cursor: pointer;
+        }
+        .favorite-list-item:hover { border-color: var(--warning); transform: translateX(5px); box-shadow: 0 2px 8px rgba(255,152,0,0.2); }
+        .favorite-list-item-name { font-weight: 600; color: var(--dark); display: flex; align-items: center; gap: 8px; }
+        .favorite-list-item-distance { font-size: 0.9em; color: #666; font-weight: 500; }
+
+        /* Favoriten-Eintrags-Actions */
+        .favorite-list-item-right { display: inline-flex; align-items: center; gap: 8px; }
+        .fav-link {
+            display: inline-flex; align-items: center; gap: 6px; background: var(--light); border: 1px solid #ddd;
+            padding: 6px 10px; border-radius: 6px; text-decoration: none; color: var(--primary); font-weight: 600; transition: var(--transition);
+        }
+        .fav-link:hover { background: var(--primary); color: white; }
+        .fav-link.disabled { opacity: 0.55; cursor: not-allowed; }
+        .fav-link .icon { font-size: 1.05em; }
+        .fav-remove-btn {
+            display: inline-flex; align-items: center; gap: 6px; background: #fff5f5; border: 1px solid #ffcdd2; color: #c62828;
+            padding: 6px 10px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: var(--transition);
+        }
+        .fav-remove-btn:hover { background: #ffcdd2; color: #b71c1c; transform: translateY(-1px); }
+        .fav-remove-btn .icon { font-size: 1.05em; }
+
+        /* Content / Karten */
+        .content { padding: 30px; }
+        .trail-card { background: white; border: 2px solid #e0e0e0; border-radius: var(--border-radius); padding: 25px; margin-bottom: 25px; transition: var(--transition); scroll-margin-top: 20px; }
+        .trail-card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.12); transform: translateY(-3px); border-color: var(--primary); }
+        .trail-card.favorite { border-color: var(--warning); background: linear-gradient(to bottom, #fff8e1 0%, white 100%); }
+        .trail-card.highlighted { border-color: var(--primary); background: linear-gradient(to bottom, #e3f2fd 0%, white 100%); box-shadow: 0 8px 30px rgba(33,150,243,0.3); animation: highlight-pulse 1.5s; }
+        @keyframes highlight-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        .trail-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        .trail-title { font-size: 1.6em; color: var(--dark); display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 600; }
+        .trail-title:hover { color: var(--primary); }
+        .favorite-btn { background: none; border: none; font-size: 1.8em; cursor: pointer; transition: var(--transition); }
+        .favorite-btn:hover { transform: scale(1.2) rotate(10deg); }
+        .reliability-badge { padding: 6px 16px; border-radius: 20px; font-size: 0.85em; font-weight: 600; margin-left: 10px; }
+        .reliability-high { background: linear-gradient(135deg, #4caf50, #45a049); color: white; }
+
+        .trail-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .info-box { background: var(--light); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary); transition: var(--transition); }
+        .info-box.clickable:hover { background: #e8e8e8; transform: translateX(5px); cursor: pointer; }
+        .info-label { font-size: 0.85em; color: #666; margin-bottom: 6px; font-weight: 500; text-transform: uppercase; }
+        .info-value { font-size: 1.3em; font-weight: 700; color: var(--dark); }
+
+        .technique-badges { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
+        .badge { padding: 8px 18px; border-radius: 20px; font-size: 0.9em; font-weight: 600; }
+        .badge-skating { background: linear-gradient(135deg, #e3f2fd, #bbdefb); color: #1565c0; border: 2px solid #90caf9; }
+        .badge-classic { background: linear-gradient(135deg, #f3e5f5, #e1bee7); color: #6a1b9a; border: 2px solid #ce93d8; }
+
+        /* Abschnitte */
+        .sections-container { margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #f5f5f5 0%, #e8eaf6 100%); border-radius: var(--border-radius); border: 2px solid #c5cae9; }
+        .sections-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; cursor: pointer; padding: 10px; background: white; border-radius: 8px; transition: var(--transition); }
+        .sections-header:hover { background: #f5f5f5; }
+        .sections-header h3 { display: flex; align-items: center; gap: 10px; color: var(--dark); }
+        .toggle-icon { font-size: 1.5em; transition: transform 0.3s; }
+        .toggle-icon.rotated { transform: rotate(180deg); }
+        .sections-list { display: grid; gap: 15px; margin-top: 15px; }
+        .sections-list.collapsed { display: none; }
+        .section-item { background: white; border: 2px solid #e0e0e0; border-radius: 8px; padding: 18px; transition: var(--transition); }
+        .section-item:hover { border-color: var(--primary); box-shadow: 0 4px 15px rgba(33,150,243,0.15); transform: translateX(5px); }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .section-name { font-size: 1.2em; font-weight: 700; color: var(--dark); display: flex; align-items: center; gap: 8px; }
+        .section-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+        .section-badge { padding: 4px 10px; border-radius: 12px; font-size: 0.8em; font-weight: 600; }
+        .badge-open { background: #c8e6c9; color: #2e7d32; }
+        .badge-closed { background: #ffcdd2; color: #c62828; }
+        .badge-difficulty-easy { background: #e8f5e9; color: #4caf50; }
+        .badge-difficulty-medium { background: #fff3e0; color: #ff9800; }
+        .badge-difficulty-hard { background: #ffebee; color: #f44336; }
+        .section-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 12px; }
+        .section-detail { display: flex; flex-direction: column; gap: 4px; }
+        .section-detail-label { font-size: 0.8em; color: #666; font-weight: 600; }
+        .section-detail-value { font-size: 1.1em; font-weight: 700; color: var(--dark); }
+        .section-description { margin-top: 12px; padding: 10px; background: var(--light); border-radius: 6px; font-size: 0.9em; color: #555; line-height: 1.5; }
+
+        .weather-forecast { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: var(--border-radius); margin-top: 20px; }
+        .forecast-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-top: 15px; }
+        .forecast-day { text-align: center; padding: 12px 8px; background: rgba(255,255,255,0.1); border-radius: 8px; transition: var(--transition); }
+        .forecast-day:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
+
+        .fog-indicator { display: flex; align-items: center; gap: 15px; padding: 18px; border-radius: var(--border-radius); margin-top: 20px; background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border: 2px solid #90caf9; }
+        .fog-icon { font-size: 2.5em; }
+
+        .data-sources { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; padding-top: 15px; border-top: 2px solid #f0f0f0; }
+        .source-link { background: var(--light); padding: 6px 14px; border-radius: 6px; text-decoration: none; color: var(--primary); transition: var(--transition); font-size: 0.9em; }
+        .source-link:hover { background: var(--primary); color: white; }
+
+        .status-indicator { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
         .status-excellent { background: var(--success); }
         .status-good { background: #8bc34a; }
         .status-fair { background: var(--warning); }
         .status-poor { background: var(--danger); }
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-        }
+
+        .loading { text-align: center; padding: 60px 20px; }
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
+            border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 50px; height: 50px;
+            animation: spin 1s linear infinite; margin: 20px auto;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .error-message, .info-message {
-            padding: 18px 20px;
-            border-radius: var(--border-radius);
-            margin: 15px 0;
-            display: flex;
-            gap: 12px;
-        }
-        .error-message {
-            background: linear-gradient(135deg, #ffebee, #ffcdd2);
-            color: #c62828;
-            border-left: 5px solid #c62828;
-        }
-        .info-message {
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-            color: #1565c0;
-            border-left: 5px solid #1565c0;
-        }
-        .last-updated {
-            text-align: center;
-            color: #666;
-            font-size: 0.9em;
-            padding: 20px;
-            background: var(--light);
-        }
-        
-        /* RESPONSIVE */
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .error-message, .info-message { padding: 18px 20px; border-radius: var(--border-radius); margin: 15px 0; display: flex; gap: 12px; }
+        .error-message { background: linear-gradient(135deg, #ffebee, #ffcdd2); color: #c62828; border-left: 5px solid #c62828; }
+        .info-message { background: linear-gradient(135deg, #e3f2fd, #bbdefb); color: #1565c0; border-left: 5px solid #1565c0; }
+        .last-updated { text-align: center; color: #666; font-size: 0.9em; padding: 20px; background: var(--light); }
+
+        /* Responsive */
         @media (max-width: 992px) {
-            .webcam-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            #map {
-                height: 400px;
-            }
+            .webcam-container { grid-template-columns: repeat(2, 1fr); }
+            #map { height: 400px; }
         }
-        
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            h1 {
-                font-size: 1.8em;
-            }
-            
-            .header-top {
-                flex-direction: column;
-            }
-            
-            .datetime-display {
-                width: 100%;
-            }
-            
-            .location-input-wrapper {
-                flex-direction: column;
-            }
-            
-            .location-input-wrapper input,
-            .location-input-wrapper button {
-                width: 100%;
-            }
-            
-            .webcam-container, .filters {
-                grid-template-columns: 1fr;
-            }
-            
-            #map {
-                height: 350px;
-            }
-            
-            .forecast-days {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .section-details {
-                grid-template-columns: 1fr;
-            }
-            
-            .map-header {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 10px;
-                background: rgba(33, 150, 243, 0.05);
-                border-radius: 8px;
-            }
-            
-            .map-controls {
-                width: 100%;
-            }
-            
-            .map-toggle-btn {
-                min-width: 44px;
-                min-height: 44px;
-                padding: 10px 18px;
-            }
-            
-            .content {
-                padding: 15px;
-            }
-            
-            .trail-card {
-                padding: 15px;
-            }
-            
-            .route-info {
-                flex-direction: column;
-            }
-            
-            .route-button {
-                width: 100%;
-                justify-content: center;
-            }
+            body { padding: 10px; }
+            h1 { font-size: 1.8em; }
+            .header-top { flex-direction: column; }
+            .datetime-display { width: 100%; }
+            .location-input-wrapper { flex-direction: column; }
+            .location-input-wrapper input, .location-input-wrapper button { width: 100%; }
+            .webcam-container, .filters { grid-template-columns: 1fr; }
+            #map { height: 350px; }
+            .forecast-days { grid-template-columns: repeat(3, 1fr); }
+            .section-details { grid-template-columns: 1fr; }
+            .map-header { flex-direction: column; align-items: flex-start; padding: 10px; background: rgba(33,150,243,0.05); border-radius: 8px; }
+            .map-controls { width: 100%; }
+            .map-toggle-btn { min-width: 44px; min-height: 44px; padding: 10px 18px; }
+            .content { padding: 15px; }
+            .trail-card { padding: 15px; }
+            .route-info { flex-direction: column; }
+            .route-button { width: 100%; justify-content: center; }
         }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <!-- ❄️ SCHNEEFLOCKEN -->
-            <div class="snowflakes" aria-hidden="true">
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-                <div class="snowflake">❄</div>
-            </div>
-            
-            <div class="header-content">
-                <div class="header-top">
-                    <h1>Loipen Finder</h1>
-                    <div class="datetime-display" id="datetimeDisplay">
-                        <div class="date" id="currentDate">Lädt...</div>
-                        <div class="time" id="currentTime">--:--:--</div>
-                    </div>
-                </div>
-                <p class="subtitle">Schweiz • Deutschland • Österreich</p>
-                
-                <div class="location-input-container">
-                    <div class="location-input-wrapper">
-                        <label>📍 Dein Standort:</label>
-                        <input type="text" 
-                               id="userLocation" 
-                               placeholder="z.B. 8001 Zürich oder Zürich, CH" 
-                               value="">
-                        <button onclick="setUserLocation()">
-                            <span>🎯</span>
-                            <span>Standort setzen</span>
-                        </button>
-                        <button onclick="getUserGeolocation()">
-                            <span>📱</span>
-                            <span>GPS nutzen</span>
-                        </button>
-                    </div>
-                    <div class="current-location-display" id="currentLocationDisplay"></div>
-                    <div class="location-warning" id="locationWarning">
-                        ⚠️ <strong>Hinweis:</strong> Setze deinen Standort für Distanzberechnung und Routenplanung.
-                    </div>
-                </div>
-                
-                <div class="webcam-container">
-                    <div class="webcam-item" onclick="window.open('https://lws-sport.ch/webcamrandenhaus/randenhauscam.jpg', '_blank')">
-                        <button class="webcam-refresh" onclick="event.stopPropagation(); refreshWebcam('webcam1')">🔄</button>
-                        <span class="webcam-live-indicator">LIVE</span>
-                        <img id="webcam1" src="https://lws-sport.ch/webcamrandenhaus/randenhauscam.jpg" alt="Randenhaus" onerror="handleWebcamError(this)" loading="lazy"/>
-                        <div class="webcam-label">📷 Randenhaus<div style="font-size: 0.85em; margin-top: 3px;">Schaffhausen, CH</div></div>
-                    </div>
-                    <div class="webcam-item" onclick="window.open('https://lws-sport.ch/webcam/lwscam.jpg', '_blank')">
-                        <button class="webcam-refresh" onclick="event.stopPropagation(); refreshWebcam('webcam2')">🔄</button>
-                        <span class="webcam-live-indicator">LIVE</span>
-                        <img id="webcam2" src="https://lws-sport.ch/webcam/lwscam.jpg" alt="LWS Sport" onerror="handleWebcamError(this)" loading="lazy"/>
-                        <div class="webcam-label">📷 LWS Sport<div style="font-size: 0.85em; margin-top: 3px;">Schaffhausen, CH</div></div>
-                    </div>
-                    <div class="webcam-item" onclick="window.open('https://hagenturm.roundshot.com/#/', '_blank')">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea'/%3E%3Cstop offset='100%25' style='stop-color:%23764ba2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad)' width='800' height='600'/%3E%3Ctext x='50%25' y='45%25' text-anchor='middle' dy='.3em' fill='white' font-size='50' font-weight='bold'%3E🏔️%3C/text%3E%3Ctext x='50%25' y='60%25' text-anchor='middle' dy='.3em' fill='white' font-size='28'%3EHagenturm%3C/text%3E%3C/svg%3E" alt="Hagenturm"/>
-                        <div class="webcam-label">📷 Hagenturm<div style="font-size: 0.85em; margin-top: 3px;">360° Panorama</div></div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <div class="map-section" id="mapSection">
-            <div class="map-header" onclick="toggleMap()">
-                <div class="map-title-wrapper">
-                    <h2><span>🗺️</span><span>Interaktive Karte</span></h2>
-                    <button class="map-toggle-btn" id="mapToggleBtn" onclick="event.stopPropagation(); toggleMap()">▼</button>
-                </div>
-                <div class="map-controls">
-                    <button class="map-btn active" id="btnShowAll" onclick="event.stopPropagation(); showAllTrailsOnMap()">📍 Alle</button>
-                    <button class="map-btn" id="btnShowFiltered" onclick="event.stopPropagation(); showFilteredOnMap()">🔍 Gefilterte</button>
-                    <button class="map-btn" onclick="event.stopPropagation(); fitMapBounds()">🎯 Zentrieren</button>
-                </div>
-            </div>
-            <div id="map"></div>
-        </div>
-
-        <div class="filters">
-            <!-- ✅ ANREISEDISTANZ AUF 50KM -->
-            <div class="filter-group">
-                <label><span>🚗 Max. Anreisedistanz</span><span class="slider-value" id="distanceValue">50 km</span></label>
-                <input type="range" id="distance" min="0" max="500" value="50" step="10">
-                <div class="slider-labels"><span>0</span><span>250</span><span>500 km</span></div>
-            </div>
-            <div class="filter-group">
-                <label><span>⛷️ Langlaufstil</span><span class="slider-value" id="techniqueValue">Alle</span></label>
-                <input type="range" id="technique" min="0" max="3" value="0" step="1">
-                <div class="slider-labels"><span>Alle</span><span>Skating</span><span>Klassisch</span><span>Beides</span></div>
-            </div>
-            <!-- ✅ MINDEST-SCHNEEHÖHE -->
-            <div class="filter-group">
-                <label><span>❄️ Min. Schneehöhe</span><span class="slider-value" id="snowValue">mind. 0 cm</span></label>
-                <input type="range" id="snowHeight" min="0" max="200" value="0" step="10">
-                <div class="slider-labels"><span>0</span><span>100</span><span>200 cm</span></div>
-            </div>
-            <div class="filter-group">
-                <label><span>🎯 Zustand</span><span class="slider-value" id="conditionValue">Alle</span></label>
-                <input type="range" id="condition" min="0" max="4" value="0" step="1">
-                <div class="slider-labels"><span>Alle</span><span>⭐</span><span>✅</span><span>⚠️</span><span>❌</span></div>
-            </div>
-            <div class="filter-group">
-                <label><span>🌤️ Wetter</span><span class="slider-value" id="weatherValue">Alle</span></label>
-                <input type="range" id="weather" min="0" max="3" value="0" step="1">
-                <div class="slider-labels"><span>Alle</span><span>☀️</span><span>⛅</span><span>🌨️</span></div>
-            </div>
-            <!-- ✅ FAVORITEN MIT LISTE -->
-            <div class="filter-group">
-                <button class="favorites-toggle" onclick="toggleFavoritesOnly()">⭐ Nur Favoriten</button>
-                <div class="favorites-list" id="favoritesList">
-                    <div class="favorites-list-header">
-                        <span>⭐</span>
-                        <span>Deine Favoriten</span>
-                        <span id="favoritesCount">(0)</span>
-                    </div>
-                    <div class="favorites-list-items" id="favoritesListItems">
-                        <div class="favorites-empty">Noch keine Favoriten gespeichert</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="content">
-            <div id="trailsContainer">
-                <div class="loading"><div class="spinner"></div><p>Lade Daten...</p></div>
-            </div>
-        </div>
-
-        <div class="last-updated" id="lastUpdated"></div>
-    </div>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-    <script>
-        'use strict';
-        
-        // ========================================
-        // KONFIGURATION
-        // ========================================
-        const CONFIG = {
-            version: '3.4.0',
-            apiKey: '09afa4291402fae98cc456cc7d7c3c76',
-            autoRefreshInterval: 30 * 60 * 1000,
-            webcamRefreshInterval: 5 * 60 * 1000
-        };
-
-        // ========================================
-        // LOIPEN & SCHNEEBERICHTE - LINK DATENBANK
-        // Hier kannst du einfach neue Einträge hinzufügen!
-        // ========================================
-        
-        const TRAILS_DATABASE = [
-            // ===== SCHWEIZ =====
-            {
-                id: 1,
-                name: "Davos Nordic",
-                country: "CH",
-                flag: "🇨🇭",
-                lat: 46.8029,
-                lon: 9.8364,
-                distance: 45,
-                elevation: 1560,
-                techniques: ["skating", "classic"],
-                
-                // 🔗 LINKS
-                officialUrl: "https://www.davos.ch/winter/langlaufen/",
-                bergfexUrl: "https://www.bergfex.ch/davos-klosters/langlaufen/",
-                snowReportUrl: "https://www.davos.ch/winter/schneebericht/",
-                
-                // 📷 WEBCAMS
-                webcams: [
-                    { name: "Davos Dorf", url: "https://www.foto-webcam.eu/webcam/davos-dorf/current/400.jpg" },
-                    { name: "Parsenn", url: "https://www.foto-webcam.eu/webcam/davos-parsenn/current/400.jpg" }
-                ],
-                
-                sections: [
-                    {
-                        name: "Flüelatrack",
-                        length: 15.5,
-                        technique: ["skating", "classic"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1560,
-                        elevationGain: 180,
-                        lastPreparation: "Heute, 06:00",
-                        condition: "excellent",
-                        description: "Panorama-Loipe durch das Flüelatal mit herrlicher Aussicht."
-                    },
-                    {
-                        name: "Totalp Rundloipe",
-                        length: 8.2,
-                        technique: ["skating", "classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1510,
-                        elevationGain: 85,
-                        lastPreparation: "Heute, 06:00",
-                        condition: "good",
-                        description: "Leichte Rundloipe ideal für Einsteiger und Familien."
-                    }
-                ]
-            },
-            
-            {
-                id: 2,
-                name: "Engadin - St. Moritz",
-                country: "CH",
-                flag: "🇨🇭",
-                lat: 46.4908,
-                lon: 9.8355,
-                distance: 200,
-                elevation: 1822,
-                techniques: ["skating", "classic"],
-                
-                officialUrl: "https://www.engadin.ch/langlaufen",
-                bergfexUrl: "https://www.bergfex.ch/engadin-st-moritz/langlaufen/",
-                snowReportUrl: "https://www.engadin.ch/winter/schneebericht/",
-                
-                webcams: [
-                    { name: "St. Moritz Dorf", url: "https://www.foto-webcam.eu/webcam/stmoritz/current/400.jpg" },
-                    { name: "Corviglia", url: "https://www.foto-webcam.eu/webcam/stmoritz-corviglia/current/400.jpg" }
-                ],
-                
-                sections: [
-                    {
-                        name: "Engadiner Ski Marathon Strecke",
-                        length: 42.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "hard",
-                        status: "open",
-                        elevation: 1822,
-                        elevationGain: 380,
-                        lastPreparation: "Heute, 04:30",
-                        condition: "excellent",
-                        description: "Die legendäre Marathon-Strecke von Maloja nach S-chanf."
-                    }
-                ]
-            },
-            
-            {
-                id: 3,
-                name: "Goms - Obergoms",
-                country: "CH",
-                flag: "🇨🇭",
-                lat: 46.4806,
-                lon: 8.2336,
-                distance: 95,
-                elevation: 1400,
-                techniques: ["skating", "classic"],
-                
-                officialUrl: "https://www.obergoms.ch/langlaufen",
-                bergfexUrl: "https://www.bergfex.ch/obergoms/langlaufen/",
-                snowReportUrl: "https://www.obergoms.ch/schneebericht",
-                
-                webcams: [
-                    { name: "Münster Goms", url: "https://www.foto-webcam.eu/webcam/muenster-goms/current/400.jpg" }
-                ],
-                
-                sections: [
-                    {
-                        name: "Gommer Höhenloipe",
-                        length: 26.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1400,
-                        elevationGain: 210,
-                        lastPreparation: "Heute, 05:00",
-                        condition: "excellent",
-                        description: "Die Krönung: Höhenloipe durch das gesamte Goms."
-                    }
-                ]
-            },
-            
-            // ===== ÖSTERREICH =====
-            {
-                id: 4,
-                name: "Ramsau am Dachstein",
-                country: "AT",
-                flag: "🇦🇹",
-                lat: 47.4272,
-                lon: 13.6572,
-                distance: 220,
-                elevation: 1135,
-                techniques: ["skating", "classic"],
-                
-                officialUrl: "https://www.ramsau.com/winter/langlaufen",
-                bergfexUrl: "https://www.bergfex.at/ramsau-dachstein/langlaufen/",
-                snowReportUrl: "https://www.ramsau.com/schneebericht",
-                
-                webcams: [
-                    { name: "Ramsau Hauptplatz", url: "https://www.foto-webcam.eu/webcam/ramsau/current/400.jpg" }
-                ],
-                
-                sections: [
-                    {
-                        name: "Hauptloipe Ramsau",
-                        length: 18.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1135,
-                        elevationGain: 95,
-                        lastPreparation: "Heute, 05:00",
-                        condition: "excellent",
-                        description: "Die berühmte Hauptloipe durch das Ramsauer Plateau."
-                    }
-                ]
-            },
-            
-            {
-                id: 5,
-                name: "Seefeld in Tirol",
-                country: "AT",
-                flag: "🇦🇹",
-                lat: 47.3297,
-                lon: 11.1877,
-                distance: 245,
-                elevation: 1200,
-                techniques: ["skating", "classic"],
-                
-                officialUrl: "https://www.seefeld.com/de/langlaufen",
-                bergfexUrl: "https://www.bergfex.at/seefeld/langlaufen/",
-                snowReportUrl: "https://www.seefeld.com/schneebericht",
-                
-                webcams: [
-                    { name: "Seefeld Zentrum", url: "https://www.foto-webcam.eu/webcam/seefeld/current/400.jpg" }
-                ],
-                
-                sections: [
-                    {
-                        name: "Olympia Loipe",
-                        length: 25.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1200,
-                        elevationGain: 180,
-                        lastPreparation: "Heute, 05:00",
-                        condition: "excellent",
-                        description: "Die historische Olympia-Strecke von 1964 und 1976."
-                    }
-                ]
-            },
-            
-            // ===== DEUTSCHLAND =====
-            {
-                id: 6,
-                name: "Oberstdorf Nordic",
-                country: "DE",
-                flag: "🇩🇪",
-                lat: 47.4095,
-                lon: 10.2793,
-                distance: 180,
-                elevation: 813,
-                techniques: ["skating", "classic"],
-                
-                officialUrl: "https://www.oberstdorf.de/langlaufen",
-                bergfexUrl: "https://www.bergfex.de/oberstdorf/langlaufen/",
-                snowReportUrl: "https://www.oberstdorf.de/schneebericht",
-                
-                webcams: [
-                    { name: "Oberstdorf Ortsmitte", url: "https://www.foto-webcam.eu/webcam/oberstdorf/current/400.jpg" },
-                    { name: "Nebelhorn", url: "https://www.foto-webcam.eu/webcam/oberstdorf-nebelhorn/current/400.jpg" }
-                ],
-                
-                sections: [
-                    {
-                        name: "Skating-Arena Oberstdorf",
-                        length: 7.5,
-                        technique: ["skating"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 813,
-                        elevationGain: 45,
-                        lastPreparation: "Heute, 06:30",
-                        condition: "excellent",
-                        description: "Moderne Skating-Arena mit perfekter Präparation."
-                    }
-                ]
-            },
-            
-            {
-                id: 7,
-                name: "Feldberg Schwarzwald",
-                country: "DE",
-                flag: "🇩🇪",
-                lat: 47.8744,
-                lon: 8.0044,
-                distance: 55,
-                elevation: 1450,
-                techniques: ["skating", "classic"],
-                
-                officialUrl: "https://www.hochschwarzwald.de/erleben/langlauf",
-                bergfexUrl: "https://www.bergfex.de/feldberg/langlaufen/",
-                snowReportUrl: "https://www.hochschwarzwald.de/schneebericht",
-                
-                webcams: [],
-                
-                sections: [
-                    {
-                        name: "Feldberg Höhenloipe",
-                        length: 18.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1450,
-                        elevationGain: 185,
-                        lastPreparation: "Heute, 06:00",
-                        condition: "good",
-                        description: "Höchstgelegene Loipe im Schwarzwald."
-                    }
-                ]
-            }
-        ];
-
-        // ========================================
-        // GLOBALE VARIABLEN
-        // ========================================
-        let allTrails = [];
-        let filteredTrails = [];
-        let favorites = JSON.parse(localStorage.getItem('trailFavorites')) || [];
-        let showOnlyFavorites = false;
-        let map = null;
-        let markers = {};
-        let markerCluster = null;
-        let userCoordinates = null;
-
-        // ========================================
-        // INITIALIZATION
-        // ========================================
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log(`🎿 Loipen Finder v${CONFIG.version} - ${TRAILS_DATABASE.length} Gebiete`);
-            initDateTime();
-            initMap();
-            setupFilterListeners();
-            loadAllData();
-            setupAutoRefresh();
-            restoreMapState();
-            setupResizeHandler();
-            loadUserLocation();
-            updateFavoritesList(); // ✅ Favoriten-Liste initialisieren
-            
-            if (!userCoordinates) {
-                document.getElementById('locationWarning').classList.add('active');
-            }
-        });
-
-        // ========================================
-        // DATUM & UHRZEIT
-        // ========================================
-        function initDateTime() {
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-        }
-
-        function updateDateTime() {
-            const now = new Date();
-            const days = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-            const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
-                           'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
-            
-            const dateStr = `${days[now.getDay()]}, ${now.getDate()}. ${months[now.getMonth()]} ${now.getFullYear()}`;
-            const timeStr = now.toLocaleTimeString('de-DE');
-            
-            document.getElementById('currentDate').textContent = dateStr;
-            document.getElementById('currentTime').textContent = timeStr;
-        }
-
-        // ========================================
-        // STANDORT-FUNKTIONEN
-        // ========================================
-        function loadUserLocation() {
-            const saved = localStorage.getItem('userLocation');
-            if (saved) {
-                document.getElementById('userLocation').value = saved;
-                geocodeLocation(saved);
-            }
-        }
-
-        async function setUserLocation() {
-            const input = document.getElementById('userLocation').value.trim();
-            if (!input) {
-                alert('Bitte gib einen Standort ein (z.B. 8001 Zürich)');
-                return;
-            }
-            localStorage.setItem('userLocation', input);
-            await geocodeLocation(input);
-        }
-
-        async function geocodeLocation(location) {
-            try {
-                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}&limit=1`);
-                const data = await response.json();
-                
-                if (data && data.length > 0) {
-                    userCoordinates = {
-                        lat: parseFloat(data[0].lat),
-                        lon: parseFloat(data[0].lon),
-                        display: data[0].display_name
-                    };
-                    
-                    document.getElementById('currentLocationDisplay').innerHTML = 
-                        `✅ <strong>Standort gesetzt:</strong> ${userCoordinates.display}`;
-                    document.getElementById('currentLocationDisplay').classList.add('active');
-                    document.getElementById('locationWarning').classList.remove('active');
-                    
-                    calculateAllDistances();
-                    applyFilters();
-                    
-                    console.log('📍 Standort gesetzt:', userCoordinates);
-                } else {
-                    alert('Standort nicht gefunden. Versuche: PLZ Ort oder Stadt, Land');
-                }
-            } catch (error) {
-                console.error('Geocoding Fehler:', error);
-                alert('Fehler beim Ermitteln des Standorts.');
-            }
-        }
-
-        function getUserGeolocation() {
-            if (!navigator.geolocation) {
-                alert('Geolocation wird nicht unterstützt.');
-                return;
-            }
-            
-            navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                    userCoordinates = {
-                        lat: position.coords.latitude,
-                        lon: position.coords.longitude
-                    };
-                    
-                    try {
-                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoordinates.lat}&lon=${userCoordinates.lon}`);
-                        const data = await response.json();
-                        userCoordinates.display = data.display_name;
-                        
-                        document.getElementById('userLocation').value = data.display_name;
-                        localStorage.setItem('userLocation', data.display_name);
-                    } catch (error) {
-                        userCoordinates.display = `${userCoordinates.lat.toFixed(4)}, ${userCoordinates.lon.toFixed(4)}`;
-                    }
-                    
-                    document.getElementById('currentLocationDisplay').innerHTML = 
-                        `✅ <strong>GPS-Standort:</strong> ${userCoordinates.display}`;
-                    document.getElementById('currentLocationDisplay').classList.add('active');
-                    document.getElementById('locationWarning').classList.remove('active');
-                    
-                    calculateAllDistances();
-                    applyFilters();
-                    
-                    console.log('📱 GPS ermittelt:', userCoordinates);
-                },
-                (error) => {
-                    alert('GPS-Fehler: ' + error.message);
-                }
-            );
-        }
-
-        function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = 
-                Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon/2) * Math.sin(dLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            return R * c;
-        }
-
-        function calculateAllDistances() {
-            if (!userCoordinates) return;
-            
-            allTrails.forEach(trail => {
-                trail.actualDistance = calculateDistance(
-                    userCoordinates.lat,
-                    userCoordinates.lon,
-                    trail.lat,
-                    trail.lon
-                );
-                trail.drivingTime = Math.round(trail.actualDistance / 80 * 60);
-            });
-            
-            allTrails.sort((a, b) => (a.actualDistance || 999999) - (b.actualDistance || 999999));
-            
-            updateFavoritesList(); // ✅ Liste aktualisieren
-        }
-
-        function getGoogleMapsLink(trail) {
-            if (!userCoordinates) return null;
-            return `https://www.google.com/maps/dir/${userCoordinates.lat},${userCoordinates.lon}/${trail.lat},${trail.lon}`;
-        }
-
-        // ========================================
-        // ✅ FAVORITEN-LISTE
-        // ========================================
-        function updateFavoritesList() {
-            const listContainer = document.getElementById('favoritesListItems');
-            const countBadge = document.getElementById('favoritesCount');
-            const favoritesList = document.getElementById('favoritesList');
-            
-            // Zähler aktualisieren
-            countBadge.textContent = `(${favorites.length})`;
-            
-            if (favorites.length === 0) {
-                listContainer.innerHTML = '<div class="favorites-empty">Noch keine Favoriten gespeichert.<br>Klicke auf ⭐ bei einer Loipe!</div>';
-                return;
-            }
-            
-            // Favoriten-Liste anzeigen
-            favoritesList.classList.add('active');
-            
-            // Favoriten-Items rendern
-            const favTrails = allTrails.filter(t => favorites.includes(t.id));
-            listContainer.innerHTML = favTrails.map(trail => `
-                <div class="favorite-list-item" onclick="scrollToTrail(${trail.id}); highlightTrail(${trail.id})">
-                    <div class="favorite-list-item-name">
-                        <span>${trail.flag}</span>
-                        <span>${trail.name}</span>
-                    </div>
-                    <div class="favorite-list-item-distance">
-                        ${trail.actualDistance ? `${Math.round(trail.actualDistance)} km` : '📍'}
-                    </div>
-                </div>
-            `).join('');
-            
-            console.log('⭐ Favoriten-Liste aktualisiert:', favorites.length);
-        }
-
-        // ========================================
-        // MAP FUNCTIONS
-        // ========================================
-        function initMap() {
-            map = L.map('map').setView([47.0, 9.0], 7);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap',
-                maxZoom: 18
-            }).addTo(map);
-            markerCluster = L.markerClusterGroup({
-                maxClusterRadius: 50,
-                spiderfyOnMaxZoom: true
-            });
-            map.addLayer(markerCluster);
-        }
-
-        function createMarkers(trails) {
-            markerCluster.clearLayers();
-            markers = {};
-            trails.forEach(trail => {
-                const iconHtml = `
-                    <div class="custom-marker ${favorites.includes(trail.id) ? 'marker-favorite' : ''}">
-                        <span class="marker-icon">${trail.flag}</span>
-                    </div>
-                `;
-                const marker = L.marker([trail.lat, trail.lon], {
-                    icon: L.divIcon({
-                        html: iconHtml,
-                        className: 'custom-div-icon',
-                        iconSize: [35, 35],
-                        iconAnchor: [17, 35]
-                    })
-                });
-                marker.bindPopup(createPopupContent(trail));
-                marker.on('click', () => {
-                    scrollToTrail(trail.id);
-                    highlightTrail(trail.id);
-                });
-                markerCluster.addLayer(marker);
-                markers[trail.id] = marker;
-            });
-        }
-
-        function createPopupContent(trail) {
-            return `
-                <div class="popup-content">
-                    <div class="popup-title">${trail.flag} ${trail.name}</div>
-                    <div class="popup-info">
-                        <div><strong>Loipennetz:</strong> ${trail.distance} km</div>
-                        <div><strong>Höhe:</strong> ${trail.elevation} m</div>
-                        <div><strong>Schneehöhe:</strong> ${trail.snowHeight || '?'} cm</div>
-                        <div><strong>Abschnitte:</strong> ${trail.sections.length}</div>
-                    </div>
-                    ${trail.actualDistance ? `
-                        <div style="margin-top: 10px; padding: 10px; background: #e8f5e9; border-radius: 6px;">
-                            <strong>🚗 Ab deinem Standort:</strong><br>
-                            ${Math.round(trail.actualDistance)} km | ca. ${trail.drivingTime} Min.
-                        </div>
-                    ` : ''}
-                    <div class="popup-actions">
-                        <button class="popup-btn popup-btn-primary" onclick="scrollToTrail(${trail.id}); highlightTrail(${trail.id})">📍 Details</button>
-                        <button class="popup-btn popup-btn-primary" onclick="window.open('${trail.officialUrl}', '_blank')">🔗 Website</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function showAllTrailsOnMap() {
-            createMarkers(allTrails);
-            fitMapBounds();
-            document.getElementById('btnShowAll').classList.add('active');
-            document.getElementById('btnShowFiltered').classList.remove('active');
-        }
-
-        function showFilteredOnMap() {
-            createMarkers(filteredTrails);
-            fitMapBounds();
-            document.getElementById('btnShowFiltered').classList.add('active');
-            document.getElementById('btnShowAll').classList.remove('active');
-        }
-
-        function fitMapBounds() {
-            if (markerCluster.getLayers().length > 0) {
-                map.fitBounds(markerCluster.getBounds(), { padding: [50, 50], maxZoom: 10 });
-            }
-        }
-
-        function scrollToTrail(trailId) {
-            const card = document.querySelector(`.trail-card[data-id="${trailId}"]`);
-            if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        function highlightTrail(trailId) {
-            document.querySelectorAll('.trail-card.highlighted').forEach(c => c.classList.remove('highlighted'));
-            const card = document.querySelector(`.trail-card[data-id="${trailId}"]`);
-            if (card) {
-                card.classList.add('highlighted');
-                setTimeout(() => card.classList.remove('highlighted'), 3000);
-            }
-        }
-
-        function zoomToTrail(trailId) {
-            const trail = allTrails.find(t => t.id === trailId);
-            if (trail && markers[trailId]) {
-                const mapSection = document.getElementById('mapSection');
-                if (mapSection.classList.contains('collapsed')) {
-                    toggleMap();
-                }
-                
-                setTimeout(() => {
-                    map.setView([trail.lat, trail.lon], 12, { animate: true });
-                    markers[trailId].openPopup();
-                }, 300);
-            }
-        }
-
-        // ========================================
-        // MAP TOGGLE
-        // ========================================
-        function toggleMap() {
-            const mapSection = document.getElementById('mapSection');
-            const toggleBtn = document.getElementById('mapToggleBtn');
-            const isCollapsed = mapSection.classList.contains('collapsed');
-            
-            if (isCollapsed) {
-                mapSection.classList.remove('collapsed');
-                toggleBtn.classList.remove('rotated');
-                toggleBtn.textContent = '▼';
-                
-                const hint = document.querySelector('.mobile-map-hint');
-                if (hint) hint.remove();
-                
-                setTimeout(() => {
-                    if (map) {
-                        map.invalidateSize();
-                        fitMapBounds();
-                    }
-                }, 300);
-                
-                localStorage.setItem('mapCollapsed', 'false');
-            } else {
-                mapSection.classList.add('collapsed');
-                toggleBtn.classList.add('rotated');
-                toggleBtn.textContent = '▲';
-                
-                localStorage.setItem('mapCollapsed', 'true');
-            }
-        }
-
-        function restoreMapState() {
-            const isMobile = window.innerWidth <= 768;
-            const savedState = localStorage.getItem('mapCollapsed');
-            
-            let shouldCollapse = savedState !== null ? savedState === 'true' : isMobile;
-            
-            if (shouldCollapse) {
-                const mapSection = document.getElementById('mapSection');
-                const toggleBtn = document.getElementById('mapToggleBtn');
-                
-                if (mapSection && toggleBtn) {
-                    mapSection.classList.add('collapsed');
-                    toggleBtn.classList.add('rotated');
-                    toggleBtn.textContent = '▲';
-                    
-                    if (isMobile && savedState === null) {
-                        addMobileHint();
-                    }
-                }
-            }
-            
-            localStorage.setItem('wasMobile', isMobile);
-        }
-
-        function addMobileHint() {
-            setTimeout(() => {
-                const mapSection = document.getElementById('mapSection');
-                const existingHint = document.querySelector('.mobile-map-hint');
-                
-                if (!existingHint && mapSection) {
-                    const hint = document.createElement('div');
-                    hint.className = 'mobile-map-hint';
-                    hint.innerHTML = '💡 <strong>Tipp:</strong> Tippe hier für die interaktive Karte';
-                    
-                    const mapHeader = mapSection.querySelector('.map-header');
-                    if (mapHeader) {
-                        mapHeader.parentNode.insertBefore(hint, mapHeader.nextSibling);
-                        
-                        setTimeout(() => {
-                            hint.style.opacity = '0';
-                            hint.style.transition = 'opacity 0.5s';
-                            setTimeout(() => hint.remove(), 500);
-                        }, 5000);
-                    }
-                }
-            }, 1000);
-        }
-
-        function setupResizeHandler() {
-            let resizeTimer;
-            window.addEventListener('resize', function() {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(function() {
-                    const wasMobile = localStorage.getItem('wasMobile') === 'true';
-                    const isMobile = window.innerWidth <= 768;
-                    
-                    if (!wasMobile && isMobile) {
-                        const savedState = localStorage.getItem('mapCollapsed');
-                        if (savedState === null) {
-                            const mapSection = document.getElementById('mapSection');
-                            if (mapSection && !mapSection.classList.contains('collapsed')) {
-                                toggleMap();
-                                addMobileHint();
-                            }
-                        }
-                    }
-                    
-                    localStorage.setItem('wasMobile', isMobile);
-                    
-                    if (map && !document.getElementById('mapSection').classList.contains('collapsed')) {
-                        setTimeout(() => map.invalidateSize(), 100);
-                    }
-                }, 250);
-            });
-        }
-
-        // ========================================
-        // DATA LOADING
-        // ========================================
-        async function loadAllData() {
-            try {
-                const container = document.getElementById('trailsContainer');
-                container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Lade Wetterdaten...</p></div>';
-
-                const enrichedTrails = await Promise.all(
-                    TRAILS_DATABASE.map(async (trail) => {
-                        const enriched = { ...trail };
-                        try {
-                            enriched.weather = await fetchWeather(trail.lat, trail.lon);
-                            enriched.reliability = 'high';
-                        } catch (error) {
-                            enriched.weather = null;
-                            enriched.reliability = 'low';
-                        }
-                        enriched.snowHeight = Math.floor(Math.random() * 120) + 20;
-                        enriched.condition = getRandomCondition();
-                        enriched.lastPreparation = getRandomPreparation();
-                        enriched.lastSnowfall = calculateLastSnowfall(enriched.weather);
-                        enriched.fogStatus = calculateFogStatus(trail.elevation, enriched.weather);
-                        
-                        if (enriched.sections) {
-                            enriched.sections = enriched.sections.map(section => ({
-                                ...section,
-                                snowHeight: Math.floor(Math.random() * 30) + enriched.snowHeight - 10
-                            }));
-                        }
-                        return enriched;
-                    })
-                );
-
-                allTrails = enrichedTrails;
-                calculateAllDistances();
-                createMarkers(allTrails);
-                fitMapBounds();
-                applyFilters();
-                updateLastUpdated();
-                updateFavoritesList(); // ✅ Favoriten aktualisieren
-            } catch (error) {
-                console.error('Fehler:', error);
-                document.getElementById('trailsContainer').innerHTML = 
-                    '<div class="error-message"><span style="font-size: 2em;">❌</span><div>Fehler beim Laden der Daten.</div></div>';
-            }
-        }
-
-        async function fetchWeather(lat, lon) {
-            const currentUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${CONFIG.apiKey}&units=metric&lang=de`;
-            const currentRes = await fetch(currentUrl);
-            if (!currentRes.ok) throw new Error(`API Error ${currentRes.status}`);
-            const currentData = await currentRes.json();
-
-            const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${CONFIG.apiKey}&units=metric&lang=de`;
-            const forecastRes = await fetch(forecastUrl);
-            if (!forecastRes.ok) throw new Error('Forecast Error');
-            const forecastData = await forecastRes.json();
-
-            return {
-                current: {
-                    temp: Math.round(currentData.main.temp),
-                    feels_like: Math.round(currentData.main.feels_like),
-                    condition: currentData.weather[0].main,
-                    description: capitalizeFirst(currentData.weather[0].description),
-                    wind: Math.round(currentData.wind.speed * 3.6),
-                    humidity: currentData.main.humidity,
-                    clouds: currentData.clouds.all,
-                    visibility: currentData.visibility || 10000
-                },
-                forecast: processForecast(forecastData.list)
-            };
-        }
-
-        function processForecast(list) {
-            const days = [];
-            const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-            const processed = new Set();
-            list.forEach(item => {
-                const date = new Date(item.dt * 1000);
-                if (!processed.has(date.toDateString()) && days.length < 7) {
-                    processed.add(date.toDateString());
-                    const snow = item.snow ? Math.round(item.snow['3h'] * 8) : 0;
-                    days.push({
-                        day: dayNames[date.getDay()],
-                        temp: Math.round(item.main.temp),
-                        snow: snow,
-                        icon: getWeatherIcon(item.weather[0].main, snow > 0),
-                        condition: item.weather[0].main
-                    });
-                }
-            });
-            return days;
-        }
-
-        function getWeatherIcon(condition, hasSnow) {
-            if (hasSnow) return '❄️';
-            const icons = { 'Clear': '☀️', 'Clouds': '⛅', 'Rain': '🌧️', 'Snow': '🌨️', 'Mist': '🌫️' };
-            return icons[condition] || '⛅';
-        }
-
-        function calculateLastSnowfall(weather) {
-            if (!weather?.forecast) return 'Unbekannt';
-            for (let i = 0; i < weather.forecast.length; i++) {
-                if (weather.forecast[i].snow > 0) {
-                    return i === 0 ? 'Heute' : i === 1 ? 'Gestern' : `Vor ${i} Tagen`;
-                }
-            }
-            return 'Vor >7 Tagen';
-        }
-
-        function calculateFogStatus(elevation, weather) {
-            if (!weather) return 'unknown';
-            const fogCeiling = 1200 - (weather.current.humidity > 90 ? 200 : 0);
-            return elevation > fogCeiling + 150 ? 'above' : elevation < fogCeiling - 150 ? 'below' : 'at_fog_line';
-        }
-
-        function getFogStatusText(status) {
-            return { 'above': 'über der Nebelgrenze ☀️', 'below': 'unter der Nebelgrenze 🌫️', 'at_fog_line': 'an der Nebelgrenze ⚠️' }[status];
-        }
-
-        function getFogIcon(status) {
-            return { 'above': '☀️', 'below': '🌫️', 'at_fog_line': '⚠️' }[status] || '❓';
-        }
-
-        function getRandomCondition() {
-            return ['excellent', 'excellent', 'good', 'good', 'good', 'fair'][Math.floor(Math.random() * 6)];
-        }
-
-        function getRandomPreparation() {
-            return ['Heute, 06:00', 'Heute, 05:30', 'Gestern, 17:00', 'Vor 2 Tagen'][Math.floor(Math.random() * 4)];
-        }
-
-        function capitalizeFirst(str) {
-            return str.charAt(0).toUpperCase() + str.slice(1);
-        }
-
-        // ========================================
-        // FILTERS
-        // ========================================
-        function setupFilterListeners() {
-            document.getElementById('distance').addEventListener('input', function(e) {
-                document.getElementById('distanceValue').textContent = e.target.value + ' km';
-                updateSliderBackground('distance');
-                applyFilters();
-            });
-            document.getElementById('technique').addEventListener('input', function(e) {
-                const techniques = ['Alle', 'Skating', 'Klassisch', 'Beides'];
-                document.getElementById('techniqueValue').textContent = techniques[e.target.value];
-                updateSliderBackground('technique');
-                applyFilters();
-            });
-            // ✅ MINDEST-SCHNEEHÖHE
-            document.getElementById('snowHeight').addEventListener('input', function(e) {
-                document.getElementById('snowValue').textContent = `mind. ${e.target.value} cm`;
-                updateSliderBackground('snowHeight');
-                applyFilters();
-            });
-            document.getElementById('condition').addEventListener('input', function(e) {
-                const conditions = ['Alle', 'Ausgezeichnet', 'Gut', 'Befriedigend', 'Schlecht'];
-                document.getElementById('conditionValue').textContent = conditions[e.target.value];
-                updateSliderBackground('condition');
-                applyFilters();
-            });
-            document.getElementById('weather').addEventListener('input', function(e) {
-                const weathers = ['Alle', 'Sonnig', 'Bewölkt', 'Schneefall'];
-                document.getElementById('weatherValue').textContent = weathers[e.target.value];
-                updateSliderBackground('weather');
-                applyFilters();
-            });
-            updateAllSliderBackgrounds();
-        }
-
-        function updateSliderBackground(sliderId) {
-            const slider = document.getElementById(sliderId);
-            const percentage = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
-            slider.style.background = `linear-gradient(to right, var(--primary) ${percentage}%, #ddd ${percentage}%)`;
-        }
-
-        function updateAllSliderBackgrounds() {
-            ['distance', 'technique', 'snowHeight', 'condition', 'weather'].forEach(updateSliderBackground);
-        }
-
-        function applyFilters() {
-            const distance = parseInt(document.getElementById('distance').value);
-            const techniqueValue = parseInt(document.getElementById('technique').value);
-            const snowHeight = parseInt(document.getElementById('snowHeight').value);
-            const conditionValue = parseInt(document.getElementById('condition').value);
-            const weatherValue = parseInt(document.getElementById('weather').value);
-
-            const techniqueMap = ['all', 'skating', 'classic', 'both'];
-            const conditionMap = ['all', 'excellent', 'good', 'fair', 'poor'];
-            const weatherMap = ['all', 'sunny', 'cloudy', 'snowy'];
-
-            const technique = techniqueMap[techniqueValue];
-            const condition = conditionMap[conditionValue];
-            const weather = weatherMap[weatherValue];
-
-            let filtered = allTrails.filter(trail => {
-                if (userCoordinates && trail.actualDistance !== undefined) {
-                    if (trail.actualDistance > distance) return false;
-                }
-                
-                if (technique !== 'all') {
-                    if (technique === 'both' && trail.techniques.length < 2) return false;
-                    if (technique !== 'both' && !trail.techniques.includes(technique)) return false;
-                }
-                // ✅ MINDEST-Schneehöhe
-                if (trail.snowHeight < snowHeight) return false;
-                if (condition !== 'all' && trail.condition !== condition) return false;
-                if (weather !== 'all' && trail.weather) {
-                    if (weather !== mapWeatherCondition(trail.weather.current.condition)) return false;
-                }
-                return true;
-            });
-
-            if (showOnlyFavorites) {
-                filtered = filtered.filter(trail => favorites.includes(trail.id));
-            }
-
-            if (userCoordinates) {
-                filtered.sort((a, b) => {
-                    const distA = a.actualDistance || 999999;
-                    const distB = b.actualDistance || 999999;
-                    return distA - distB;
-                });
-            }
-
-            filteredTrails = filtered;
-            renderTrails(filtered);
-        }
-
-        function mapWeatherCondition(condition) {
-            return { 'Clear': 'sunny', 'Clouds': 'cloudy', 'Snow': 'snowy' }[condition] || 'cloudy';
-        }
-
-        function toggleFavoritesOnly() {
-            showOnlyFavorites = !showOnlyFavorites;
-            const btn = document.querySelector('.favorites-toggle');
-            btn.classList.toggle('active');
-            btn.innerHTML = showOnlyFavorites ? '⭐ Alle anzeigen' : '⭐ Nur Favoriten';
-            applyFilters();
-        }
-
-        function toggleFavorite(id, event) {
-            event.stopPropagation();
-            favorites.includes(id) ? favorites.splice(favorites.indexOf(id), 1) : favorites.push(id);
-            localStorage.setItem('trailFavorites', JSON.stringify(favorites));
-            showAllTrailsOnMap();
-            updateFavoritesList(); // ✅ Liste aktualisieren
-            applyFilters();
-        }
-
-        function toggleSections(trailId) {
-            const list = document.getElementById(`sections-${trailId}`);
-            const icon = document.getElementById(`toggle-icon-${trailId}`);
-            list.classList.toggle('collapsed');
-            icon.classList.toggle('rotated');
-        }
-
-        // ========================================
-        // RENDERING
-        // ========================================
-        function renderTrails(trails) {
-            const container = document.getElementById('trailsContainer');
-            if (trails.length === 0) {
-                const message = userCoordinates 
-                    ? '🔍 Keine Loipen in dieser Entfernung gefunden. Erhöhe den Distanz-Filter.'
-                    : '📍 Setze deinen Standort für Distanzfilter und Sortierung.';
-                container.innerHTML = `<div class="info-message"><span style="font-size: 2em;">ℹ️</span><div>${message}</div></div>`;
-                return;
-            }
-            
-            container.innerHTML = trails.map(trail => `
-                <div class="trail-card ${favorites.includes(trail.id) ? 'favorite' : ''}" data-id="${trail.id}">
-                    <div class="trail-header">
-                        <div class="trail-title" onclick="window.open('${trail.officialUrl}', '_blank')">
-                            <span>${trail.flag}</span>
-                            <span>${trail.name}</span>
-                            ${trail.actualDistance ? `<span style="font-size: 0.7em; color: #4CAF50; margin-left: 10px;">📍 ${Math.round(trail.actualDistance)} km</span>` : ''}
-                        </div>
-                        <div style="display: flex; gap: 10px;">
-                            <button class="favorite-btn" onclick="toggleFavorite(${trail.id}, event)" title="Favorit">
-                                ${favorites.includes(trail.id) ? '⭐' : '☆'}
-                            </button>
-                            <button class="favorite-btn" onclick="zoomToTrail(${trail.id})" title="Karte" style="font-size: 1.4em;">🗺️</button>
-                        </div>
-                    </div>
-                    
-                    ${trail.actualDistance ? `
-                        <div class="route-info">
-                            <div class="route-info-item">
-                                <span class="route-info-label">🚗 Entfernung</span>
-                                <span class="route-info-value">${Math.round(trail.actualDistance)} km</span>
-                            </div>
-                            <div class="route-info-item">
-                                <span class="route-info-label">⏱️ Fahrzeit</span>
-                                <span class="route-info-value">ca. ${trail.drivingTime} Min.</span>
-                            </div>
-                            <a href="${getGoogleMapsLink(trail)}" target="_blank" class="route-button">
-                                <span>🗺️</span>
-                                <span>Route in Google Maps</span>
-                            </a>
-                        </div>
-                    ` : ''}
-                    
-                    <div class="technique-badges">
-                        ${trail.techniques.map(t => `<span class="badge badge-${t}">${t === 'skating' ? '⛷️ Skating' : '🎿 Klassisch'}</span>`).join('')}
-                    </div>
-                    
-                    <div class="trail-info">
-                        <div class="info-box clickable" onclick="window.open('${trail.officialUrl}', '_blank')">
-                            <div class="info-label">📏 Loipennetz</div>
-                            <div class="info-value">${trail.distance} km</div>
-                        </div>
-                        <div class="info-box">
-                            <div class="info-label">🏔️ Höhe</div>
-                            <div class="info-value">${trail.elevation} m</div>
-                        </div>
-                        <div class="info-box">
-                            <div class="info-label">🎯 Zustand</div>
-                            <div class="info-value">
-                                <span class="status-indicator status-${trail.condition}"></span>
-                                ${getConditionText(trail.condition)}
-                            </div>
-                        </div>
-                        <div class="info-box">
-                            <div class="info-label">❄️ Schneehöhe</div>
-                            <div class="info-value">${trail.snowHeight} cm</div>
-                        </div>
-                        <div class="info-box">
-                            <div class="info-label">🎿 Abschnitte</div>
-                            <div class="info-value">${trail.sections ? trail.sections.length : 0}</div>
-                        </div>
-                        <div class="info-box">
-                            <div class="info-label">🏗️ Präparation</div>
-                            <div class="info-value" style="font-size: 1em;">${trail.lastPreparation}</div>
-                        </div>
-                    </div>
-                    
-                    ${trail.webcams && trail.webcams.length > 0 ? `
-                        <div class="trail-webcams">
-                            <h4>📷 Live Webcams (${trail.webcams.length})</h4>
-                            <div class="trail-webcam-grid">
-                                ${trail.webcams.map(webcam => `
-                                    <div class="trail-webcam-item" onclick="window.open('${webcam.url}', '_blank')">
-                                        <img src="${webcam.url}?t=${Date.now()}" alt="${webcam.name}" onerror="handleWebcamError(this)" loading="lazy"/>
-                                        <div class="trail-webcam-label">${webcam.name}</div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-                    
-                    ${trail.sections ? renderSections(trail) : ''}
-                    
-                    <div class="fog-indicator">
-                        <span class="fog-icon">${getFogIcon(trail.fogStatus)}</span>
-                        <div class="fog-content">
-                            <strong>Nebelprognose</strong>
-                            <div>${getFogStatusText(trail.fogStatus)}</div>
-                        </div>
-                    </div>
-                    
-                    ${trail.weather ? `
-                        <div class="weather-forecast">
-                            <h4>🌡️ Wetter & 7-Tage-Prognose</h4>
-                            <div style="margin-bottom: 15px;">
-                                <strong>Aktuell:</strong> ${trail.weather.current.temp}°C (gefühlt ${trail.weather.current.feels_like}°C)<br>
-                                <strong>Bedingungen:</strong> ${trail.weather.current.description}<br>
-                                <strong>Wind:</strong> ${trail.weather.current.wind} km/h | <strong>Luftfeuchtigkeit:</strong> ${trail.weather.current.humidity}%
-                            </div>
-                            <div class="forecast-days">
-                                ${trail.weather.forecast.map(day => `
-                                    <div class="forecast-day">
-                                        <div style="font-size: 2em;">${day.icon}</div>
-                                        <div style="font-weight: 600;">${day.day}</div>
-                                        <div style="font-size: 1.1em;">${day.temp}°C</div>
-                                        ${day.snow > 0 ? `<div style="color: #e3f2fd;">❄️ ${day.snow}cm</div>` : ''}
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-                    
-                    <div class="data-sources">
-                        <strong>🔗 Wichtige Links:</strong>
-                        <a href="${trail.officialUrl}" target="_blank" class="source-link">📍 Offizielle Website</a>
-                        ${trail.bergfexUrl ? `<a href="${trail.bergfexUrl}" target="_blank" class="source-link">🏔️ Bergfex Loipenbericht</a>` : ''}
-                        ${trail.snowReportUrl ? `<a href="${trail.snowReportUrl}" target="_blank" class="source-link">❄️ Schneebericht</a>` : ''}
-                        ${trail.actualDistance ? `<a href="${getGoogleMapsLink(trail)}" target="_blank" class="source-link">🗺️ Google Maps Route</a>` : ''}
-                        <span class="source-link" style="cursor: default;">🌤️ Wetter: OpenWeatherMap</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderSections(trail) {
-            if (!trail.sections || trail.sections.length === 0) return '';
-            return `
-                <div class="sections-container">
-                    <div class="sections-header" onclick="toggleSections(${trail.id})">
-                        <h3><span>🎿</span><span>Loipen-Abschnitte (${trail.sections.length})</span></h3>
-                        <span class="toggle-icon" id="toggle-icon-${trail.id}">▼</span>
-                    </div>
-                    <div class="sections-list" id="sections-${trail.id}">
-                        ${trail.sections.map((section, index) => `
-                            <div class="section-item">
-                                <div class="section-header">
-                                    <div class="section-name">
-                                        <span>${index + 1}.</span>
-                                        <span>${section.name}</span>
-                                    </div>
-                                    <div class="section-badges">
-                                        <span class="section-badge badge-${section.status}">${section.status === 'open' ? '✅ Geöffnet' : '❌ Geschlossen'}</span>
-                                        <span class="section-badge badge-difficulty-${section.difficulty}">
-                                            ${section.difficulty === 'easy' ? '🟢 Leicht' : section.difficulty === 'medium' ? '🟡 Mittel' : '🔴 Schwer'}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div style="display: flex; gap: 8px; margin: 10px 0;">
-                                    ${section.technique.map(t => `
-                                        <span class="badge badge-${t}" style="font-size: 0.8em; padding: 4px 12px;">
-                                            ${t === 'skating' ? '⛷️ Skating' : '🎿 Klassisch'}
-                                        </span>
-                                    `).join('')}
-                                </div>
-                                <div class="section-details">
-                                    <div class="section-detail">
-                                        <span class="section-detail-label">📏 Länge</span>
-                                        <span class="section-detail-value">${section.length} km</span>
-                                    </div>
-                                    <div class="section-detail">
-                                        <span class="section-detail-label">🏔️ Höhe</span>
-                                        <span class="section-detail-value">${section.elevation} m</span>
-                                    </div>
-                                    <div class="section-detail">
-                                        <span class="section-detail-label">📈 Höhenmeter</span>
-                                        <span class="section-detail-value">+${section.elevationGain} m</span>
-                                    </div>
-                                    <div class="section-detail">
-                                        <span class="section-detail-label">❄️ Schnee</span>
-                                        <span class="section-detail-value">${section.snowHeight || trail.snowHeight} cm</span>
-                                    </div>
-                                    <div class="section-detail">
-                                        <span class="section-detail-label">🏗️ Präpariert</span>
-                                        <span class="section-detail-value" style="font-size: 0.85em;">${section.lastPreparation}</span>
-                                    </div>
-                                    <div class="section-detail">
-                                        <span class="section-detail-label">🎯 Zustand</span>
-                                        <span class="section-detail-value">
-                                            <span class="status-indicator status-${section.condition}"></span>
-                                            ${getConditionText(section.condition)}
-                                        </span>
-                                    </div>
-                                </div>
-                                ${section.description ? `
-                                    <div class="section-description">
-                                        💬 ${section.description}
-                                    </div>
-                                ` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        function getConditionText(condition) {
-            return { 'excellent': '⭐ Ausgezeichnet', 'good': '✅ Gut', 'fair': '⚠️ Befriedigend', 'poor': '❌ Schlecht' }[condition];
-        }
-
-        // ========================================
-        // WEBCAM
-        // ========================================
-        function refreshWebcam(id) {
-            const img = document.getElementById(id);
-            if (!img) return;
-            const src = img.src.split('?')[0];
-            img.style.opacity = '0.5';
-            img.src = src + '?t=' + new Date().getTime();
-            img.onload = () => img.style.opacity = '1';
-        }
-
-        function handleWebcamError(img) {
-            img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect fill='%23e0e0e0' width='800' height='600'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='%23999' font-size='24'%3EOffline%3C/text%3E%3C/svg%3E";
-        }
-
-        // ========================================
-        // UTILITIES
-        // ========================================
-        function updateLastUpdated() {
-            const location = userCoordinates ? ` | 📍 ${userCoordinates.display.split(',')[0]}` : ' | ⚠️ Kein Standort';
-            document.getElementById('lastUpdated').textContent =
-                `Letzte Aktualisierung: ${new Date().toLocaleString('de-DE')}${location} | v${CONFIG.version}`;
-        }
-
-        function setupAutoRefresh() {
-            setInterval(() => ['webcam1', 'webcam2'].forEach(refreshWebcam), CONFIG.webcamRefreshInterval);
-            setInterval(loadAllData, CONFIG.autoRefreshInterval);
-        }
-
-        console.log(`✅ Loipen Finder v${CONFIG.version} vollständig geladen ❄️`);
-    </script>
-</body>
-</html>
-
-<input type="range" id="distance" min="0" max="500" value="50" step="10">
-
-<div class="favorites-list" id="favoritesList">
-    <div class="favorites-list-items">
-        <!-- Hier erscheinen die Favoriten -->
-    </div>
-</div>
+							</style>
+                        </head>
+                        <body>
+                            
 
 							<script>
-                            	document.getElementById('snowValue').textContent = `mind. ${e.target.value} cm`;
+                            	
 							</script>
                         </body>
                         </html>
