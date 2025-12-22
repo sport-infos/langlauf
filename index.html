@@ -21,18 +21,21 @@
     <meta name="description" content="Loipen Finder - Detaillierte Loipeninformationen für CH, D, A">
     <title>Loipen Finder - CH, D, A</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎿</text></svg>">
+    
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin=""/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        
         :root {
             --primary: #2196F3;
             --secondary: #1976D2;
@@ -44,6 +47,7 @@
             --border-radius: 10px;
             --transition: all 0.3s ease;
         }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -53,7 +57,6 @@
             position: relative;
         }
         
-        /* Verschneite Berglandschaft Hintergrund */
         body::before {
             content: '';
             position: fixed;
@@ -61,7 +64,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 linear-gradient(to bottom, rgba(135, 206, 235, 0.3) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.8) 100%),
                 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%2387CEEB;stop-opacity:1" /><stop offset="100%" style="stop-color:%23E0F6FF;stop-opacity:1" /></linearGradient></defs><rect fill="url(%23sky)" width="1200" height="600"/><path fill="%23FFFFFF" d="M0 450 Q 150 350, 300 380 T 600 420 T 900 400 T 1200 450 L 1200 600 L 0 600 Z" opacity="0.9"/><path fill="%23F0F8FF" d="M0 480 Q 200 420, 400 460 T 800 480 T 1200 500 L 1200 600 L 0 600 Z" opacity="0.8"/><path fill="%23E8F4F8" d="M0 400 L 200 320 L 350 380 L 500 300 L 650 360 L 800 280 L 1000 340 L 1200 300 L 1200 600 L 0 600 Z" opacity="0.7"/><circle fill="%23FFFFFF" cx="100" cy="50" r="3" opacity="0.6"/><circle fill="%23FFFFFF" cx="250" cy="80" r="2" opacity="0.7"/><circle fill="%23FFFFFF" cx="400" cy="60" r="2.5" opacity="0.5"/><circle fill="%23FFFFFF" cx="600" cy="90" r="3" opacity="0.6"/><circle fill="%23FFFFFF" cx="800" cy="70" r="2" opacity="0.7"/><circle fill="%23FFFFFF" cx="950" cy="100" r="2.5" opacity="0.6"/><circle fill="%23FFFFFF" cx="1100" cy="60" r="3" opacity="0.5"/></svg>');
             background-size: cover;
@@ -89,7 +92,6 @@
             overflow: hidden;
         }
         
-        /* ========== ANIMIERTE SCHNEEFLOCKEN ========== */
         .snowflake {
             position: absolute;
             top: -10px;
@@ -99,6 +101,7 @@
             pointer-events: none;
             animation: fall linear infinite;
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            will-change: transform, opacity;
         }
         
         @keyframes fall {
@@ -118,7 +121,6 @@
             }
         }
         
-        /* Verschiedene Schneeflocken mit unterschiedlichen Eigenschaften */
         .snowflake:nth-child(1) { left: 5%; animation-duration: 8s; animation-delay: 0s; font-size: 18px; }
         .snowflake:nth-child(2) { left: 15%; animation-duration: 12s; animation-delay: 2s; font-size: 24px; }
         .snowflake:nth-child(3) { left: 25%; animation-duration: 10s; animation-delay: 1s; font-size: 16px; }
@@ -139,6 +141,16 @@
         .snowflake:nth-child(18) { left: 80%; animation-duration: 14s; animation-delay: 0.6s; font-size: 20px; }
         .snowflake:nth-child(19) { left: 90%; animation-duration: 11s; animation-delay: 3.2s; font-size: 26px; }
         .snowflake:nth-child(20) { left: 3%; animation-duration: 10s; animation-delay: 1.5s; font-size: 16px; }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .snowflake,
+            .spinner,
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
         
         .header-content {
             position: relative;
@@ -191,7 +203,6 @@
             font-size: 1.1em;
         }
         
-        /* Standort-Eingabe */
         .location-input-container {
             background: rgba(255, 255, 255, 0.15);
             padding: 20px;
@@ -247,9 +258,14 @@
             gap: 8px;
         }
         
-        .location-input-wrapper button:hover {
+        .location-input-wrapper button:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .location-input-wrapper button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         
         .current-location-display {
@@ -284,6 +300,7 @@
             gap: 15px;
             margin: 20px 0;
         }
+        
         .webcam-item {
             position: relative;
             border-radius: var(--border-radius);
@@ -293,15 +310,19 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             aspect-ratio: 4/3;
         }
+        
         .webcam-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
+        
         .webcam-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: opacity 0.3s ease;
         }
+        
         .webcam-label {
             position: absolute;
             bottom: 0;
@@ -313,6 +334,7 @@
             font-size: 0.95em;
             font-weight: 600;
         }
+        
         .webcam-live-indicator {
             position: absolute;
             top: 10px;
@@ -325,10 +347,12 @@
             font-weight: 700;
             animation: pulse 2s infinite;
         }
+        
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.8; }
         }
+        
         .webcam-refresh {
             position: absolute;
             top: 10px;
@@ -341,12 +365,13 @@
             cursor: pointer;
             font-size: 1.2em;
             transition: var(--transition);
+            z-index: 10;
         }
+        
         .webcam-refresh:hover {
             transform: rotate(180deg);
         }
         
-        /* Route Info */
         .route-info {
             background: linear-gradient(135deg, #4CAF50, #45a049);
             color: white;
@@ -399,22 +424,25 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
         
-        /* MAP */
         .map-section {
             padding: 30px;
             background: var(--light);
             border-bottom: 3px solid #e0e0e0;
             transition: var(--transition);
         }
+        
         .map-section.collapsed {
             padding: 20px 30px;
         }
+        
         .map-section.collapsed #map {
             display: none;
         }
+        
         .map-section.collapsed .map-controls {
             display: none;
         }
+        
         .map-header {
             display: flex;
             justify-content: space-between;
@@ -425,14 +453,17 @@
             cursor: pointer;
             transition: var(--transition);
         }
+        
         .map-header:hover .map-title-wrapper h2 {
             color: var(--primary);
         }
+        
         .map-title-wrapper {
             display: flex;
             align-items: center;
             gap: 10px;
         }
+        
         .map-title-wrapper h2 {
             color: var(--dark);
             display: flex;
@@ -440,6 +471,7 @@
             gap: 10px;
             transition: var(--transition);
         }
+        
         .map-toggle-btn {
             background: var(--primary);
             color: white;
@@ -452,21 +484,26 @@
             font-weight: 600;
             box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
         }
+        
         .map-toggle-btn:hover {
             background: var(--secondary);
             transform: scale(1.05);
         }
+        
         .map-toggle-btn.rotated {
             transform: rotate(180deg);
         }
+        
         .map-toggle-btn.rotated:hover {
             transform: rotate(180deg) scale(1.05);
         }
+        
         .map-controls {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
         }
+        
         .map-btn {
             padding: 8px 16px;
             border: 2px solid var(--primary);
@@ -477,14 +514,17 @@
             font-weight: 600;
             transition: var(--transition);
         }
+        
         .map-btn:hover {
             background: var(--primary);
             color: white;
         }
+        
         .map-btn.active {
             background: var(--primary);
             color: white;
         }
+        
         #map {
             height: 500px;
             border-radius: var(--border-radius);
@@ -523,36 +563,44 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.3);
             transition: var(--transition);
         }
+        
         .custom-marker:hover {
             transform: rotate(-45deg) scale(1.2);
         }
+        
         .marker-icon {
             transform: rotate(45deg);
             font-size: 18px;
         }
+        
         .marker-favorite {
             border-color: var(--warning);
             background: #fff8e1;
         }
+        
         .popup-content {
             padding: 15px;
         }
+        
         .popup-title {
             font-size: 1.2em;
             font-weight: 700;
             margin-bottom: 10px;
         }
+        
         .popup-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
             margin: 10px 0;
         }
+        
         .popup-actions {
             display: flex;
             gap: 8px;
             margin-top: 12px;
         }
+        
         .popup-btn {
             flex: 1;
             padding: 8px;
@@ -561,12 +609,12 @@
             cursor: pointer;
             font-weight: 600;
         }
+        
         .popup-btn-primary {
             background: var(--primary);
             color: white;
         }
         
-        /* FILTERS */
         .filters {
             background: var(--light);
             padding: 25px;
@@ -575,11 +623,13 @@
             gap: 20px;
             border-bottom: 3px solid #e0e0e0;
         }
+        
         .filter-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
+        
         .filter-group label {
             font-weight: 600;
             color: var(--dark);
@@ -587,6 +637,7 @@
             display: flex;
             justify-content: space-between;
         }
+        
         .slider-value {
             background: var(--primary);
             color: white;
@@ -596,6 +647,7 @@
             min-width: 80px;
             text-align: center;
         }
+        
         input[type="range"] {
             width: 100%;
             height: 8px;
@@ -604,6 +656,7 @@
             outline: none;
             -webkit-appearance: none;
         }
+        
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 22px;
@@ -614,6 +667,7 @@
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(33, 150, 243, 0.4);
         }
+        
         input[type="range"]::-moz-range-thumb {
             width: 22px;
             height: 22px;
@@ -622,6 +676,7 @@
             border: 3px solid var(--primary);
             cursor: pointer;
         }
+        
         .slider-labels {
             display: flex;
             justify-content: space-between;
@@ -629,6 +684,7 @@
             color: #666;
             margin-top: 5px;
         }
+        
         .favorites-toggle {
             background: var(--warning);
             color: white;
@@ -638,87 +694,367 @@
             cursor: pointer;
             font-weight: 600;
             transition: var(--transition);
+            margin-top: 24px;
         }
+        
         .favorites-toggle:hover {
             background: #e68900;
         }
+        
         .favorites-toggle.active {
             background: #e68900;
         }
         
-        /* ========== FAVORITEN-LISTE ========== */
-        .favorites-list {
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(255, 152, 0, 0.1);
-            border-radius: 8px;
-            border: 2px solid rgba(255, 152, 0, 0.3);
-            display: none;
+        /* ========== FAVORITEN PANEL ========== */
+        .favorites-panel {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border: 3px solid #ffb300;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin: 20px 30px;
+            box-shadow: 0 4px 20px rgba(255, 179, 0, 0.2);
         }
         
-        .favorites-list.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .favorites-list-header {
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .favorites-list-items {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .favorite-list-item {
-            background: white;
-            padding: 12px 15px;
-            border-radius: 6px;
+        .favorites-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: var(--transition);
-            border: 2px solid transparent;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ffb300;
             cursor: pointer;
         }
         
-        .favorite-list-item:hover {
-            border-color: var(--warning);
-            transform: translateX(5px);
-            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
-        }
-        
-        .favorite-list-item-name {
-            font-weight: 600;
-            color: var(--dark);
+        .favorites-header h3 {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            color: var(--dark);
+            font-size: 1.5em;
+            margin: 0;
         }
         
-        .favorite-list-item-distance {
+        .favorites-count {
+            background: #ffb300;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
             font-size: 0.9em;
-            color: #666;
-            font-weight: 500;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(255, 179, 0, 0.3);
+        }
+        
+        .favorites-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .favorites-btn {
+            padding: 8px 16px;
+            border: 2px solid #ffb300;
+            background: white;
+            color: #ffb300;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .favorites-btn:hover {
+            background: #ffb300;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .favorites-btn.danger {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+        
+        .favorites-btn.danger:hover {
+            background: var(--danger);
+            color: white;
         }
         
         .favorites-empty {
             text-align: center;
-            padding: 20px;
+            padding: 40px 20px;
             color: #666;
-            font-style: italic;
         }
         
-        /* CONTENT */
+        .favorites-empty-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .favorites-list {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .favorite-item {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+            cursor: pointer;
+            gap: 15px;
+        }
+        
+        .favorite-item:hover {
+            border-color: #ffb300;
+            box-shadow: 0 4px 15px rgba(255, 179, 0, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .favorite-item-main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .favorite-flag {
+            font-size: 2em;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .favorite-info {
+            flex: 1;
+        }
+        
+        .favorite-name {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .favorite-name:hover {
+            color: var(--primary);
+        }
+        
+        .favorite-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .favorite-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .favorite-distance {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+        
+        .favorite-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .favorite-action-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .favorite-action-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .favorite-action-btn.view {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .favorite-action-btn.view:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .favorite-action-btn.map {
+            border-color: #2196F3;
+            color: #2196F3;
+        }
+        
+        .favorite-action-btn.map:hover {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .favorite-action-btn.delete {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+        
+        .favorite-action-btn.delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .favorites-panel.collapsed .favorites-list {
+            display: none;
+        }
+        
+        .favorites-panel.collapsed .favorites-quick-stats {
+            display: none !important;
+        }
+        
+        .favorites-toggle-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+        
+        .favorites-toggle-icon.rotated {
+            transform: rotate(180deg);
+        }
+        
+        .favorites-view-mode {
+            display: flex;
+            gap: 5px;
+            background: white;
+            padding: 4px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .view-mode-btn {
+            padding: 6px 12px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: var(--transition);
+        }
+        
+        .view-mode-btn.active {
+            background: #ffb300;
+            color: white;
+        }
+        
+        .view-mode-btn:hover:not(.active) {
+            background: #f5f5f5;
+        }
+        
+        .favorites-list.compact {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+        
+        .favorites-list.compact .favorite-item {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 12px;
+        }
+        
+        .favorites-list.compact .favorite-item-main {
+            width: 100%;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        
+        .favorites-list.compact .favorite-flag {
+            font-size: 1.5em;
+            min-width: auto;
+        }
+        
+        .favorites-list.compact .favorite-stats {
+            font-size: 0.8em;
+            gap: 10px;
+        }
+        
+        .favorites-list.compact .favorite-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .favorites-list.compact .favorite-action-btn {
+            width: 36px;
+            height: 36px;
+            font-size: 1.1em;
+        }
+        
+        .favorites-quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #ffb300;
+        }
+        
+        .quick-stat {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .quick-stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #ffb300;
+        }
+        
+        .quick-stat-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+        }
+        
+        .favorite-item.removing {
+            animation: slideOut 0.3s ease-out forwards;
+        }
+        
         .content {
             padding: 30px;
         }
+        
         .trail-card {
             background: white;
             border: 2px solid #e0e0e0;
@@ -728,25 +1064,30 @@
             transition: var(--transition);
             scroll-margin-top: 20px;
         }
+        
         .trail-card:hover {
             box-shadow: 0 8px 25px rgba(0,0,0,0.12);
             transform: translateY(-3px);
             border-color: var(--primary);
         }
+        
         .trail-card.favorite {
             border-color: var(--warning);
             background: linear-gradient(to bottom, #fff8e1 0%, white 100%);
         }
+        
         .trail-card.highlighted {
             border-color: var(--primary);
             background: linear-gradient(to bottom, #e3f2fd 0%, white 100%);
             box-shadow: 0 8px 30px rgba(33, 150, 243, 0.3);
             animation: highlight-pulse 1.5s;
         }
+        
         @keyframes highlight-pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.02); }
         }
+        
         .trail-header {
             display: flex;
             justify-content: space-between;
@@ -755,6 +1096,7 @@
             flex-wrap: wrap;
             gap: 15px;
         }
+        
         .trail-title {
             font-size: 1.6em;
             color: var(--dark);
@@ -764,9 +1106,11 @@
             cursor: pointer;
             font-weight: 600;
         }
+        
         .trail-title:hover {
             color: var(--primary);
         }
+        
         .favorite-btn {
             background: none;
             border: none;
@@ -774,26 +1118,18 @@
             cursor: pointer;
             transition: var(--transition);
         }
+        
         .favorite-btn:hover {
             transform: scale(1.2) rotate(10deg);
         }
-        .reliability-badge {
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-        .reliability-high {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-        }
+        
         .trail-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
+        
         .info-box {
             background: var(--light);
             padding: 15px;
@@ -801,11 +1137,13 @@
             border-left: 4px solid var(--primary);
             transition: var(--transition);
         }
+        
         .info-box.clickable:hover {
             background: #e8e8e8;
             transform: translateX(5px);
             cursor: pointer;
         }
+        
         .info-label {
             font-size: 0.85em;
             color: #666;
@@ -813,28 +1151,33 @@
             font-weight: 500;
             text-transform: uppercase;
         }
+        
         .info-value {
             font-size: 1.3em;
             font-weight: 700;
             color: var(--dark);
         }
+        
         .technique-badges {
             display: flex;
             gap: 10px;
             margin: 15px 0;
             flex-wrap: wrap;
         }
+        
         .badge {
             padding: 8px 18px;
             border-radius: 20px;
             font-size: 0.9em;
             font-weight: 600;
         }
+        
         .badge-skating {
             background: linear-gradient(135deg, #e3f2fd, #bbdefb);
             color: #1565c0;
             border: 2px solid #90caf9;
         }
+        
         .badge-classic {
             background: linear-gradient(135deg, #f3e5f5, #e1bee7);
             color: #6a1b9a;
@@ -899,6 +1242,7 @@
             border-radius: var(--border-radius);
             border: 2px solid #c5cae9;
         }
+        
         .sections-header {
             display: flex;
             justify-content: space-between;
@@ -910,30 +1254,37 @@
             border-radius: 8px;
             transition: var(--transition);
         }
+        
         .sections-header:hover {
             background: #f5f5f5;
         }
+        
         .sections-header h3 {
             display: flex;
             align-items: center;
             gap: 10px;
             color: var(--dark);
         }
+        
         .toggle-icon {
             font-size: 1.5em;
             transition: transform 0.3s;
         }
+        
         .toggle-icon.rotated {
             transform: rotate(180deg);
         }
+        
         .sections-list {
             display: grid;
             gap: 15px;
             margin-top: 15px;
         }
+        
         .sections-list.collapsed {
             display: none;
         }
+        
         .section-item {
             background: white;
             border: 2px solid #e0e0e0;
@@ -941,11 +1292,13 @@
             padding: 18px;
             transition: var(--transition);
         }
+        
         .section-item:hover {
             border-color: var(--primary);
             box-shadow: 0 4px 15px rgba(33, 150, 243, 0.15);
             transform: translateX(5px);
         }
+        
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -954,6 +1307,7 @@
             flex-wrap: wrap;
             gap: 10px;
         }
+        
         .section-name {
             font-size: 1.2em;
             font-weight: 700;
@@ -962,58 +1316,70 @@
             align-items: center;
             gap: 8px;
         }
+        
         .section-badges {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
+        
         .section-badge {
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 0.8em;
             font-weight: 600;
         }
+        
         .badge-open {
             background: #c8e6c9;
             color: #2e7d32;
         }
+        
         .badge-closed {
             background: #ffcdd2;
             color: #c62828;
         }
+        
         .badge-difficulty-easy {
             background: #e8f5e9;
             color: #4CAF50;
         }
+        
         .badge-difficulty-medium {
             background: #fff3e0;
             color: #FF9800;
         }
+        
         .badge-difficulty-hard {
             background: #ffebee;
             color: #F44336;
         }
+        
         .section-details {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 12px;
             margin-top: 12px;
         }
+        
         .section-detail {
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
+        
         .section-detail-label {
             font-size: 0.8em;
             color: #666;
             font-weight: 600;
         }
+        
         .section-detail-value {
             font-size: 1.1em;
             font-weight: 700;
             color: var(--dark);
         }
+        
         .section-description {
             margin-top: 12px;
             padding: 10px;
@@ -1023,6 +1389,7 @@
             color: #555;
             line-height: 1.5;
         }
+        
         .weather-forecast {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -1030,12 +1397,14 @@
             border-radius: var(--border-radius);
             margin-top: 20px;
         }
+        
         .forecast-days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 12px;
             margin-top: 15px;
         }
+        
         .forecast-day {
             text-align: center;
             padding: 12px 8px;
@@ -1043,10 +1412,12 @@
             border-radius: 8px;
             transition: var(--transition);
         }
+        
         .forecast-day:hover {
             background: rgba(255,255,255,0.2);
             transform: translateY(-3px);
         }
+        
         .fog-indicator {
             display: flex;
             align-items: center;
@@ -1057,9 +1428,11 @@
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             border: 2px solid #90caf9;
         }
+        
         .fog-icon {
             font-size: 2.5em;
         }
+        
         .data-sources {
             display: flex;
             flex-wrap: wrap;
@@ -1068,6 +1441,7 @@
             padding-top: 15px;
             border-top: 2px solid #f0f0f0;
         }
+        
         .source-link {
             background: var(--light);
             padding: 6px 14px;
@@ -1077,10 +1451,12 @@
             transition: var(--transition);
             font-size: 0.9em;
         }
+        
         .source-link:hover {
             background: var(--primary);
             color: white;
         }
+        
         .status-indicator {
             display: inline-block;
             width: 12px;
@@ -1088,14 +1464,17 @@
             border-radius: 50%;
             margin-right: 8px;
         }
+        
         .status-excellent { background: var(--success); }
         .status-good { background: #8bc34a; }
         .status-fair { background: var(--warning); }
         .status-poor { background: var(--danger); }
+        
         .loading {
             text-align: center;
             padding: 60px 20px;
         }
+        
         .spinner {
             border: 4px solid #f3f3f3;
             border-top: 4px solid var(--primary);
@@ -1105,10 +1484,12 @@
             animation: spin 1s linear infinite;
             margin: 20px auto;
         }
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
         .error-message, .info-message {
             padding: 18px 20px;
             border-radius: var(--border-radius);
@@ -1116,16 +1497,19 @@
             display: flex;
             gap: 12px;
         }
+        
         .error-message {
             background: linear-gradient(135deg, #ffebee, #ffcdd2);
             color: #c62828;
             border-left: 5px solid #c62828;
         }
+        
         .info-message {
             background: linear-gradient(135deg, #e3f2fd, #bbdefb);
             color: #1565c0;
             border-left: 5px solid #1565c0;
         }
+        
         .last-updated {
             text-align: center;
             color: #666;
@@ -1148,44 +1532,34 @@
             body {
                 padding: 10px;
             }
-            
             h1 {
                 font-size: 1.8em;
             }
-            
             .header-top {
                 flex-direction: column;
             }
-            
             .datetime-display {
                 width: 100%;
             }
-            
             .location-input-wrapper {
                 flex-direction: column;
             }
-            
             .location-input-wrapper input,
             .location-input-wrapper button {
                 width: 100%;
             }
-            
             .webcam-container, .filters {
                 grid-template-columns: 1fr;
             }
-            
             #map {
                 height: 350px;
             }
-            
             .forecast-days {
                 grid-template-columns: repeat(3, 1fr);
             }
-            
             .section-details {
                 grid-template-columns: 1fr;
             }
-            
             .map-header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -1193,32 +1567,56 @@
                 background: rgba(33, 150, 243, 0.05);
                 border-radius: 8px;
             }
-            
             .map-controls {
                 width: 100%;
             }
-            
             .map-toggle-btn {
                 min-width: 44px;
                 min-height: 44px;
                 padding: 10px 18px;
             }
-            
             .content {
                 padding: 15px;
             }
-            
             .trail-card {
                 padding: 15px;
             }
-            
             .route-info {
                 flex-direction: column;
             }
-            
             .route-button {
                 width: 100%;
                 justify-content: center;
+            }
+            .favorites-panel {
+                margin: 20px 15px;
+                padding: 15px;
+            }
+            .favorites-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .favorites-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .favorites-list.compact {
+                grid-template-columns: 1fr;
+            }
+            .favorite-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .favorite-item-main {
+                width: 100%;
+            }
+            .favorite-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .favorite-stats {
+                font-size: 0.85em;
             }
         }
     </style>
@@ -1226,7 +1624,6 @@
 <body>
     <div class="container">
         <header>
-            <!-- ❄️ SCHNEEFLOCKEN -->
             <div class="snowflakes" aria-hidden="true">
                 <div class="snowflake">❄</div>
                 <div class="snowflake">❄</div>
@@ -1263,9 +1660,9 @@
                 <div class="location-input-container">
                     <div class="location-input-wrapper">
                         <label>📍 Dein Standort:</label>
-                        <input type="text" 
-                               id="userLocation" 
-                               placeholder="z.B. 8001 Zürich oder Zürich, CH" 
+                        <input type="text"
+                               id="userLocation"
+                               placeholder="z.B. 8001 Zürich oder Zürich, CH"
                                value="">
                         <button onclick="setUserLocation()">
                             <span>🎯</span>
@@ -1302,7 +1699,7 @@
                 </div>
             </div>
         </header>
-
+        
         <div class="map-section" id="mapSection">
             <div class="map-header" onclick="toggleMap()">
                 <div class="map-title-wrapper">
@@ -1317,84 +1714,112 @@
             </div>
             <div id="map"></div>
         </div>
-
+        
         <div class="filters">
-            <!-- ✅ ANREISEDISTANZ AUF 50KM -->
             <div class="filter-group">
-                <label><span>🚗 Max. Anreisedistanz</span><span class="slider-value" id="distanceValue">50 km</span></label>
-                <input type="range" id="distance" min="0" max="500" value="50" step="10">
+                <label><span>🚗 Anreisedistanz (ab Standort)</span><span class="slider-value" id="distanceValue">500 km</span></label>
+                <input type="range" id="distance" min="0" max="500" value="500" step="10">
                 <div class="slider-labels"><span>0</span><span>250</span><span>500 km</span></div>
             </div>
+            
             <div class="filter-group">
                 <label><span>⛷️ Langlaufstil</span><span class="slider-value" id="techniqueValue">Alle</span></label>
                 <input type="range" id="technique" min="0" max="3" value="0" step="1">
                 <div class="slider-labels"><span>Alle</span><span>Skating</span><span>Klassisch</span><span>Beides</span></div>
             </div>
-            <!-- ✅ MINDEST-SCHNEEHÖHE -->
+            
             <div class="filter-group">
-                <label><span>❄️ Min. Schneehöhe</span><span class="slider-value" id="snowValue">mind. 0 cm</span></label>
+                <label><span>❄️ Schneehöhe</span><span class="slider-value" id="snowValue">0 cm</span></label>
                 <input type="range" id="snowHeight" min="0" max="200" value="0" step="10">
                 <div class="slider-labels"><span>0</span><span>100</span><span>200 cm</span></div>
             </div>
+            
             <div class="filter-group">
                 <label><span>🎯 Zustand</span><span class="slider-value" id="conditionValue">Alle</span></label>
                 <input type="range" id="condition" min="0" max="4" value="0" step="1">
                 <div class="slider-labels"><span>Alle</span><span>⭐</span><span>✅</span><span>⚠️</span><span>❌</span></div>
             </div>
+            
             <div class="filter-group">
                 <label><span>🌤️ Wetter</span><span class="slider-value" id="weatherValue">Alle</span></label>
                 <input type="range" id="weather" min="0" max="3" value="0" step="1">
                 <div class="slider-labels"><span>Alle</span><span>☀️</span><span>⛅</span><span>🌨️</span></div>
             </div>
-            <!-- ✅ FAVORITEN MIT LISTE -->
+            
             <div class="filter-group">
                 <button class="favorites-toggle" onclick="toggleFavoritesOnly()">⭐ Nur Favoriten</button>
-                <div class="favorites-list" id="favoritesList">
-                    <div class="favorites-list-header">
-                        <span>⭐</span>
-                        <span>Deine Favoriten</span>
-                        <span id="favoritesCount">(0)</span>
-                    </div>
-                    <div class="favorites-list-items" id="favoritesListItems">
-                        <div class="favorites-empty">Noch keine Favoriten gespeichert</div>
-                    </div>
-                </div>
             </div>
         </div>
-
+        
+        <!-- FAVORITEN PANEL -->
+        <div class="favorites-panel" id="favoritesPanel" style="display: none;">
+            <div class="favorites-header" onclick="toggleFavoritesPanel()">
+                <h3>
+                    <span>⭐</span>
+                    <span>Meine Favoriten</span>
+                    <span class="favorites-count" id="favoritesCount">0</span>
+                </h3>
+                <div class="favorites-actions">
+                    <div class="favorites-view-mode">
+                        <button class="view-mode-btn active" 
+                                id="viewModeList" 
+                                onclick="event.stopPropagation(); setFavoritesViewMode('list')" 
+                                title="Listenansicht">
+                            ☰
+                        </button>
+                        <button class="view-mode-btn" 
+                                id="viewModeCompact" 
+                                onclick="event.stopPropagation(); setFavoritesViewMode('compact')" 
+                                title="Kompaktansicht">
+                            ▦
+                        </button>
+                    </div>
+                    <button class="favorites-btn danger" 
+                            onclick="event.stopPropagation(); clearAllFavorites()">
+                        <span>🗑️</span>
+                        <span>Alle löschen</span>
+                    </button>
+                    <span class="favorites-toggle-icon" id="favoritesToggleIcon">▼</span>
+                </div>
+            </div>
+            
+            <div id="favoritesList" class="favorites-list">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+            
+            <div class="favorites-quick-stats" id="favoritesQuickStats" style="display: none;">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+        </div>
+        
         <div class="content">
             <div id="trailsContainer">
                 <div class="loading"><div class="spinner"></div><p>Lade Daten...</p></div>
             </div>
         </div>
-
+        
         <div class="last-updated" id="lastUpdated"></div>
     </div>
-
+    
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    
     <script>
         'use strict';
         
-        // ========================================
-        // KONFIGURATION
-        // ========================================
         const CONFIG = {
-            version: '3.4.0',
+            version: '3.5.0',
             apiKey: '09afa4291402fae98cc456cc7d7c3c76',
             autoRefreshInterval: 30 * 60 * 1000,
-            webcamRefreshInterval: 5 * 60 * 1000
+            webcamRefreshInterval: 5 * 60 * 1000,
+            drivingSpeedKmh: 80,
+            fogBaseCeiling: 1200,
+            fogHumidityOffset: 200
         };
-
-        // ========================================
-        // LOIPEN & SCHNEEBERICHTE - LINK DATENBANK
-        // Hier kannst du einfach neue Einträge hinzufügen!
-        // ========================================
         
         const TRAILS_DATABASE = [
-            // ===== SCHWEIZ =====
             {
                 id: 1,
                 name: "Davos Nordic",
@@ -1405,18 +1830,13 @@
                 distance: 45,
                 elevation: 1560,
                 techniques: ["skating", "classic"],
-                
-                // 🔗 LINKS
                 officialUrl: "https://www.davos.ch/winter/langlaufen/",
                 bergfexUrl: "https://www.bergfex.ch/davos-klosters/langlaufen/",
                 snowReportUrl: "https://www.davos.ch/winter/schneebericht/",
-                
-                // 📷 WEBCAMS
                 webcams: [
                     { name: "Davos Dorf", url: "https://www.foto-webcam.eu/webcam/davos-dorf/current/400.jpg" },
                     { name: "Parsenn", url: "https://www.foto-webcam.eu/webcam/davos-parsenn/current/400.jpg" }
                 ],
-                
                 sections: [
                     {
                         name: "Flüelatrack",
@@ -1444,7 +1864,6 @@
                     }
                 ]
             },
-            
             {
                 id: 2,
                 name: "Engadin - St. Moritz",
@@ -1455,16 +1874,13 @@
                 distance: 200,
                 elevation: 1822,
                 techniques: ["skating", "classic"],
-                
                 officialUrl: "https://www.engadin.ch/langlaufen",
                 bergfexUrl: "https://www.bergfex.ch/engadin-st-moritz/langlaufen/",
                 snowReportUrl: "https://www.engadin.ch/winter/schneebericht/",
-                
                 webcams: [
                     { name: "St. Moritz Dorf", url: "https://www.foto-webcam.eu/webcam/stmoritz/current/400.jpg" },
                     { name: "Corviglia", url: "https://www.foto-webcam.eu/webcam/stmoritz-corviglia/current/400.jpg" }
                 ],
-                
                 sections: [
                     {
                         name: "Engadiner Ski Marathon Strecke",
@@ -1480,7 +1896,6 @@
                     }
                 ]
             },
-            
             {
                 id: 3,
                 name: "Goms - Obergoms",
@@ -1491,15 +1906,12 @@
                 distance: 95,
                 elevation: 1400,
                 techniques: ["skating", "classic"],
-                
                 officialUrl: "https://www.obergoms.ch/langlaufen",
                 bergfexUrl: "https://www.bergfex.ch/obergoms/langlaufen/",
                 snowReportUrl: "https://www.obergoms.ch/schneebericht",
-                
                 webcams: [
                     { name: "Münster Goms", url: "https://www.foto-webcam.eu/webcam/muenster-goms/current/400.jpg" }
                 ],
-                
                 sections: [
                     {
                         name: "Gommer Höhenloipe",
@@ -1515,8 +1927,6 @@
                     }
                 ]
             },
-            
-            // ===== ÖSTERREICH =====
             {
                 id: 4,
                 name: "Ramsau am Dachstein",
@@ -1527,15 +1937,12 @@
                 distance: 220,
                 elevation: 1135,
                 techniques: ["skating", "classic"],
-                
                 officialUrl: "https://www.ramsau.com/winter/langlaufen",
                 bergfexUrl: "https://www.bergfex.at/ramsau-dachstein/langlaufen/",
                 snowReportUrl: "https://www.ramsau.com/schneebericht",
-                
                 webcams: [
                     { name: "Ramsau Hauptplatz", url: "https://www.foto-webcam.eu/webcam/ramsau/current/400.jpg" }
                 ],
-                
                 sections: [
                     {
                         name: "Hauptloipe Ramsau",
@@ -1551,7 +1958,6 @@
                     }
                 ]
             },
-            
             {
                 id: 5,
                 name: "Seefeld in Tirol",
@@ -1562,15 +1968,12 @@
                 distance: 245,
                 elevation: 1200,
                 techniques: ["skating", "classic"],
-                
                 officialUrl: "https://www.seefeld.com/de/langlaufen",
                 bergfexUrl: "https://www.bergfex.at/seefeld/langlaufen/",
                 snowReportUrl: "https://www.seefeld.com/schneebericht",
-                
                 webcams: [
                     { name: "Seefeld Zentrum", url: "https://www.foto-webcam.eu/webcam/seefeld/current/400.jpg" }
                 ],
-                
                 sections: [
                     {
                         name: "Olympia Loipe",
@@ -1586,8 +1989,6 @@
                     }
                 ]
             },
-            
-            // ===== DEUTSCHLAND =====
             {
                 id: 6,
                 name: "Oberstdorf Nordic",
@@ -1598,16 +1999,13 @@
                 distance: 180,
                 elevation: 813,
                 techniques: ["skating", "classic"],
-                
                 officialUrl: "https://www.oberstdorf.de/langlaufen",
                 bergfexUrl: "https://www.bergfex.de/oberstdorf/langlaufen/",
                 snowReportUrl: "https://www.oberstdorf.de/schneebericht",
-                
                 webcams: [
                     { name: "Oberstdorf Ortsmitte", url: "https://www.foto-webcam.eu/webcam/oberstdorf/current/400.jpg" },
                     { name: "Nebelhorn", url: "https://www.foto-webcam.eu/webcam/oberstdorf-nebelhorn/current/400.jpg" }
                 ],
-                
                 sections: [
                     {
                         name: "Skating-Arena Oberstdorf",
@@ -1623,7 +2021,6 @@
                     }
                 ]
             },
-            
             {
                 id: 7,
                 name: "Feldberg Schwarzwald",
@@ -1634,13 +2031,10 @@
                 distance: 55,
                 elevation: 1450,
                 techniques: ["skating", "classic"],
-                
                 officialUrl: "https://www.hochschwarzwald.de/erleben/langlauf",
                 bergfexUrl: "https://www.bergfex.de/feldberg/langlaufen/",
                 snowReportUrl: "https://www.hochschwarzwald.de/schneebericht",
-                
                 webcams: [],
-                
                 sections: [
                     {
                         name: "Feldberg Höhenloipe",
@@ -1657,24 +2051,32 @@
                 ]
             }
         ];
-
-        // ========================================
-        // GLOBALE VARIABLEN
-        // ========================================
+        
         let allTrails = [];
         let filteredTrails = [];
-        let favorites = JSON.parse(localStorage.getItem('trailFavorites')) || [];
+        let favorites = [];
         let showOnlyFavorites = false;
         let map = null;
         let markers = {};
         let markerCluster = null;
         let userCoordinates = null;
-
-        // ========================================
-        // INITIALIZATION
-        // ========================================
+        let filterTimeout = null;
+        const webcamLoadAttempts = {};
+        let favoritesViewMode = 'list';
+        let favoritesPanelCollapsed = false;
+        
         document.addEventListener('DOMContentLoaded', function() {
             console.log(`🎿 Loipen Finder v${CONFIG.version} - ${TRAILS_DATABASE.length} Gebiete`);
+            
+            try {
+                favorites = JSON.parse(localStorage.getItem('trailFavorites')) || [];
+                favoritesViewMode = localStorage.getItem('favoritesViewMode') || 'list';
+                favoritesPanelCollapsed = localStorage.getItem('favoritesPanelCollapsed') === 'true';
+            } catch (e) {
+                console.warn('LocalStorage nicht verfügbar:', e);
+                favorites = [];
+            }
+            
             initDateTime();
             initMap();
             setupFilterListeners();
@@ -1683,25 +2085,21 @@
             restoreMapState();
             setupResizeHandler();
             loadUserLocation();
-            updateFavoritesList(); // ✅ Favoriten-Liste initialisieren
             
             if (!userCoordinates) {
                 document.getElementById('locationWarning').classList.add('active');
             }
         });
-
-        // ========================================
-        // DATUM & UHRZEIT
-        // ========================================
+        
         function initDateTime() {
             updateDateTime();
             setInterval(updateDateTime, 1000);
         }
-
+        
         function updateDateTime() {
             const now = new Date();
             const days = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-            const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+            const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
                            'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             
             const dateStr = `${days[now.getDay()]}, ${now.getDate()}. ${months[now.getMonth()]} ${now.getFullYear()}`;
@@ -1710,28 +2108,46 @@
             document.getElementById('currentDate').textContent = dateStr;
             document.getElementById('currentTime').textContent = timeStr;
         }
-
-        // ========================================
-        // STANDORT-FUNKTIONEN
-        // ========================================
+        
         function loadUserLocation() {
-            const saved = localStorage.getItem('userLocation');
-            if (saved) {
-                document.getElementById('userLocation').value = saved;
-                geocodeLocation(saved);
+            try {
+                const saved = localStorage.getItem('userLocation');
+                if (saved) {
+                    document.getElementById('userLocation').value = saved;
+                    geocodeLocation(saved);
+                }
+            } catch (e) {
+                console.warn('LocalStorage nicht verfügbar:', e);
             }
         }
-
+        
         async function setUserLocation() {
             const input = document.getElementById('userLocation').value.trim();
             if (!input) {
                 alert('Bitte gib einen Standort ein (z.B. 8001 Zürich)');
                 return;
             }
-            localStorage.setItem('userLocation', input);
-            await geocodeLocation(input);
+            
+            const buttons = document.querySelectorAll('.location-input-wrapper button');
+            const originalTexts = Array.from(buttons).map(btn => btn.innerHTML);
+            buttons.forEach((btn, idx) => {
+                if (idx === 0) btn.innerHTML = '<span>⏳</span><span>Suche...</span>';
+                btn.disabled = true;
+            });
+            
+            try {
+                localStorage.setItem('userLocation', input);
+                await geocodeLocation(input);
+            } catch (e) {
+                console.error('Fehler beim Speichern:', e);
+            } finally {
+                buttons.forEach((btn, idx) => {
+                    btn.innerHTML = originalTexts[idx];
+                    btn.disabled = false;
+                });
+            }
         }
-
+        
         async function geocodeLocation(location) {
             try {
                 const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}&limit=1`);
@@ -1744,13 +2160,14 @@
                         display: data[0].display_name
                     };
                     
-                    document.getElementById('currentLocationDisplay').innerHTML = 
+                    document.getElementById('currentLocationDisplay').innerHTML =
                         `✅ <strong>Standort gesetzt:</strong> ${userCoordinates.display}`;
                     document.getElementById('currentLocationDisplay').classList.add('active');
                     document.getElementById('locationWarning').classList.remove('active');
                     
                     calculateAllDistances();
                     applyFilters();
+                    updateFavoritesPanel();
                     
                     console.log('📍 Standort gesetzt:', userCoordinates);
                 } else {
@@ -1761,12 +2178,19 @@
                 alert('Fehler beim Ermitteln des Standorts.');
             }
         }
-
+        
         function getUserGeolocation() {
             if (!navigator.geolocation) {
                 alert('Geolocation wird nicht unterstützt.');
                 return;
             }
+            
+            const buttons = document.querySelectorAll('.location-input-wrapper button');
+            const originalTexts = Array.from(buttons).map(btn => btn.innerHTML);
+            buttons.forEach((btn, idx) => {
+                if (idx === 1) btn.innerHTML = '<span>📡</span><span>Ermittle...</span>';
+                btn.disabled = true;
+            });
             
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
@@ -1779,41 +2203,55 @@
                         const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoordinates.lat}&lon=${userCoordinates.lon}`);
                         const data = await response.json();
                         userCoordinates.display = data.display_name;
-                        
                         document.getElementById('userLocation').value = data.display_name;
-                        localStorage.setItem('userLocation', data.display_name);
+                        
+                        try {
+                            localStorage.setItem('userLocation', data.display_name);
+                        } catch (e) {
+                            console.warn('LocalStorage nicht verfügbar:', e);
+                        }
                     } catch (error) {
                         userCoordinates.display = `${userCoordinates.lat.toFixed(4)}, ${userCoordinates.lon.toFixed(4)}`;
                     }
                     
-                    document.getElementById('currentLocationDisplay').innerHTML = 
+                    document.getElementById('currentLocationDisplay').innerHTML =
                         `✅ <strong>GPS-Standort:</strong> ${userCoordinates.display}`;
                     document.getElementById('currentLocationDisplay').classList.add('active');
                     document.getElementById('locationWarning').classList.remove('active');
                     
                     calculateAllDistances();
                     applyFilters();
+                    updateFavoritesPanel();
                     
                     console.log('📱 GPS ermittelt:', userCoordinates);
+                    
+                    buttons.forEach((btn, idx) => {
+                        btn.innerHTML = originalTexts[idx];
+                        btn.disabled = false;
+                    });
                 },
                 (error) => {
                     alert('GPS-Fehler: ' + error.message);
+                    buttons.forEach((btn, idx) => {
+                        btn.innerHTML = originalTexts[idx];
+                        btn.disabled = false;
+                    });
                 }
             );
         }
-
+        
         function calculateDistance(lat1, lon1, lat2, lon2) {
             const R = 6371;
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = 
+            const a =
                 Math.sin(dLat/2) * Math.sin(dLat/2) +
                 Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
                 Math.sin(dLon/2) * Math.sin(dLon/2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             return R * c;
         }
-
+        
         function calculateAllDistances() {
             if (!userCoordinates) return;
             
@@ -1824,80 +2262,46 @@
                     trail.lat,
                     trail.lon
                 );
-                trail.drivingTime = Math.round(trail.actualDistance / 80 * 60);
+                trail.drivingTime = Math.round(trail.actualDistance / CONFIG.drivingSpeedKmh * 60);
             });
             
             allTrails.sort((a, b) => (a.actualDistance || 999999) - (b.actualDistance || 999999));
             
-            updateFavoritesList(); // ✅ Liste aktualisieren
+            console.log('📏 Distanzen ab', userCoordinates.display.split(',')[0]);
         }
-
+        
         function getGoogleMapsLink(trail) {
             if (!userCoordinates) return null;
             return `https://www.google.com/maps/dir/${userCoordinates.lat},${userCoordinates.lon}/${trail.lat},${trail.lon}`;
         }
-
-        // ========================================
-        // ✅ FAVORITEN-LISTE
-        // ========================================
-        function updateFavoritesList() {
-            const listContainer = document.getElementById('favoritesListItems');
-            const countBadge = document.getElementById('favoritesCount');
-            const favoritesList = document.getElementById('favoritesList');
-            
-            // Zähler aktualisieren
-            countBadge.textContent = `(${favorites.length})`;
-            
-            if (favorites.length === 0) {
-                listContainer.innerHTML = '<div class="favorites-empty">Noch keine Favoriten gespeichert.<br>Klicke auf ⭐ bei einer Loipe!</div>';
-                return;
-            }
-            
-            // Favoriten-Liste anzeigen
-            favoritesList.classList.add('active');
-            
-            // Favoriten-Items rendern
-            const favTrails = allTrails.filter(t => favorites.includes(t.id));
-            listContainer.innerHTML = favTrails.map(trail => `
-                <div class="favorite-list-item" onclick="scrollToTrail(${trail.id}); highlightTrail(${trail.id})">
-                    <div class="favorite-list-item-name">
-                        <span>${trail.flag}</span>
-                        <span>${trail.name}</span>
-                    </div>
-                    <div class="favorite-list-item-distance">
-                        ${trail.actualDistance ? `${Math.round(trail.actualDistance)} km` : '📍'}
-                    </div>
-                </div>
-            `).join('');
-            
-            console.log('⭐ Favoriten-Liste aktualisiert:', favorites.length);
-        }
-
-        // ========================================
-        // MAP FUNCTIONS
-        // ========================================
+        
         function initMap() {
             map = L.map('map').setView([47.0, 9.0], 7);
+            
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap',
                 maxZoom: 18
             }).addTo(map);
+            
             markerCluster = L.markerClusterGroup({
                 maxClusterRadius: 50,
                 spiderfyOnMaxZoom: true
             });
+            
             map.addLayer(markerCluster);
         }
-
+        
         function createMarkers(trails) {
             markerCluster.clearLayers();
             markers = {};
+            
             trails.forEach(trail => {
                 const iconHtml = `
                     <div class="custom-marker ${favorites.includes(trail.id) ? 'marker-favorite' : ''}">
                         <span class="marker-icon">${trail.flag}</span>
                     </div>
                 `;
+                
                 const marker = L.marker([trail.lat, trail.lon], {
                     icon: L.divIcon({
                         html: iconHtml,
@@ -1906,16 +2310,19 @@
                         iconAnchor: [17, 35]
                     })
                 });
+                
                 marker.bindPopup(createPopupContent(trail));
+                
                 marker.on('click', () => {
                     scrollToTrail(trail.id);
                     highlightTrail(trail.id);
                 });
+                
                 markerCluster.addLayer(marker);
                 markers[trail.id] = marker;
             });
         }
-
+        
         function createPopupContent(trail) {
             return `
                 <div class="popup-content">
@@ -1939,32 +2346,32 @@
                 </div>
             `;
         }
-
+        
         function showAllTrailsOnMap() {
             createMarkers(allTrails);
             fitMapBounds();
             document.getElementById('btnShowAll').classList.add('active');
             document.getElementById('btnShowFiltered').classList.remove('active');
         }
-
+        
         function showFilteredOnMap() {
             createMarkers(filteredTrails);
             fitMapBounds();
             document.getElementById('btnShowFiltered').classList.add('active');
             document.getElementById('btnShowAll').classList.remove('active');
         }
-
+        
         function fitMapBounds() {
             if (markerCluster.getLayers().length > 0) {
                 map.fitBounds(markerCluster.getBounds(), { padding: [50, 50], maxZoom: 10 });
             }
         }
-
+        
         function scrollToTrail(trailId) {
             const card = document.querySelector(`.trail-card[data-id="${trailId}"]`);
             if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-
+        
         function highlightTrail(trailId) {
             document.querySelectorAll('.trail-card.highlighted').forEach(c => c.classList.remove('highlighted'));
             const card = document.querySelector(`.trail-card[data-id="${trailId}"]`);
@@ -1973,7 +2380,7 @@
                 setTimeout(() => card.classList.remove('highlighted'), 3000);
             }
         }
-
+        
         function zoomToTrail(trailId) {
             const trail = allTrails.find(t => t.id === trailId);
             if (trail && markers[trailId]) {
@@ -1981,17 +2388,13 @@
                 if (mapSection.classList.contains('collapsed')) {
                     toggleMap();
                 }
-                
                 setTimeout(() => {
                     map.setView([trail.lat, trail.lon], 12, { animate: true });
                     markers[trailId].openPopup();
                 }, 300);
             }
         }
-
-        // ========================================
-        // MAP TOGGLE
-        // ========================================
+        
         function toggleMap() {
             const mapSection = document.getElementById('mapSection');
             const toggleBtn = document.getElementById('mapToggleBtn');
@@ -2012,19 +2415,33 @@
                     }
                 }, 300);
                 
-                localStorage.setItem('mapCollapsed', 'false');
+                try {
+                    localStorage.setItem('mapCollapsed', 'false');
+                } catch (e) {
+                    console.warn('LocalStorage nicht verfügbar:', e);
+                }
             } else {
                 mapSection.classList.add('collapsed');
                 toggleBtn.classList.add('rotated');
                 toggleBtn.textContent = '▲';
                 
-                localStorage.setItem('mapCollapsed', 'true');
+                try {
+                    localStorage.setItem('mapCollapsed', 'true');
+                } catch (e) {
+                    console.warn('LocalStorage nicht verfügbar:', e);
+                }
             }
         }
-
+        
         function restoreMapState() {
             const isMobile = window.innerWidth <= 768;
-            const savedState = localStorage.getItem('mapCollapsed');
+            let savedState = null;
+            
+            try {
+                savedState = localStorage.getItem('mapCollapsed');
+            } catch (e) {
+                console.warn('LocalStorage nicht verfügbar:', e);
+            }
             
             let shouldCollapse = savedState !== null ? savedState === 'true' : isMobile;
             
@@ -2043,9 +2460,13 @@
                 }
             }
             
-            localStorage.setItem('wasMobile', isMobile);
+            try {
+                localStorage.setItem('wasMobile', isMobile);
+            } catch (e) {
+                console.warn('LocalStorage nicht verfügbar:', e);
+            }
         }
-
+        
         function addMobileHint() {
             setTimeout(() => {
                 const mapSection = document.getElementById('mapSection');
@@ -2069,17 +2490,29 @@
                 }
             }, 1000);
         }
-
+        
         function setupResizeHandler() {
             let resizeTimer;
             window.addEventListener('resize', function() {
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(function() {
-                    const wasMobile = localStorage.getItem('wasMobile') === 'true';
+                    let wasMobile = false;
+                    try {
+                        wasMobile = localStorage.getItem('wasMobile') === 'true';
+                    } catch (e) {
+                        console.warn('LocalStorage nicht verfügbar:', e);
+                    }
+                    
                     const isMobile = window.innerWidth <= 768;
                     
                     if (!wasMobile && isMobile) {
-                        const savedState = localStorage.getItem('mapCollapsed');
+                        let savedState = null;
+                        try {
+                            savedState = localStorage.getItem('mapCollapsed');
+                        } catch (e) {
+                            console.warn('LocalStorage nicht verfügbar:', e);
+                        }
+                        
                         if (savedState === null) {
                             const mapSection = document.getElementById('mapSection');
                             if (mapSection && !mapSection.classList.contains('collapsed')) {
@@ -2089,7 +2522,11 @@
                         }
                     }
                     
-                    localStorage.setItem('wasMobile', isMobile);
+                    try {
+                        localStorage.setItem('wasMobile', isMobile);
+                    } catch (e) {
+                        console.warn('LocalStorage nicht verfügbar:', e);
+                    }
                     
                     if (map && !document.getElementById('mapSection').classList.contains('collapsed')) {
                         setTimeout(() => map.invalidateSize(), 100);
@@ -2097,25 +2534,25 @@
                 }, 250);
             });
         }
-
-        // ========================================
-        // DATA LOADING
-        // ========================================
+        
         async function loadAllData() {
             try {
                 const container = document.getElementById('trailsContainer');
                 container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Lade Wetterdaten...</p></div>';
-
+                
                 const enrichedTrails = await Promise.all(
                     TRAILS_DATABASE.map(async (trail) => {
                         const enriched = { ...trail };
+                        
                         try {
                             enriched.weather = await fetchWeather(trail.lat, trail.lon);
                             enriched.reliability = 'high';
                         } catch (error) {
+                            console.warn(`Wetter für ${trail.name} nicht verfügbar:`, error);
                             enriched.weather = null;
                             enriched.reliability = 'low';
                         }
+                        
                         enriched.snowHeight = Math.floor(Math.random() * 120) + 20;
                         enriched.condition = getRandomCondition();
                         enriched.lastPreparation = getRandomPreparation();
@@ -2128,35 +2565,45 @@
                                 snowHeight: Math.floor(Math.random() * 30) + enriched.snowHeight - 10
                             }));
                         }
+                        
                         return enriched;
                     })
                 );
-
+                
                 allTrails = enrichedTrails;
                 calculateAllDistances();
                 createMarkers(allTrails);
                 fitMapBounds();
                 applyFilters();
                 updateLastUpdated();
-                updateFavoritesList(); // ✅ Favoriten aktualisieren
+                updateFavoritesPanel();
+                
             } catch (error) {
-                console.error('Fehler:', error);
-                document.getElementById('trailsContainer').innerHTML = 
+                console.error('Fehler beim Laden:', error);
+                document.getElementById('trailsContainer').innerHTML =
                     '<div class="error-message"><span style="font-size: 2em;">❌</span><div>Fehler beim Laden der Daten.</div></div>';
             }
         }
-
+        
         async function fetchWeather(lat, lon) {
             const currentUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${CONFIG.apiKey}&units=metric&lang=de`;
             const currentRes = await fetch(currentUrl);
-            if (!currentRes.ok) throw new Error(`API Error ${currentRes.status}`);
+            
+            if (!currentRes.ok) {
+                throw new Error(`API Error: ${currentRes.status} - ${currentRes.statusText}`);
+            }
+            
             const currentData = await currentRes.json();
-
+            
             const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${CONFIG.apiKey}&units=metric&lang=de`;
             const forecastRes = await fetch(forecastUrl);
-            if (!forecastRes.ok) throw new Error('Forecast Error');
+            
+            if (!forecastRes.ok) {
+                throw new Error('Forecast Error');
+            }
+            
             const forecastData = await forecastRes.json();
-
+            
             return {
                 current: {
                     temp: Math.round(currentData.main.temp),
@@ -2171,16 +2618,19 @@
                 forecast: processForecast(forecastData.list)
             };
         }
-
+        
         function processForecast(list) {
             const days = [];
             const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
             const processed = new Set();
+            
             list.forEach(item => {
                 const date = new Date(item.dt * 1000);
                 if (!processed.has(date.toDateString()) && days.length < 7) {
                     processed.add(date.toDateString());
+                    
                     const snow = item.snow ? Math.round(item.snow['3h'] * 8) : 0;
+                    
                     days.push({
                         day: dayNames[date.getDay()],
                         temp: Math.round(item.main.temp),
@@ -2190,17 +2640,25 @@
                     });
                 }
             });
+            
             return days;
         }
-
+        
         function getWeatherIcon(condition, hasSnow) {
             if (hasSnow) return '❄️';
-            const icons = { 'Clear': '☀️', 'Clouds': '⛅', 'Rain': '🌧️', 'Snow': '🌨️', 'Mist': '🌫️' };
+            const icons = {
+                'Clear': '☀️',
+                'Clouds': '⛅',
+                'Rain': '🌧️',
+                'Snow': '🌨️',
+                'Mist': '🌫️'
+            };
             return icons[condition] || '⛅';
         }
-
+        
         function calculateLastSnowfall(weather) {
             if (!weather?.forecast) return 'Unbekannt';
+            
             for (let i = 0; i < weather.forecast.length; i++) {
                 if (weather.forecast[i].snow > 0) {
                     return i === 0 ? 'Heute' : i === 1 ? 'Gestern' : `Vor ${i} Tagen`;
@@ -2208,94 +2666,116 @@
             }
             return 'Vor >7 Tagen';
         }
-
+        
         function calculateFogStatus(elevation, weather) {
             if (!weather) return 'unknown';
-            const fogCeiling = 1200 - (weather.current.humidity > 90 ? 200 : 0);
-            return elevation > fogCeiling + 150 ? 'above' : elevation < fogCeiling - 150 ? 'below' : 'at_fog_line';
+            
+            const fogCeiling = CONFIG.fogBaseCeiling - (weather.current.humidity > 90 ? CONFIG.fogHumidityOffset : 0);
+            
+            if (elevation > fogCeiling + 150) return 'above';
+            if (elevation < fogCeiling - 150) return 'below';
+            return 'at_fog_line';
         }
-
+        
         function getFogStatusText(status) {
-            return { 'above': 'über der Nebelgrenze ☀️', 'below': 'unter der Nebelgrenze 🌫️', 'at_fog_line': 'an der Nebelgrenze ⚠️' }[status];
+            const texts = {
+                'above': 'über der Nebelgrenze ☀️',
+                'below': 'unter der Nebelgrenze 🌫️',
+                'at_fog_line': 'an der Nebelgrenze ⚠️'
+            };
+            return texts[status] || 'Unbekannt';
         }
-
+        
         function getFogIcon(status) {
-            return { 'above': '☀️', 'below': '🌫️', 'at_fog_line': '⚠️' }[status] || '❓';
+            const icons = {
+                'above': '☀️',
+                'below': '🌫️',
+                'at_fog_line': '⚠️'
+            };
+            return icons[status] || '❓';
         }
-
+        
         function getRandomCondition() {
-            return ['excellent', 'excellent', 'good', 'good', 'good', 'fair'][Math.floor(Math.random() * 6)];
+            const conditions = ['excellent', 'excellent', 'good', 'good', 'good', 'fair'];
+            return conditions[Math.floor(Math.random() * conditions.length)];
         }
-
+        
         function getRandomPreparation() {
-            return ['Heute, 06:00', 'Heute, 05:30', 'Gestern, 17:00', 'Vor 2 Tagen'][Math.floor(Math.random() * 4)];
+            const times = ['Heute, 06:00', 'Heute, 05:30', 'Gestern, 17:00', 'Vor 2 Tagen'];
+            return times[Math.floor(Math.random() * times.length)];
         }
-
+        
         function capitalizeFirst(str) {
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
-
-        // ========================================
-        // FILTERS
-        // ========================================
+        
         function setupFilterListeners() {
             document.getElementById('distance').addEventListener('input', function(e) {
                 document.getElementById('distanceValue').textContent = e.target.value + ' km';
                 updateSliderBackground('distance');
-                applyFilters();
+                applyFiltersDebounced();
             });
+            
             document.getElementById('technique').addEventListener('input', function(e) {
                 const techniques = ['Alle', 'Skating', 'Klassisch', 'Beides'];
                 document.getElementById('techniqueValue').textContent = techniques[e.target.value];
                 updateSliderBackground('technique');
-                applyFilters();
+                applyFiltersDebounced();
             });
-            // ✅ MINDEST-SCHNEEHÖHE
+            
             document.getElementById('snowHeight').addEventListener('input', function(e) {
-                document.getElementById('snowValue').textContent = `mind. ${e.target.value} cm`;
+                document.getElementById('snowValue').textContent = e.target.value + ' cm';
                 updateSliderBackground('snowHeight');
-                applyFilters();
+                applyFiltersDebounced();
             });
+            
             document.getElementById('condition').addEventListener('input', function(e) {
                 const conditions = ['Alle', 'Ausgezeichnet', 'Gut', 'Befriedigend', 'Schlecht'];
                 document.getElementById('conditionValue').textContent = conditions[e.target.value];
                 updateSliderBackground('condition');
-                applyFilters();
+                applyFiltersDebounced();
             });
+            
             document.getElementById('weather').addEventListener('input', function(e) {
                 const weathers = ['Alle', 'Sonnig', 'Bewölkt', 'Schneefall'];
                 document.getElementById('weatherValue').textContent = weathers[e.target.value];
                 updateSliderBackground('weather');
-                applyFilters();
+                applyFiltersDebounced();
             });
+            
             updateAllSliderBackgrounds();
         }
-
+        
         function updateSliderBackground(sliderId) {
             const slider = document.getElementById(sliderId);
             const percentage = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
             slider.style.background = `linear-gradient(to right, var(--primary) ${percentage}%, #ddd ${percentage}%)`;
         }
-
+        
         function updateAllSliderBackgrounds() {
             ['distance', 'technique', 'snowHeight', 'condition', 'weather'].forEach(updateSliderBackground);
         }
-
+        
+        function applyFiltersDebounced() {
+            clearTimeout(filterTimeout);
+            filterTimeout = setTimeout(applyFilters, 300);
+        }
+        
         function applyFilters() {
             const distance = parseInt(document.getElementById('distance').value);
             const techniqueValue = parseInt(document.getElementById('technique').value);
             const snowHeight = parseInt(document.getElementById('snowHeight').value);
             const conditionValue = parseInt(document.getElementById('condition').value);
             const weatherValue = parseInt(document.getElementById('weather').value);
-
+            
             const techniqueMap = ['all', 'skating', 'classic', 'both'];
             const conditionMap = ['all', 'excellent', 'good', 'fair', 'poor'];
             const weatherMap = ['all', 'sunny', 'cloudy', 'snowy'];
-
+            
             const technique = techniqueMap[techniqueValue];
             const condition = conditionMap[conditionValue];
             const weather = weatherMap[weatherValue];
-
+            
             let filtered = allTrails.filter(trail => {
                 if (userCoordinates && trail.actualDistance !== undefined) {
                     if (trail.actualDistance > distance) return false;
@@ -2305,19 +2785,21 @@
                     if (technique === 'both' && trail.techniques.length < 2) return false;
                     if (technique !== 'both' && !trail.techniques.includes(technique)) return false;
                 }
-                // ✅ MINDEST-Schneehöhe
+                
                 if (trail.snowHeight < snowHeight) return false;
                 if (condition !== 'all' && trail.condition !== condition) return false;
+                
                 if (weather !== 'all' && trail.weather) {
                     if (weather !== mapWeatherCondition(trail.weather.current.condition)) return false;
                 }
+                
                 return true;
             });
-
+            
             if (showOnlyFavorites) {
                 filtered = filtered.filter(trail => favorites.includes(trail.id));
             }
-
+            
             if (userCoordinates) {
                 filtered.sort((a, b) => {
                     const distA = a.actualDistance || 999999;
@@ -2325,15 +2807,23 @@
                     return distA - distB;
                 });
             }
-
+            
             filteredTrails = filtered;
             renderTrails(filtered);
+            
+            console.log(`🔍 ${filtered.length}/${allTrails.length} Trails` +
+                       (userCoordinates ? ` (sortiert ab ${userCoordinates.display.split(',')[0]})` : ''));
         }
-
+        
         function mapWeatherCondition(condition) {
-            return { 'Clear': 'sunny', 'Clouds': 'cloudy', 'Snow': 'snowy' }[condition] || 'cloudy';
+            const map = {
+                'Clear': 'sunny',
+                'Clouds': 'cloudy',
+                'Snow': 'snowy'
+            };
+            return map[condition] || 'cloudy';
         }
-
+        
         function toggleFavoritesOnly() {
             showOnlyFavorites = !showOnlyFavorites;
             const btn = document.querySelector('.favorites-toggle');
@@ -2341,32 +2831,240 @@
             btn.innerHTML = showOnlyFavorites ? '⭐ Alle anzeigen' : '⭐ Nur Favoriten';
             applyFilters();
         }
-
+        
         function toggleFavorite(id, event) {
             event.stopPropagation();
-            favorites.includes(id) ? favorites.splice(favorites.indexOf(id), 1) : favorites.push(id);
-            localStorage.setItem('trailFavorites', JSON.stringify(favorites));
+            
+            if (favorites.includes(id)) {
+                favorites.splice(favorites.indexOf(id), 1);
+            } else {
+                favorites.push(id);
+            }
+            
+            try {
+                localStorage.setItem('trailFavorites', JSON.stringify(favorites));
+            } catch (e) {
+                console.warn('LocalStorage nicht verfügbar:', e);
+            }
+            
+            updateFavoritesPanel();
             showAllTrailsOnMap();
-            updateFavoritesList(); // ✅ Liste aktualisieren
             applyFilters();
         }
-
+        
         function toggleSections(trailId) {
             const list = document.getElementById(`sections-${trailId}`);
             const icon = document.getElementById(`toggle-icon-${trailId}`);
             list.classList.toggle('collapsed');
             icon.classList.toggle('rotated');
         }
-
+        
         // ========================================
-        // RENDERING
+        // FAVORITEN PANEL
         // ========================================
+        function updateFavoritesPanel() {
+            const panel = document.getElementById('favoritesPanel');
+            const list = document.getElementById('favoritesList');
+            const count = document.getElementById('favoritesCount');
+            const quickStats = document.getElementById('favoritesQuickStats');
+            
+            if (favorites.length > 0) {
+                panel.style.display = 'block';
+                count.textContent = favorites.length;
+                
+                const favoriteTrails = allTrails.filter(trail => favorites.includes(trail.id));
+                
+                if (userCoordinates) {
+                    favoriteTrails.sort((a, b) => {
+                        const distA = a.actualDistance || 999999;
+                        const distB = b.actualDistance || 999999;
+                        return distA - distB;
+                    });
+                }
+                
+                list.innerHTML = favoriteTrails.map(trail => `
+                    <div class="favorite-item" data-trail-id="${trail.id}">
+                        <div class="favorite-item-main" onclick="scrollToTrail(${trail.id}); highlightTrail(${trail.id})">
+                            <div class="favorite-flag">${trail.flag}</div>
+                            <div class="favorite-info">
+                                <div class="favorite-name">
+                                    <span>${trail.name}</span>
+                                    ${trail.actualDistance ? `<span class="favorite-distance">📍 ${Math.round(trail.actualDistance)} km</span>` : ''}
+                                </div>
+                                <div class="favorite-stats">
+                                    <span class="favorite-stat" title="Loipennetz">
+                                        <span>📏</span>
+                                        <span>${trail.distance} km</span>
+                                    </span>
+                                    <span class="favorite-stat" title="Höhe">
+                                        <span>🏔️</span>
+                                        <span>${trail.elevation} m</span>
+                                    </span>
+                                    <span class="favorite-stat" title="Schneehöhe">
+                                        <span>❄️</span>
+                                        <span>${trail.snowHeight} cm</span>
+                                    </span>
+                                    <span class="favorite-stat" title="Zustand">
+                                        <span class="status-indicator status-${trail.condition}"></span>
+                                        <span>${getConditionText(trail.condition).split(' ')[1]}</span>
+                                    </span>
+                                    ${trail.actualDistance ? `
+                                        <span class="favorite-stat" title="Fahrzeit">
+                                            <span>⏱️</span>
+                                            <span>${trail.drivingTime} Min.</span>
+                                        </span>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="favorite-actions">
+                            <button class="favorite-action-btn view" 
+                                    onclick="scrollToTrail(${trail.id}); highlightTrail(${trail.id})"
+                                    title="Zu Details scrollen">
+                                👁️
+                            </button>
+                            <button class="favorite-action-btn map" 
+                                    onclick="zoomToTrail(${trail.id})"
+                                    title="Auf Karte anzeigen">
+                                🗺️
+                            </button>
+                            ${trail.actualDistance ? `
+                                <button class="favorite-action-btn view" 
+                                        onclick="window.open('${getGoogleMapsLink(trail)}', '_blank')"
+                                        title="Route in Google Maps">
+                                    🚗
+                                </button>
+                            ` : ''}
+                            <button class="favorite-action-btn delete" 
+                                    onclick="removeFavorite(${trail.id}, event)"
+                                    title="Aus Favoriten entfernen">
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                list.className = `favorites-list ${favoritesViewMode}`;
+                document.getElementById('viewModeList').classList.toggle('active', favoritesViewMode === 'list');
+                document.getElementById('viewModeCompact').classList.toggle('active', favoritesViewMode === 'compact');
+                
+                if (userCoordinates && favoriteTrails.length > 0) {
+                    const avgDistance = Math.round(
+                        favoriteTrails.reduce((sum, t) => sum + (t.actualDistance || 0), 0) / favoriteTrails.length
+                    );
+                    const closestTrail = favoriteTrails[0];
+                    const totalKm = favoriteTrails.reduce((sum, t) => sum + t.distance, 0);
+                    
+                    quickStats.style.display = 'grid';
+                    quickStats.innerHTML = `
+                        <div class="quick-stat">
+                            <div class="quick-stat-value">${favoriteTrails.length}</div>
+                            <div class="quick-stat-label">Favoriten</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value">${Math.round(closestTrail.actualDistance)} km</div>
+                            <div class="quick-stat-label">Nächster Trail</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value">${avgDistance} km</div>
+                            <div class="quick-stat-label">Ø Entfernung</div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value">${totalKm} km</div>
+                            <div class="quick-stat-label">Gesamt Loipennetz</div>
+                        </div>
+                    `;
+                } else {
+                    quickStats.style.display = 'none';
+                }
+                
+                if (favoritesPanelCollapsed) {
+                    panel.classList.add('collapsed');
+                    document.getElementById('favoritesToggleIcon').classList.add('rotated');
+                }
+                
+            } else {
+                panel.style.display = 'none';
+            }
+        }
+        
+        function toggleFavoritesPanel() {
+            const panel = document.getElementById('favoritesPanel');
+            const icon = document.getElementById('favoritesToggleIcon');
+            
+            favoritesPanelCollapsed = !favoritesPanelCollapsed;
+            panel.classList.toggle('collapsed');
+            icon.classList.toggle('rotated');
+            
+            try {
+                localStorage.setItem('favoritesPanelCollapsed', favoritesPanelCollapsed);
+            } catch (e) {
+                console.warn('LocalStorage nicht verfügbar:', e);
+            }
+        }
+        
+        function setFavoritesViewMode(mode) {
+            favoritesViewMode = mode;
+            
+            try {
+                localStorage.setItem('favoritesViewMode', mode);
+            } catch (e) {
+                console.warn('LocalStorage nicht verfügbar:', e);
+            }
+            
+            updateFavoritesPanel();
+        }
+        
+        function removeFavorite(id, event) {
+            if (event) event.stopPropagation();
+            
+            const item = document.querySelector(`.favorite-item[data-trail-id="${id}"]`);
+            if (item) {
+                item.classList.add('removing');
+                setTimeout(() => {
+                    const index = favorites.indexOf(id);
+                    if (index > -1) {
+                        favorites.splice(index, 1);
+                    }
+                    
+                    try {
+                        localStorage.setItem('trailFavorites', JSON.stringify(favorites));
+                    } catch (e) {
+                        console.warn('LocalStorage nicht verfügbar:', e);
+                    }
+                    
+                    updateFavoritesPanel();
+                    showAllTrailsOnMap();
+                    applyFilters();
+                }, 300);
+            }
+        }
+        
+        function clearAllFavorites() {
+            if (!confirm(`Möchtest du wirklich alle ${favorites.length} Favoriten löschen?`)) {
+                return;
+            }
+            
+            favorites = [];
+            
+            try {
+                localStorage.setItem('trailFavorites', JSON.stringify(favorites));
+            } catch (e) {
+                console.warn('LocalStorage nicht verfügbar:', e);
+            }
+            
+            updateFavoritesPanel();
+            showAllTrailsOnMap();
+            applyFilters();
+        }
+        
         function renderTrails(trails) {
             const container = document.getElementById('trailsContainer');
+            
             if (trails.length === 0) {
-                const message = userCoordinates 
-                    ? '🔍 Keine Loipen in dieser Entfernung gefunden. Erhöhe den Distanz-Filter.'
-                    : '📍 Setze deinen Standort für Distanzfilter und Sortierung.';
+                const message = userCoordinates
+                    ? '🔍 Keine Loipen in dieser Entfernung. Erhöhe den Distanz-Filter oder ändere deinen Standort.'
+                    : '📍 Setze deinen Standort, um Trails nach Entfernung zu filtern und sortieren.';
                 container.innerHTML = `<div class="info-message"><span style="font-size: 2em;">ℹ️</span><div>${message}</div></div>`;
                 return;
             }
@@ -2377,7 +3075,7 @@
                         <div class="trail-title" onclick="window.open('${trail.officialUrl}', '_blank')">
                             <span>${trail.flag}</span>
                             <span>${trail.name}</span>
-                            ${trail.actualDistance ? `<span style="font-size: 0.7em; color: #4CAF50; margin-left: 10px;">📍 ${Math.round(trail.actualDistance)} km</span>` : ''}
+                            ${trail.actualDistance ? `<span style="font-size: 0.7em; color: #4CAF50; margin-left: 10px;">📍 ${Math.round(trail.actualDistance)} km entfernt</span>` : ''}
                         </div>
                         <div style="display: flex; gap: 10px;">
                             <button class="favorite-btn" onclick="toggleFavorite(${trail.id}, event)" title="Favorit">
@@ -2390,16 +3088,16 @@
                     ${trail.actualDistance ? `
                         <div class="route-info">
                             <div class="route-info-item">
-                                <span class="route-info-label">🚗 Entfernung</span>
+                                <span class="route-info-label">🚗 Entfernung ab deinem Standort</span>
                                 <span class="route-info-value">${Math.round(trail.actualDistance)} km</span>
                             </div>
                             <div class="route-info-item">
-                                <span class="route-info-label">⏱️ Fahrzeit</span>
+                                <span class="route-info-label">⏱️ Geschätzte Fahrzeit</span>
                                 <span class="route-info-value">ca. ${trail.drivingTime} Min.</span>
                             </div>
                             <a href="${getGoogleMapsLink(trail)}" target="_blank" class="route-button">
                                 <span>🗺️</span>
-                                <span>Route in Google Maps</span>
+                                <span>Route in Google Maps öffnen</span>
                             </a>
                         </div>
                     ` : ''}
@@ -2442,9 +3140,13 @@
                         <div class="trail-webcams">
                             <h4>📷 Live Webcams (${trail.webcams.length})</h4>
                             <div class="trail-webcam-grid">
-                                ${trail.webcams.map(webcam => `
+                                ${trail.webcams.map((webcam, idx) => `
                                     <div class="trail-webcam-item" onclick="window.open('${webcam.url}', '_blank')">
-                                        <img src="${webcam.url}?t=${Date.now()}" alt="${webcam.name}" onerror="handleWebcamError(this)" loading="lazy"/>
+                                        <img src="${webcam.url}?t=${Date.now()}" 
+                                             alt="${webcam.name}" 
+                                             onerror="handleWebcamError(this)" 
+                                             loading="lazy"
+                                             id="trail-webcam-${trail.id}-${idx}"/>
                                         <div class="trail-webcam-label">${webcam.name}</div>
                                     </div>
                                 `).join('')}
@@ -2494,9 +3196,10 @@
                 </div>
             `).join('');
         }
-
+        
         function renderSections(trail) {
             if (!trail.sections || trail.sections.length === 0) return '';
+            
             return `
                 <div class="sections-container">
                     <div class="sections-header" onclick="toggleSections(${trail.id})">
@@ -2512,7 +3215,9 @@
                                         <span>${section.name}</span>
                                     </div>
                                     <div class="section-badges">
-                                        <span class="section-badge badge-${section.status}">${section.status === 'open' ? '✅ Geöffnet' : '❌ Geschlossen'}</span>
+                                        <span class="section-badge badge-${section.status}">
+                                            ${section.status === 'open' ? '✅ Geöffnet' : '❌ Geschlossen'}
+                                        </span>
                                         <span class="section-badge badge-difficulty-${section.difficulty}">
                                             ${section.difficulty === 'easy' ? '🟢 Leicht' : section.difficulty === 'medium' ? '🟡 Mittel' : '🔴 Schwer'}
                                         </span>
@@ -2565,56 +3270,76 @@
                 </div>
             `;
         }
-
+        
         function getConditionText(condition) {
-            return { 'excellent': '⭐ Ausgezeichnet', 'good': '✅ Gut', 'fair': '⚠️ Befriedigend', 'poor': '❌ Schlecht' }[condition];
+            const texts = {
+                'excellent': '⭐ Ausgezeichnet',
+                'good': '✅ Gut',
+                'fair': '⚠️ Befriedigend',
+                'poor': '❌ Schlecht'
+            };
+            return texts[condition] || 'Unbekannt';
         }
-
-        // ========================================
-        // WEBCAM
-        // ========================================
+        
         function refreshWebcam(id) {
             const img = document.getElementById(id);
             if (!img) return;
+            
             const src = img.src.split('?')[0];
             img.style.opacity = '0.5';
+            
+            const timeoutId = setTimeout(() => {
+                img.style.opacity = '1';
+                handleWebcamError(img);
+            }, 5000);
+            
             img.src = src + '?t=' + new Date().getTime();
-            img.onload = () => img.style.opacity = '1';
+            
+            img.onload = () => {
+                clearTimeout(timeoutId);
+                img.style.opacity = '1';
+                if (webcamLoadAttempts[id]) webcamLoadAttempts[id] = 0;
+            };
+            
+            img.onerror = () => {
+                clearTimeout(timeoutId);
+                handleWebcamError(img);
+            };
         }
-
+        
         function handleWebcamError(img) {
-            img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect fill='%23e0e0e0' width='800' height='600'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='%23999' font-size='24'%3EOffline%3C/text%3E%3C/svg%3E";
+            const id = img.id;
+            webcamLoadAttempts[id] = (webcamLoadAttempts[id] || 0) + 1;
+            
+            if (webcamLoadAttempts[id] >= 3) {
+                img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect fill='%23e0e0e0' width='800' height='600'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='%23999' font-size='24'%3E📷 Offline%3C/text%3E%3C/svg%3E";
+                return;
+            }
+            
+            setTimeout(() => refreshWebcam(id), 5000);
         }
-
-        // ========================================
-        // UTILITIES
-        // ========================================
+        
         function updateLastUpdated() {
-            const location = userCoordinates ? ` | 📍 ${userCoordinates.display.split(',')[0]}` : ' | ⚠️ Kein Standort';
+            const location = userCoordinates ? ` | 📍 ${userCoordinates.display.split(',')[0]}` : ' | ⚠️ Kein Standort gesetzt';
             document.getElementById('lastUpdated').textContent =
                 `Letzte Aktualisierung: ${new Date().toLocaleString('de-DE')}${location} | v${CONFIG.version}`;
         }
-
+        
         function setupAutoRefresh() {
-            setInterval(() => ['webcam1', 'webcam2'].forEach(refreshWebcam), CONFIG.webcamRefreshInterval);
+            setInterval(() => {
+                ['webcam1', 'webcam2'].forEach(refreshWebcam);
+            }, CONFIG.webcamRefreshInterval);
+            
             setInterval(loadAllData, CONFIG.autoRefreshInterval);
         }
-
-        console.log(`✅ Loipen Finder v${CONFIG.version} vollständig geladen ❄️`);
+        
+        console.log(`✅ Loipen Finder v${CONFIG.version} mit Favoriten-Panel! ⭐`);
     </script>
 </body>
 </html>
 
-<input type="range" id="distance" min="0" max="500" value="50" step="10">
-
-<div class="favorites-list" id="favoritesList">
-    <div class="favorites-list-items">
-        <!-- Hier erscheinen die Favoriten -->
-    </div>
-</div>
-
 							<script>
-                            	document.getElementById('snowValue').textContent = `mind. ${e.target.value} cm`;
+                            	
 							</script>
                         </body>
                         </html>
