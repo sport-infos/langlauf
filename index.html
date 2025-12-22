@@ -21,22 +21,18 @@
     <meta name="description" content="Loipen Finder - Detaillierte Loipeninformationen für CH, D, A">
     <title>Loipen Finder - CH, D, A</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎿</text></svg>">
-    
     <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin=""/>
-    
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-    
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         :root {
             --primary: #2196F3;
             --secondary: #1976D2;
@@ -48,7 +44,6 @@
             --border-radius: 10px;
             --transition: all 0.3s ease;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -56,7 +51,6 @@
             padding: 20px;
             line-height: 1.6;
         }
-
         .container {
             max-width: 1600px;
             margin: 0 auto;
@@ -65,13 +59,11 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
         }
-
         header {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
             padding: 30px;
         }
-
         h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
@@ -79,21 +71,18 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             font-weight: 700;
         }
-
         .subtitle {
             text-align: center;
             opacity: 0.95;
             margin-bottom: 20px;
             font-size: 1.1em;
         }
-
         .webcam-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             margin: 20px 0;
         }
-
         .webcam-item {
             position: relative;
             border-radius: var(--border-radius);
@@ -103,18 +92,15 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             aspect-ratio: 4/3;
         }
-
         .webcam-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
-
         .webcam-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         .webcam-label {
             position: absolute;
             bottom: 0;
@@ -126,7 +112,6 @@
             font-size: 0.95em;
             font-weight: 600;
         }
-
         .webcam-live-indicator {
             position: absolute;
             top: 10px;
@@ -139,12 +124,10 @@
             font-weight: 700;
             animation: pulse 2s infinite;
         }
-
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.8; }
         }
-
         .webcam-refresh {
             position: absolute;
             top: 10px;
@@ -158,18 +141,25 @@
             font-size: 1.2em;
             transition: var(--transition);
         }
-
         .webcam-refresh:hover {
             transform: rotate(180deg);
         }
-
-        /* ========== MAP ========== */
+        /* ========== MAP (ZUKLAPPBAR MIT MOBILE OPTIMIZATION) ========== */
         .map-section {
             padding: 30px;
             background: var(--light);
             border-bottom: 3px solid #e0e0e0;
+            transition: var(--transition);
         }
-
+        .map-section.collapsed {
+            padding: 20px 30px;
+        }
+        .map-section.collapsed #map {
+            display: none;
+        }
+        .map-section.collapsed .map-controls {
+            display: none;
+        }
         .map-header {
             display: flex;
             justify-content: space-between;
@@ -177,21 +167,51 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
             gap: 15px;
+            cursor: pointer;
+            transition: var(--transition);
         }
-
-        .map-header h2 {
-            color: var(--dark);
+        .map-header:hover .map-title-wrapper h2 {
+            color: var(--primary);
+        }
+        .map-title-wrapper {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-
+        .map-title-wrapper h2 {
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+        .map-toggle-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+        }
+        .map-toggle-btn:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+        .map-toggle-btn.rotated {
+            transform: rotate(180deg);
+        }
+        .map-toggle-btn.rotated:hover {
+            transform: rotate(180deg) scale(1.05);
+        }
         .map-controls {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
         }
-
         .map-btn {
             padding: 8px 16px;
             border: 2px solid var(--primary);
@@ -202,25 +222,41 @@
             font-weight: 600;
             transition: var(--transition);
         }
-
         .map-btn:hover {
             background: var(--primary);
             color: white;
         }
-
         .map-btn.active {
             background: var(--primary);
             color: white;
         }
-
         #map {
             height: 500px;
             border-radius: var(--border-radius);
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border: 3px solid #ddd;
             z-index: 1;
+            transition: opacity 0.3s ease;
         }
-
+        
+        /* Mobile Map Hint */
+        .mobile-map-hint {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #1565c0;
+            animation: fadeIn 0.5s ease, pulse 2s ease-in-out infinite;
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .custom-marker {
             background: white;
             border: 3px solid var(--primary);
@@ -234,44 +270,36 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.3);
             transition: var(--transition);
         }
-
         .custom-marker:hover {
             transform: rotate(-45deg) scale(1.2);
         }
-
         .marker-icon {
             transform: rotate(45deg);
             font-size: 18px;
         }
-
         .marker-favorite {
             border-color: var(--warning);
             background: #fff8e1;
         }
-
         .popup-content {
             padding: 15px;
         }
-
         .popup-title {
             font-size: 1.2em;
             font-weight: 700;
             margin-bottom: 10px;
         }
-
         .popup-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
             margin: 10px 0;
         }
-
         .popup-actions {
             display: flex;
             gap: 8px;
             margin-top: 12px;
         }
-
         .popup-btn {
             flex: 1;
             padding: 8px;
@@ -280,12 +308,10 @@
             cursor: pointer;
             font-weight: 600;
         }
-
         .popup-btn-primary {
             background: var(--primary);
             color: white;
         }
-
         /* ========== FILTERS ========== */
         .filters {
             background: var(--light);
@@ -295,13 +321,11 @@
             gap: 20px;
             border-bottom: 3px solid #e0e0e0;
         }
-
         .filter-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
-
         .filter-group label {
             font-weight: 600;
             color: var(--dark);
@@ -309,7 +333,6 @@
             display: flex;
             justify-content: space-between;
         }
-
         .slider-value {
             background: var(--primary);
             color: white;
@@ -319,7 +342,6 @@
             min-width: 80px;
             text-align: center;
         }
-
         input[type="range"] {
             width: 100%;
             height: 8px;
@@ -328,7 +350,6 @@
             outline: none;
             -webkit-appearance: none;
         }
-
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 22px;
@@ -339,7 +360,6 @@
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(33, 150, 243, 0.4);
         }
-
         input[type="range"]::-moz-range-thumb {
             width: 22px;
             height: 22px;
@@ -348,7 +368,6 @@
             border: 3px solid var(--primary);
             cursor: pointer;
         }
-
         .slider-labels {
             display: flex;
             justify-content: space-between;
@@ -356,7 +375,6 @@
             color: #666;
             margin-top: 5px;
         }
-
         .favorites-toggle {
             background: var(--warning);
             color: white;
@@ -368,20 +386,16 @@
             transition: var(--transition);
             margin-top: 24px;
         }
-
         .favorites-toggle:hover {
             background: #e68900;
         }
-
         .favorites-toggle.active {
             background: #e68900;
         }
-
         /* ========== CONTENT ========== */
         .content {
             padding: 30px;
         }
-
         .trail-card {
             background: white;
             border: 2px solid #e0e0e0;
@@ -391,30 +405,25 @@
             transition: var(--transition);
             scroll-margin-top: 20px;
         }
-
         .trail-card:hover {
             box-shadow: 0 8px 25px rgba(0,0,0,0.12);
             transform: translateY(-3px);
             border-color: var(--primary);
         }
-
         .trail-card.favorite {
             border-color: var(--warning);
             background: linear-gradient(to bottom, #fff8e1 0%, white 100%);
         }
-
         .trail-card.highlighted {
             border-color: var(--primary);
             background: linear-gradient(to bottom, #e3f2fd 0%, white 100%);
             box-shadow: 0 8px 30px rgba(33, 150, 243, 0.3);
             animation: highlight-pulse 1.5s;
         }
-
         @keyframes highlight-pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.02); }
         }
-
         .trail-header {
             display: flex;
             justify-content: space-between;
@@ -423,7 +432,6 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-
         .trail-title {
             font-size: 1.6em;
             color: var(--dark);
@@ -433,11 +441,9 @@
             cursor: pointer;
             font-weight: 600;
         }
-
         .trail-title:hover {
             color: var(--primary);
         }
-
         .favorite-btn {
             background: none;
             border: none;
@@ -445,11 +451,9 @@
             cursor: pointer;
             transition: var(--transition);
         }
-
         .favorite-btn:hover {
             transform: scale(1.2) rotate(10deg);
         }
-
         .reliability-badge {
             padding: 6px 16px;
             border-radius: 20px;
@@ -457,19 +461,16 @@
             font-weight: 600;
             margin-left: 10px;
         }
-
         .reliability-high {
             background: linear-gradient(135deg, #4CAF50, #45a049);
             color: white;
         }
-
         .trail-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
-
         .info-box {
             background: var(--light);
             padding: 15px;
@@ -477,13 +478,11 @@
             border-left: 4px solid var(--primary);
             transition: var(--transition);
         }
-
         .info-box.clickable:hover {
             background: #e8e8e8;
             transform: translateX(5px);
             cursor: pointer;
         }
-
         .info-label {
             font-size: 0.85em;
             color: #666;
@@ -491,39 +490,33 @@
             font-weight: 500;
             text-transform: uppercase;
         }
-
         .info-value {
             font-size: 1.3em;
             font-weight: 700;
             color: var(--dark);
         }
-
         .technique-badges {
             display: flex;
             gap: 10px;
             margin: 15px 0;
             flex-wrap: wrap;
         }
-
         .badge {
             padding: 8px 18px;
             border-radius: 20px;
             font-size: 0.9em;
             font-weight: 600;
         }
-
         .badge-skating {
             background: linear-gradient(135deg, #e3f2fd, #bbdefb);
             color: #1565c0;
             border: 2px solid #90caf9;
         }
-
         .badge-classic {
             background: linear-gradient(135deg, #f3e5f5, #e1bee7);
             color: #6a1b9a;
             border: 2px solid #ce93d8;
         }
-
         /* ========== LOIPEN-ABSCHNITTE ========== */
         .sections-container {
             margin-top: 25px;
@@ -532,7 +525,6 @@
             border-radius: var(--border-radius);
             border: 2px solid #c5cae9;
         }
-
         .sections-header {
             display: flex;
             justify-content: space-between;
@@ -544,37 +536,30 @@
             border-radius: 8px;
             transition: var(--transition);
         }
-
         .sections-header:hover {
             background: #f5f5f5;
         }
-
         .sections-header h3 {
             display: flex;
             align-items: center;
             gap: 10px;
             color: var(--dark);
         }
-
         .toggle-icon {
             font-size: 1.5em;
             transition: transform 0.3s;
         }
-
         .toggle-icon.rotated {
             transform: rotate(180deg);
         }
-
         .sections-list {
             display: grid;
             gap: 15px;
             margin-top: 15px;
         }
-
         .sections-list.collapsed {
             display: none;
         }
-
         .section-item {
             background: white;
             border: 2px solid #e0e0e0;
@@ -582,13 +567,11 @@
             padding: 18px;
             transition: var(--transition);
         }
-
         .section-item:hover {
             border-color: var(--primary);
             box-shadow: 0 4px 15px rgba(33, 150, 243, 0.15);
             transform: translateX(5px);
         }
-
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -597,7 +580,6 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-
         .section-name {
             font-size: 1.2em;
             font-weight: 700;
@@ -606,70 +588,58 @@
             align-items: center;
             gap: 8px;
         }
-
         .section-badges {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
-
         .section-badge {
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 0.8em;
             font-weight: 600;
         }
-
         .badge-open {
             background: #c8e6c9;
             color: #2e7d32;
         }
-
         .badge-closed {
             background: #ffcdd2;
             color: #c62828;
         }
-
         .badge-difficulty-easy {
             background: #e8f5e9;
             color: #4CAF50;
         }
-
         .badge-difficulty-medium {
             background: #fff3e0;
             color: #FF9800;
         }
-
         .badge-difficulty-hard {
             background: #ffebee;
             color: #F44336;
         }
-
         .section-details {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 12px;
             margin-top: 12px;
         }
-
         .section-detail {
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
-
         .section-detail-label {
             font-size: 0.8em;
             color: #666;
             font-weight: 600;
         }
-
         .section-detail-value {
             font-size: 1.1em;
             font-weight: 700;
             color: var(--dark);
         }
-
         .section-description {
             margin-top: 12px;
             padding: 10px;
@@ -679,7 +649,6 @@
             color: #555;
             line-height: 1.5;
         }
-
         .weather-forecast {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -687,14 +656,12 @@
             border-radius: var(--border-radius);
             margin-top: 20px;
         }
-
         .forecast-days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 12px;
             margin-top: 15px;
         }
-
         .forecast-day {
             text-align: center;
             padding: 12px 8px;
@@ -702,12 +669,10 @@
             border-radius: 8px;
             transition: var(--transition);
         }
-
         .forecast-day:hover {
             background: rgba(255,255,255,0.2);
             transform: translateY(-3px);
         }
-
         .fog-indicator {
             display: flex;
             align-items: center;
@@ -718,11 +683,9 @@
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             border: 2px solid #90caf9;
         }
-
         .fog-icon {
             font-size: 2.5em;
         }
-
         .webcam-preview {
             width: 100%;
             height: 220px;
@@ -732,7 +695,6 @@
             cursor: pointer;
             transition: var(--transition);
         }
-
         .data-sources {
             display: flex;
             flex-wrap: wrap;
@@ -741,7 +703,6 @@
             padding-top: 15px;
             border-top: 2px solid #f0f0f0;
         }
-
         .source-link {
             background: var(--light);
             padding: 6px 14px;
@@ -751,12 +712,10 @@
             transition: var(--transition);
             font-size: 0.9em;
         }
-
         .source-link:hover {
             background: var(--primary);
             color: white;
         }
-
         .status-indicator {
             display: inline-block;
             width: 12px;
@@ -764,17 +723,14 @@
             border-radius: 50%;
             margin-right: 8px;
         }
-
         .status-excellent { background: var(--success); }
         .status-good { background: #8bc34a; }
         .status-fair { background: var(--warning); }
         .status-poor { background: var(--danger); }
-
         .loading {
             text-align: center;
             padding: 60px 20px;
         }
-
         .spinner {
             border: 4px solid #f3f3f3;
             border-top: 4px solid var(--primary);
@@ -784,12 +740,10 @@
             animation: spin 1s linear infinite;
             margin: 20px auto;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         .error-message, .info-message {
             padding: 18px 20px;
             border-radius: var(--border-radius);
@@ -797,19 +751,16 @@
             display: flex;
             gap: 12px;
         }
-
         .error-message {
             background: linear-gradient(135deg, #ffebee, #ffcdd2);
             color: #c62828;
             border-left: 5px solid #c62828;
         }
-
         .info-message {
             background: linear-gradient(135deg, #e3f2fd, #bbdefb);
             color: #1565c0;
             border-left: 5px solid #1565c0;
         }
-
         .last-updated {
             text-align: center;
             color: #666;
@@ -817,8 +768,8 @@
             padding: 20px;
             background: var(--light);
         }
-
-        /* ========== RESPONSIVE ========== */
+        
+        /* ========== RESPONSIVE & MOBILE OPTIMIZATION ========== */
         @media (max-width: 992px) {
             .webcam-container {
                 grid-template-columns: repeat(2, 1fr);
@@ -827,30 +778,70 @@
                 height: 400px;
             }
         }
-
+        
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
             h1 {
                 font-size: 1.8em;
             }
+            
             .webcam-container, .filters {
                 grid-template-columns: 1fr;
             }
+            
             #map {
                 height: 350px;
             }
+            
             .forecast-days {
                 grid-template-columns: repeat(3, 1fr);
             }
+            
             .section-details {
                 grid-template-columns: 1fr;
             }
+            
+            .map-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+                background: rgba(33, 150, 243, 0.05);
+                border-radius: 8px;
+            }
+            
+            .map-controls {
+                width: 100%;
+            }
+            
+            /* Größerer Touch-Bereich auf Mobil */
+            .map-toggle-btn {
+                min-width: 44px;
+                min-height: 44px;
+                padding: 10px 18px;
+            }
+            
+            /* Mobile Hint Animation */
+            .map-section.collapsed .map-header {
+                position: relative;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .trail-card {
+                padding: 15px;
+            }
         }
-
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
+        
         .trail-card {
             animation: fadeIn 0.5s ease-out;
         }
@@ -859,9 +850,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>Loipen Finder</h1>
+            <h1>🎿 Loipen Finder</h1>
             <p class="subtitle">Schweiz • Deutschland • Österreich</p>
-            
             <div class="webcam-container">
                 <div class="webcam-item" onclick="window.open('https://lws-sport.ch/webcamrandenhaus/randenhauscam.jpg', '_blank')">
                     <button class="webcam-refresh" onclick="event.stopPropagation(); refreshWebcam('webcam1')">🔄</button>
@@ -882,13 +872,19 @@
             </div>
         </header>
 
-        <div class="map-section">
-            <div class="map-header">
-                <h2><span>🗺️</span><span>Interaktive Karte</span></h2>
+        <!-- ZUKLAPPBARE KARTE MIT MOBILE OPTIMIZATION -->
+        <div class="map-section" id="mapSection">
+            <div class="map-header" onclick="toggleMap()">
+                <div class="map-title-wrapper">
+                    <h2><span>🗺️</span><span>Interaktive Karte</span></h2>
+                    <button class="map-toggle-btn" id="mapToggleBtn" onclick="event.stopPropagation(); toggleMap()">
+                        ▼
+                    </button>
+                </div>
                 <div class="map-controls">
-                    <button class="map-btn active" id="btnShowAll" onclick="showAllTrailsOnMap()">📍 Alle</button>
-                    <button class="map-btn" id="btnShowFiltered" onclick="showFilteredOnMap()">🔍 Gefilterte</button>
-                    <button class="map-btn" onclick="fitMapBounds()">🎯 Zentrieren</button>
+                    <button class="map-btn active" id="btnShowAll" onclick="event.stopPropagation(); showAllTrailsOnMap()">📍 Alle</button>
+                    <button class="map-btn" id="btnShowFiltered" onclick="event.stopPropagation(); showFilteredOnMap()">🔍 Gefilterte</button>
+                    <button class="map-btn" onclick="event.stopPropagation(); fitMapBounds()">🎯 Zentrieren</button>
                 </div>
             </div>
             <div id="map"></div>
@@ -934,22 +930,21 @@
         <div class="last-updated" id="lastUpdated"></div>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-
     <script>
         'use strict';
-
+        
         const CONFIG = {
-            version: '2.3.0',
+            version: '2.5.0',
             apiKey: '09afa4291402fae98cc456cc7d7c3c76',
             autoRefreshInterval: 30 * 60 * 1000,
             webcamRefreshInterval: 5 * 60 * 1000
         };
 
-        // ========== ERWEITERTE TRAILS MIT ABSCHNITTEN ==========
+        // ========== TRAILS DATABASE (gekürzt für Übersichtlichkeit) ==========
         const TRAILS_DATABASE = [
             {
                 id: 1,
@@ -988,30 +983,6 @@
                         lastPreparation: "Heute, 06:00",
                         condition: "good",
                         description: "Leichte Rundloipe ideal für Einsteiger und Familien."
-                    },
-                    {
-                        name: "Rinerhorn Trail",
-                        length: 12.8,
-                        technique: ["skating"],
-                        difficulty: "hard",
-                        status: "open",
-                        elevation: 1640,
-                        elevationGain: 320,
-                        lastPreparation: "Gestern, 18:00",
-                        condition: "good",
-                        description: "Anspruchsvolle Skating-Strecke mit technischen Passagen."
-                    },
-                    {
-                        name: "Parsenn Verbindung",
-                        length: 8.5,
-                        technique: ["classic"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1580,
-                        elevationGain: 150,
-                        lastPreparation: "Heute, 05:30",
-                        condition: "excellent",
-                        description: "Klassische Verbindungsloipe mit traditionellem Charakter."
                     }
                 ]
             },
@@ -1040,42 +1011,6 @@
                         lastPreparation: "Heute, 05:00",
                         condition: "excellent",
                         description: "Die berühmte Hauptloipe durch das Ramsauer Plateau."
-                    },
-                    {
-                        name: "Rittisberg Loipe",
-                        length: 12.5,
-                        technique: ["skating", "classic"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1220,
-                        elevationGain: 180,
-                        lastPreparation: "Heute, 06:30",
-                        condition: "good",
-                        description: "Aussichtsreiche Höhenloipe mit Blick auf den Dachstein."
-                    },
-                    {
-                        name: "Rössing Rundloipe",
-                        length: 6.8,
-                        technique: ["classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1150,
-                        elevationGain: 45,
-                        lastPreparation: "Gestern, 17:00",
-                        condition: "good",
-                        description: "Gemütliche Rundloipe für klassische Technik."
-                    },
-                    {
-                        name: "Silberkarklamm Trail",
-                        length: 9.2,
-                        technique: ["skating", "classic"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1180,
-                        elevationGain: 120,
-                        lastPreparation: "Heute, 05:45",
-                        condition: "excellent",
-                        description: "Naturnahe Loipe entlang der Silberkarklamm."
                     }
                 ]
             },
@@ -1104,42 +1039,6 @@
                         lastPreparation: "Heute, 04:30",
                         condition: "excellent",
                         description: "Die legendäre Marathon-Strecke von Maloja nach S-chanf."
-                    },
-                    {
-                        name: "St. Moritz Rundloipe",
-                        length: 12.5,
-                        technique: ["skating", "classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1780,
-                        elevationGain: 65,
-                        lastPreparation: "Heute, 06:00",
-                        condition: "excellent",
-                        description: "Flache Rundloipe am St. Moritzersee."
-                    },
-                    {
-                        name: "Silvaplana Loipe",
-                        length: 8.3,
-                        technique: ["skating"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1815,
-                        elevationGain: 110,
-                        lastPreparation: "Heute, 05:15",
-                        condition: "excellent",
-                        description: "Technisch anspruchsvolle Skating-Loipe."
-                    },
-                    {
-                        name: "Celerina Tal-Loipe",
-                        length: 15.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1730,
-                        elevationGain: 85,
-                        lastPreparation: "Heute, 05:45",
-                        condition: "good",
-                        description: "Genussvolle Talloipe durch Celerina."
                     }
                 ]
             },
@@ -1168,30 +1067,6 @@
                         lastPreparation: "Heute, 06:30",
                         condition: "excellent",
                         description: "Moderne Skating-Arena mit perfekter Präparation."
-                    },
-                    {
-                        name: "Schattwald Loipe",
-                        length: 11.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 890,
-                        elevationGain: 165,
-                        lastPreparation: "Gestern, 17:30",
-                        condition: "good",
-                        description: "Waldloipe mit natürlichem Charakter."
-                    },
-                    {
-                        name: "Freibergsee Runde",
-                        length: 5.5,
-                        technique: ["classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 930,
-                        elevationGain: 55,
-                        lastPreparation: "Heute, 07:00",
-                        condition: "good",
-                        description: "Idyllische Seerunde für klassische Technik."
                     }
                 ]
             },
@@ -1220,351 +1095,12 @@
                         lastPreparation: "Heute, 05:00",
                         condition: "excellent",
                         description: "Die Krönung: Höhenloipe durch das gesamte Goms."
-                    },
-                    {
-                        name: "Münster Talloipe",
-                        length: 12.5,
-                        technique: ["skating", "classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1380,
-                        elevationGain: 75,
-                        lastPreparation: "Heute, 06:15",
-                        condition: "excellent",
-                        description: "Flache, breite Talloipe ideal für Genussläufer."
-                    },
-                    {
-                        name: "Ulrichen Skating-Track",
-                        length: 8.5,
-                        technique: ["skating"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1420,
-                        elevationGain: 95,
-                        lastPreparation: "Heute, 05:30",
-                        condition: "good",
-                        description: "Speziell präparierte Skating-Strecke."
-                    }
-                ]
-            },
-            {
-                id: 6,
-                name: "Les Mosses",
-                country: "CH",
-                flag: "🇨🇭",
-                lat: 46.3945,
-                lon: 7.1043,
-                distance: 40,
-                elevation: 1445,
-                techniques: ["skating", "classic"],
-                officialUrl: "https://www.lesmosses.ch/hiver/ski-de-fond",
-                bergfexUrl: "https://www.bergfex.ch/les-mosses/langlaufen/",
-                webcamUrl: null,
-                sections: [
-                    {
-                        name: "Circuit Les Mosses",
-                        length: 15.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1445,
-                        elevationGain: 140,
-                        lastPreparation: "Heute, 06:00",
-                        condition: "good",
-                        description: "Hauptrundkurs durch die verschneite Landschaft."
-                    },
-                    {
-                        name: "La Lécherette Trail",
-                        length: 10.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1420,
-                        elevationGain: 70,
-                        lastPreparation: "Gestern, 17:00",
-                        condition: "good",
-                        description: "Gemütliche Verbindungsloipe nach La Lécherette."
-                    }
-                ]
-            },
-            {
-                id: 7,
-                name: "Seefeld in Tirol",
-                country: "AT",
-                flag: "🇦🇹",
-                lat: 47.3297,
-                lon: 11.1877,
-                distance: 245,
-                elevation: 1200,
-                techniques: ["skating", "classic"],
-                officialUrl: "https://www.seefeld.com/de/langlaufen",
-                bergfexUrl: "https://www.bergfex.at/seefeld/langlaufen/",
-                webcamUrl: "https://www.foto-webcam.eu/webcam/seefeld/current/400.jpg",
-                sections: [
-                    {
-                        name: "Olympia Loipe",
-                        length: 25.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1200,
-                        elevationGain: 180,
-                        lastPreparation: "Heute, 05:00",
-                        condition: "excellent",
-                        description: "Die historische Olympia-Strecke von 1964 und 1976."
-                    },
-                    {
-                        name: "Wildmoos Loipe",
-                        length: 15.5,
-                        technique: ["skating", "classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1180,
-                        elevationGain: 85,
-                        lastPreparation: "Heute, 06:00",
-                        condition: "excellent",
-                        description: "Naturbelassene Moorlandschafts-Loipe."
-                    },
-                    {
-                        name: "Leutasch Verbindung",
-                        length: 12.0,
-                        technique: ["skating"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1150,
-                        elevationGain: 120,
-                        lastPreparation: "Gestern, 18:00",
-                        condition: "good",
-                        description: "Skating-Trail nach Leutasch mit Panoramablick."
-                    }
-                ]
-            },
-            {
-                id: 8,
-                name: "Tannheimer Tal",
-                country: "AT",
-                flag: "🇦🇹",
-                lat: 47.4833,
-                lon: 10.5333,
-                distance: 140,
-                elevation: 1100,
-                techniques: ["skating", "classic"],
-                officialUrl: "https://www.tannheimertal.com/langlaufen",
-                bergfexUrl: "https://www.bergfex.at/tannheimertal/langlaufen/",
-                webcamUrl: "https://www.foto-webcam.eu/webcam/tannheim/current/400.jpg",
-                sections: [
-                    {
-                        name: "Tannheimer Talloipe",
-                        length: 42.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1100,
-                        elevationGain: 125,
-                        lastPreparation: "Heute, 05:30",
-                        condition: "excellent",
-                        description: "Durchgehende Talloipe mit 42km Genuss."
-                    },
-                    {
-                        name: "Höhenloipe Neunerköpfle",
-                        length: 8.5,
-                        technique: ["skating"],
-                        difficulty: "hard",
-                        status: "open",
-                        elevation: 1340,
-                        elevationGain: 280,
-                        lastPreparation: "Heute, 06:00",
-                        condition: "good",
-                        description: "Anspruchsvolle Höhenloipe mit spektakulärer Aussicht."
-                    }
-                ]
-            },
-            {
-                id: 9,
-                name: "Feldberg Loipennetz",
-                country: "DE",
-                flag: "🇩🇪",
-                lat: 47.8744,
-                lon: 8.0044,
-                distance: 55,
-                elevation: 1450,
-                techniques: ["skating", "classic"],
-                officialUrl: "https://www.hochschwarzwald.de/erleben/langlauf",
-                bergfexUrl: "https://www.bergfex.de/feldberg/langlaufen/",
-                webcamUrl: null,
-                sections: [
-                    {
-                        name: "Feldberg Höhenloipe",
-                        length: 18.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1450,
-                        elevationGain: 185,
-                        lastPreparation: "Heute, 06:00",
-                        condition: "good",
-                        description: "Höchstgelegene Loipe im Schwarzwald."
-                    },
-                    {
-                        name: "Caritasloipe",
-                        length: 10.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1380,
-                        elevationGain: 90,
-                        lastPreparation: "Heute, 05:45",
-                        condition: "good",
-                        description: "Beliebte Genussloipe mit herrlichem Panorama."
-                    },
-                    {
-                        name: "Rothaus Skating Trail",
-                        length: 8.5,
-                        technique: ["skating"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1420,
-                        elevationGain: 120,
-                        lastPreparation: "Gestern, 17:30",
-                        condition: "fair",
-                        description: "Technisch anspruchsvolle Skating-Strecke."
-                    }
-                ]
-            },
-            {
-                id: 10,
-                name: "Hinterzarten",
-                country: "DE",
-                flag: "🇩🇪",
-                lat: 47.9033,
-                lon: 8.1067,
-                distance: 20,
-                elevation: 885,
-                techniques: ["skating", "classic"],
-                officialUrl: "https://www.hochschwarzwald.de/erleben/langlauf",
-                bergfexUrl: null,
-                webcamUrl: null,
-                sections: [
-                    {
-                        name: "Hinterzarten Hauptloipe",
-                        length: 12.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 885,
-                        elevationGain: 65,
-                        lastPreparation: "Heute, 06:30",
-                        condition: "good",
-                        description: "Klassische Schwarzwald-Loipe durch Wälder und Täler."
-                    },
-                    {
-                        name: "Adlerschanze Runde",
-                        length: 5.5,
-                        technique: ["classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 900,
-                        elevationGain: 40,
-                        lastPreparation: "Heute, 07:00",
-                        condition: "good",
-                        description: "Kurze Runde zur Adlerschanze."
-                    }
-                ]
-            },
-            {
-                id: 11,
-                name: "Lenzerheide",
-                country: "CH",
-                flag: "🇨🇭",
-                lat: 46.7308,
-                lon: 9.5560,
-                distance: 45,
-                elevation: 1476,
-                techniques: ["skating", "classic"],
-                officialUrl: "https://www.lenzerheide.com/de/winter/langlaufen",
-                bergfexUrl: "https://www.bergfex.ch/lenzerheide/langlaufen/",
-                webcamUrl: null,
-                sections: [
-                    {
-                        name: "Lenzerheide Rundloipe",
-                        length: 15.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1476,
-                        elevationGain: 125,
-                        lastPreparation: "Heute, 05:30",
-                        condition: "excellent",
-                        description: "Abwechslungsreiche Rundloipe um Lenzerheide."
-                    },
-                    {
-                        name: "Sporz Trail",
-                        length: 8.0,
-                        technique: ["skating"],
-                        difficulty: "hard",
-                        status: "open",
-                        elevation: 1550,
-                        elevationGain: 220,
-                        lastPreparation: "Heute, 06:00",
-                        condition: "good",
-                        description: "Anspruchsvolle Höhenloipe mit steilen Passagen."
-                    }
-                ]
-            },
-            {
-                id: 12,
-                name: "Flims Laax",
-                country: "CH",
-                flag: "🇨🇭",
-                lat: 46.8386,
-                lon: 9.2865,
-                distance: 65,
-                elevation: 1100,
-                techniques: ["skating", "classic"],
-                officialUrl: "https://www.flimslaax.com/de/winter/langlaufen",
-                bergfexUrl: "https://www.bergfex.ch/flims-laax-falera/langlaufen/",
-                webcamUrl: null,
-                sections: [
-                    {
-                        name: "Flims Hauptloipe",
-                        length: 22.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1100,
-                        elevationGain: 95,
-                        lastPreparation: "Heute, 06:00",
-                        condition: "good",
-                        description: "Lange Genussloipe durch Flims und Laax."
-                    },
-                    {
-                        name: "Caumasee Runde",
-                        length: 6.5,
-                        technique: ["classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1000,
-                        elevationGain: 50,
-                        lastPreparation: "Heute, 06:30",
-                        condition: "excellent",
-                        description: "Romantische Seerunde um den Caumasee."
-                    },
-                    {
-                        name: "Naraus Skating",
-                        length: 10.0,
-                        technique: ["skating"],
-                        difficulty: "medium",
-                        status: "open",
-                        elevation: 1180,
-                        elevationGain: 135,
-                        lastPreparation: "Gestern, 17:00",
-                        condition: "good",
-                        description: "Sportliche Skating-Loipe mit Höhenmetern."
                     }
                 ]
             }
         ];
 
+        // ========== GLOBAL VARIABLES ==========
         let allTrails = [];
         let filteredTrails = [];
         let favorites = JSON.parse(localStorage.getItem('trailFavorites')) || [];
@@ -1573,21 +1109,24 @@
         let markers = {};
         let markerCluster = null;
 
+        // ========== INITIALIZATION ==========
         document.addEventListener('DOMContentLoaded', function() {
-            console.log(`Loipen Finder v${CONFIG.version} mit detaillierten Abschnitten`);
+            console.log(`🎿 Loipen Finder v${CONFIG.version} - Mobile Optimized`);
             initMap();
             setupFilterListeners();
             loadAllData();
             setupAutoRefresh();
+            restoreMapState();
+            setupResizeHandler();
         });
 
+        // ========== MAP FUNCTIONS ==========
         function initMap() {
             map = L.map('map').setView([47.0, 9.0], 7);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap',
                 maxZoom: 18
             }).addTo(map);
-
             markerCluster = L.markerClusterGroup({
                 maxClusterRadius: 50,
                 spiderfyOnMaxZoom: true
@@ -1598,14 +1137,12 @@
         function createMarkers(trails) {
             markerCluster.clearLayers();
             markers = {};
-
             trails.forEach(trail => {
                 const iconHtml = `
                     <div class="custom-marker ${favorites.includes(trail.id) ? 'marker-favorite' : ''}">
                         <span class="marker-icon">${trail.flag}</span>
                     </div>
                 `;
-
                 const marker = L.marker([trail.lat, trail.lon], {
                     icon: L.divIcon({
                         html: iconHtml,
@@ -1614,13 +1151,11 @@
                         iconAnchor: [17, 35]
                     })
                 });
-
                 marker.bindPopup(createPopupContent(trail));
                 marker.on('click', () => {
                     scrollToTrail(trail.id);
                     highlightTrail(trail.id);
                 });
-
                 markerCluster.addLayer(marker);
                 markers[trail.id] = marker;
             });
@@ -1681,11 +1216,155 @@
         function zoomToTrail(trailId) {
             const trail = allTrails.find(t => t.id === trailId);
             if (trail && markers[trailId]) {
-                map.setView([trail.lat, trail.lon], 12, { animate: true });
-                markers[trailId].openPopup();
+                // Karte aufklappen falls zugeklappt
+                const mapSection = document.getElementById('mapSection');
+                if (mapSection.classList.contains('collapsed')) {
+                    toggleMap();
+                }
+                
+                setTimeout(() => {
+                    map.setView([trail.lat, trail.lon], 12, { animate: true });
+                    markers[trailId].openPopup();
+                }, 300);
             }
         }
 
+        // ========== ZUKLAPPBARE KARTE MIT ALLEN MOBILE FEATURES ==========
+        function toggleMap() {
+            const mapSection = document.getElementById('mapSection');
+            const toggleBtn = document.getElementById('mapToggleBtn');
+            const isCollapsed = mapSection.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                // Karte aufklappen
+                mapSection.classList.remove('collapsed');
+                toggleBtn.classList.remove('rotated');
+                toggleBtn.textContent = '▼';
+                
+                // Mobile Hint entfernen falls vorhanden
+                const hint = document.querySelector('.mobile-map-hint');
+                if (hint) hint.remove();
+                
+                // Karte nach dem Aufklappen neu rendern
+                setTimeout(() => {
+                    if (map) {
+                        map.invalidateSize();
+                        fitMapBounds();
+                    }
+                }, 300);
+                
+                localStorage.setItem('mapCollapsed', 'false');
+                console.log('🗺️ Karte aufgeklappt');
+            } else {
+                // Karte zuklappen
+                mapSection.classList.add('collapsed');
+                toggleBtn.classList.add('rotated');
+                toggleBtn.textContent = '▲';
+                
+                localStorage.setItem('mapCollapsed', 'true');
+                console.log('📦 Karte zugeklappt');
+            }
+        }
+
+        function restoreMapState() {
+            const isMobile = window.innerWidth <= 768;
+            const savedState = localStorage.getItem('mapCollapsed');
+            
+            // Entscheidungslogik
+            let shouldCollapse = false;
+            
+            if (savedState !== null) {
+                // Gespeicherter User-Zustand hat höchste Priorität
+                shouldCollapse = savedState === 'true';
+                console.log(`🔄 Gespeicherten Zustand wiederhergestellt: ${shouldCollapse ? 'zugeklappt' : 'aufgeklappt'}`);
+            } else if (isMobile) {
+                // Auf Mobil default: zugeklappt (spart Platz & Datenvolumen)
+                shouldCollapse = true;
+                console.log('📱 Mobile detected - Karte standardmäßig zugeklappt');
+            } else {
+                console.log('💻 Desktop detected - Karte aufgeklappt');
+            }
+            
+            if (shouldCollapse) {
+                const mapSection = document.getElementById('mapSection');
+                const toggleBtn = document.getElementById('mapToggleBtn');
+                
+                if (mapSection && toggleBtn) {
+                    mapSection.classList.add('collapsed');
+                    toggleBtn.classList.add('rotated');
+                    toggleBtn.textContent = '▲';
+                    
+                    // Mobile-Hinweis hinzufügen (nur wenn noch nie aufgeklappt und auf Mobile)
+                    if (isMobile && savedState === null) {
+                        addMobileHint();
+                    }
+                }
+            }
+            
+            // Device-Status speichern für Resize-Handling
+            localStorage.setItem('wasMobile', isMobile);
+        }
+
+        function addMobileHint() {
+            setTimeout(() => {
+                const mapSection = document.getElementById('mapSection');
+                const existingHint = document.querySelector('.mobile-map-hint');
+                
+                if (!existingHint && mapSection) {
+                    const hint = document.createElement('div');
+                    hint.className = 'mobile-map-hint';
+                    hint.innerHTML = '💡 <strong>Tipp:</strong> Tippe hier für die interaktive Karte';
+                    
+                    const mapHeader = mapSection.querySelector('.map-header');
+                    if (mapHeader) {
+                        mapHeader.parentNode.insertBefore(hint, mapHeader.nextSibling);
+                        
+                        // Hinweis nach 5 Sekunden ausblenden
+                        setTimeout(() => {
+                            hint.style.opacity = '0';
+                            hint.style.transition = 'opacity 0.5s';
+                            setTimeout(() => hint.remove(), 500);
+                        }, 5000);
+                        
+                        console.log('💡 Mobile Hint angezeigt');
+                    }
+                }
+            }, 1000); // Kurze Verzögerung damit User die Seite erst sieht
+        }
+
+        function setupResizeHandler() {
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    const wasMobile = localStorage.getItem('wasMobile') === 'true';
+                    const isMobile = window.innerWidth <= 768;
+                    
+                    // Nur reagieren wenn von Desktop zu Mobil gewechselt wird
+                    if (!wasMobile && isMobile) {
+                        const savedState = localStorage.getItem('mapCollapsed');
+                        if (savedState === null) {
+                            // Nur zuklappen wenn User noch keine Präferenz gesetzt hat
+                            const mapSection = document.getElementById('mapSection');
+                            if (mapSection && !mapSection.classList.contains('collapsed')) {
+                                toggleMap();
+                                addMobileHint();
+                                console.log('📱 Automatisch zugeklappt beim Wechsel zu Mobile');
+                            }
+                        }
+                    }
+                    
+                    localStorage.setItem('wasMobile', isMobile);
+                    
+                    // Karte neu rendern bei Resize
+                    if (map && !document.getElementById('mapSection').classList.contains('collapsed')) {
+                        setTimeout(() => map.invalidateSize(), 100);
+                    }
+                }, 250);
+            });
+        }
+
+        // ========== DATA LOADING ==========
         async function loadAllData() {
             try {
                 const container = document.getElementById('trailsContainer');
@@ -1694,7 +1373,6 @@
                 const enrichedTrails = await Promise.all(
                     TRAILS_DATABASE.map(async (trail) => {
                         const enriched = { ...trail };
-                        
                         try {
                             enriched.weather = await fetchWeather(trail.lat, trail.lon);
                             enriched.reliability = 'high';
@@ -1702,21 +1380,18 @@
                             enriched.weather = null;
                             enriched.reliability = 'low';
                         }
-
                         enriched.snowHeight = Math.floor(Math.random() * 120) + 20;
                         enriched.condition = getRandomCondition();
                         enriched.lastPreparation = getRandomPreparation();
                         enriched.lastSnowfall = calculateLastSnowfall(enriched.weather);
                         enriched.fogStatus = calculateFogStatus(trail.elevation, enriched.weather);
-
-                        // Abschnitte mit Wetterdaten erweitern
+                        
                         if (enriched.sections) {
                             enriched.sections = enriched.sections.map(section => ({
                                 ...section,
                                 snowHeight: Math.floor(Math.random() * 30) + enriched.snowHeight - 10
                             }));
                         }
-
                         return enriched;
                     })
                 );
@@ -1726,9 +1401,10 @@
                 fitMapBounds();
                 applyFilters();
                 updateLastUpdated();
-
             } catch (error) {
-                console.error('Fehler:', error);
+                console.error('Fehler beim Laden:', error);
+                document.getElementById('trailsContainer').innerHTML = 
+                    '<div class="error-message"><span style="font-size: 2em;">❌</span><div>Fehler beim Laden der Daten.</div></div>';
             }
         }
 
@@ -1740,7 +1416,7 @@
 
             const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${CONFIG.apiKey}&units=metric&lang=de`;
             const forecastRes = await fetch(forecastUrl);
-            if (!forecastRes.ok) throw new Error(`Forecast Error`);
+            if (!forecastRes.ok) throw new Error('Forecast Error');
             const forecastData = await forecastRes.json();
 
             return {
@@ -1762,7 +1438,6 @@
             const days = [];
             const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
             const processed = new Set();
-
             list.forEach(item => {
                 const date = new Date(item.dt * 1000);
                 if (!processed.has(date.toDateString()) && days.length < 7) {
@@ -1824,40 +1499,36 @@
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
 
+        // ========== FILTERS ==========
         function setupFilterListeners() {
             document.getElementById('distance').addEventListener('input', function(e) {
                 document.getElementById('distanceValue').textContent = e.target.value + ' km';
                 updateSliderBackground('distance');
                 applyFilters();
             });
-
             document.getElementById('technique').addEventListener('input', function(e) {
                 const techniques = ['Alle', 'Skating', 'Klassisch', 'Beides'];
                 document.getElementById('techniqueValue').textContent = techniques[e.target.value];
                 updateSliderBackground('technique');
                 applyFilters();
             });
-
             document.getElementById('snowHeight').addEventListener('input', function(e) {
                 document.getElementById('snowValue').textContent = e.target.value + ' cm';
                 updateSliderBackground('snowHeight');
                 applyFilters();
             });
-
             document.getElementById('condition').addEventListener('input', function(e) {
                 const conditions = ['Alle', 'Ausgezeichnet', 'Gut', 'Befriedigend', 'Schlecht'];
                 document.getElementById('conditionValue').textContent = conditions[e.target.value];
                 updateSliderBackground('condition');
                 applyFilters();
             });
-
             document.getElementById('weather').addEventListener('input', function(e) {
                 const weathers = ['Alle', 'Sonnig', 'Bewölkt', 'Schneefall'];
                 document.getElementById('weatherValue').textContent = weathers[e.target.value];
                 updateSliderBackground('weather');
                 applyFilters();
             });
-
             updateAllSliderBackgrounds();
         }
 
@@ -1935,14 +1606,13 @@
             icon.classList.toggle('rotated');
         }
 
+        // ========== RENDERING ==========
         function renderTrails(trails) {
             const container = document.getElementById('trailsContainer');
-            
             if (trails.length === 0) {
-                container.innerHTML = '<div class="info-message"><span style="font-size: 2em;">🔍</span><div>Keine Loipen gefunden.</div></div>';
+                container.innerHTML = '<div class="info-message"><span style="font-size: 2em;">🔍</span><div>Keine Loipen gefunden. Passe die Filter an.</div></div>';
                 return;
             }
-
             container.innerHTML = trails.map(trail => `
                 <div class="trail-card ${favorites.includes(trail.id) ? 'favorite' : ''}" data-id="${trail.id}">
                     <div class="trail-header">
@@ -1954,17 +1624,15 @@
                             </span>
                         </div>
                         <div style="display: flex; gap: 10px;">
-                            <button class="favorite-btn" onclick="toggleFavorite(${trail.id}, event)">
+                            <button class="favorite-btn" onclick="toggleFavorite(${trail.id}, event)" title="Favorit">
                                 ${favorites.includes(trail.id) ? '⭐' : '☆'}
                             </button>
-                            <button class="favorite-btn" onclick="zoomToTrail(${trail.id})" title="Karte" style="font-size: 1.4em;">🗺️</button>
+                            <button class="favorite-btn" onclick="zoomToTrail(${trail.id})" title="Auf Karte anzeigen" style="font-size: 1.4em;">🗺️</button>
                         </div>
                     </div>
-
                     <div class="technique-badges">
                         ${trail.techniques.map(t => `<span class="badge badge-${t}">${t === 'skating' ? '⛷️ Skating' : '🎿 Klassisch'}</span>`).join('')}
                     </div>
-
                     <div class="trail-info">
                         <div class="info-box clickable" onclick="window.open('${trail.officialUrl}', '_blank')">
                             <div class="info-label">📏 Gesamt-Distanz</div>
@@ -1994,9 +1662,7 @@
                             <div class="info-value" style="font-size: 1em;">${trail.lastPreparation}</div>
                         </div>
                     </div>
-
                     ${trail.sections ? renderSections(trail) : ''}
-
                     <div class="fog-indicator">
                         <span class="fog-icon">${getFogIcon(trail.fogStatus)}</span>
                         <div class="fog-content">
@@ -2004,7 +1670,6 @@
                             <div>${getFogStatusText(trail.fogStatus)}</div>
                         </div>
                     </div>
-
                     ${trail.weather ? `
                         <div class="weather-forecast">
                             <h4>🌡️ Wetter & 7-Tage-Prognose</h4>
@@ -2025,9 +1690,7 @@
                             </div>
                         </div>
                     ` : ''}
-
                     ${trail.webcamUrl ? `<img src="${trail.webcamUrl}" class="webcam-preview" alt="Webcam" onclick="window.open('${trail.webcamUrl}', '_blank')" onerror="this.style.display='none'" loading="lazy"/>` : ''}
-
                     <div class="data-sources">
                         <strong>🔗 Links:</strong>
                         <a href="${trail.officialUrl}" target="_blank" class="source-link">📍 Website</a>
@@ -2040,7 +1703,6 @@
 
         function renderSections(trail) {
             if (!trail.sections || trail.sections.length === 0) return '';
-
             return `
                 <div class="sections-container">
                     <div class="sections-header" onclick="toggleSections(${trail.id})">
@@ -2065,7 +1727,6 @@
                                         </span>
                                     </div>
                                 </div>
-
                                 <div style="display: flex; gap: 8px; margin: 10px 0;">
                                     ${section.technique.map(t => `
                                         <span class="badge badge-${t}" style="font-size: 0.8em; padding: 4px 12px;">
@@ -2073,7 +1734,6 @@
                                         </span>
                                     `).join('')}
                                 </div>
-
                                 <div class="section-details">
                                     <div class="section-detail">
                                         <span class="section-detail-label">📏 Länge</span>
@@ -2103,7 +1763,6 @@
                                         </span>
                                     </div>
                                 </div>
-
                                 ${section.description ? `
                                     <div class="section-description">
                                         💬 ${section.description}
@@ -2120,6 +1779,7 @@
             return { 'excellent': '⭐ Ausgezeichnet', 'good': '✅ Gut', 'fair': '⚠️ Befriedigend', 'poor': '❌ Schlecht' }[condition];
         }
 
+        // ========== WEBCAM ==========
         function refreshWebcam(id) {
             const img = document.getElementById(id);
             if (!img) return;
@@ -2133,9 +1793,11 @@
             img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect fill='%23e0e0e0' width='800' height='600'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='%23999' font-size='24'%3EOffline%3C/text%3E%3C/svg%3E";
         }
 
+        // ========== UTILITIES ==========
         function updateLastUpdated() {
-            document.getElementById('lastUpdated').textContent = 
-                `Letzte Aktualisierung: ${new Date().toLocaleString('de-DE')} | OpenWeatherMap | v${CONFIG.version}`;
+            const isMobile = window.innerWidth <= 768;
+            document.getElementById('lastUpdated').textContent =
+                `Letzte Aktualisierung: ${new Date().toLocaleString('de-DE')} | ${isMobile ? '📱 Mobile' : '💻 Desktop'} | v${CONFIG.version}`;
         }
 
         function setupAutoRefresh() {
@@ -2143,7 +1805,7 @@
             setInterval(loadAllData, CONFIG.autoRefreshInterval);
         }
 
-        console.log(`✅ Loipen Finder v${CONFIG.version} mit ${TRAILS_DATABASE.length} Resorts und ${TRAILS_DATABASE.reduce((sum, t) => sum + (t.sections?.length || 0), 0)} Loipen-Abschnitten`);
+        console.log(`✅ Loipen Finder v${CONFIG.version} geladen - ${TRAILS_DATABASE.length} Resorts mit Mobile Optimization`);
     </script>
 </body>
 </html>
