@@ -89,22 +89,56 @@
             overflow: hidden;
         }
         
-        /* Schneeflocken Animation im Header */
-        header::before {
-            content: '❄️ ❄️ ❄️ ❄️ ❄️ ❄️ ❄️ ❄️';
+        /* ========== ANIMIERTE SCHNEEFLOCKEN ========== */
+        .snowflake {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+            top: -10px;
+            color: white;
             font-size: 20px;
-            opacity: 0.3;
-            animation: snowfall 10s linear infinite;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall linear infinite;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
         }
         
-        @keyframes snowfall {
-            0% { transform: translateY(-20px); }
-            100% { transform: translateY(100px); }
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
         }
+        
+        /* Verschiedene Schneeflocken mit unterschiedlichen Eigenschaften */
+        .snowflake:nth-child(1) { left: 5%; animation-duration: 8s; animation-delay: 0s; font-size: 18px; }
+        .snowflake:nth-child(2) { left: 15%; animation-duration: 12s; animation-delay: 2s; font-size: 24px; }
+        .snowflake:nth-child(3) { left: 25%; animation-duration: 10s; animation-delay: 1s; font-size: 16px; }
+        .snowflake:nth-child(4) { left: 35%; animation-duration: 14s; animation-delay: 3s; font-size: 22px; }
+        .snowflake:nth-child(5) { left: 45%; animation-duration: 9s; animation-delay: 0.5s; font-size: 20px; }
+        .snowflake:nth-child(6) { left: 55%; animation-duration: 11s; animation-delay: 2.5s; font-size: 18px; }
+        .snowflake:nth-child(7) { left: 65%; animation-duration: 13s; animation-delay: 1.5s; font-size: 26px; }
+        .snowflake:nth-child(8) { left: 75%; animation-duration: 10s; animation-delay: 3.5s; font-size: 16px; }
+        .snowflake:nth-child(9) { left: 85%; animation-duration: 12s; animation-delay: 0.8s; font-size: 22px; }
+        .snowflake:nth-child(10) { left: 95%; animation-duration: 9s; animation-delay: 2.2s; font-size: 20px; }
+        .snowflake:nth-child(11) { left: 10%; animation-duration: 15s; animation-delay: 4s; font-size: 24px; }
+        .snowflake:nth-child(12) { left: 20%; animation-duration: 8s; animation-delay: 1.2s; font-size: 18px; }
+        .snowflake:nth-child(13) { left: 30%; animation-duration: 11s; animation-delay: 3.8s; font-size: 20px; }
+        .snowflake:nth-child(14) { left: 40%; animation-duration: 13s; animation-delay: 0.3s; font-size: 16px; }
+        .snowflake:nth-child(15) { left: 50%; animation-duration: 10s; animation-delay: 2.8s; font-size: 22px; }
+        .snowflake:nth-child(16) { left: 60%; animation-duration: 12s; animation-delay: 1.8s; font-size: 24px; }
+        .snowflake:nth-child(17) { left: 70%; animation-duration: 9s; animation-delay: 4.2s; font-size: 18px; }
+        .snowflake:nth-child(18) { left: 80%; animation-duration: 14s; animation-delay: 0.6s; font-size: 20px; }
+        .snowflake:nth-child(19) { left: 90%; animation-duration: 11s; animation-delay: 3.2s; font-size: 26px; }
+        .snowflake:nth-child(20) { left: 3%; animation-duration: 10s; animation-delay: 1.5s; font-size: 16px; }
         
         .header-content {
             position: relative;
@@ -157,7 +191,7 @@
             font-size: 1.1em;
         }
         
-        /* Standort-Eingabe im Header */
+        /* Standort-Eingabe */
         .location-input-container {
             background: rgba(255, 255, 255, 0.15);
             padding: 20px;
@@ -312,7 +346,7 @@
             transform: rotate(180deg);
         }
         
-        /* Route Info Box */
+        /* Route Info */
         .route-info {
             background: linear-gradient(135deg, #4CAF50, #45a049);
             color: white;
@@ -365,7 +399,7 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
         
-        /* ========== MAP (ZUKLAPPBAR MIT MOBILE OPTIMIZATION) ========== */
+        /* MAP */
         .map-section {
             padding: 30px;
             background: var(--light);
@@ -457,10 +491,8 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border: 3px solid #ddd;
             z-index: 1;
-            transition: opacity 0.3s ease;
         }
         
-        /* Mobile Map Hint */
         .mobile-map-hint {
             background: linear-gradient(135deg, #e3f2fd, #bbdefb);
             padding: 12px;
@@ -469,7 +501,7 @@
             text-align: center;
             font-size: 0.9em;
             color: #1565c0;
-            animation: fadeIn 0.5s ease, pulse 2s ease-in-out infinite;
+            animation: fadeIn 0.5s ease;
             box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
         }
         
@@ -533,7 +565,8 @@
             background: var(--primary);
             color: white;
         }
-        /* ========== FILTERS ========== */
+        
+        /* FILTERS */
         .filters {
             background: var(--light);
             padding: 25px;
@@ -605,7 +638,6 @@
             cursor: pointer;
             font-weight: 600;
             transition: var(--transition);
-            margin-top: 24px;
         }
         .favorites-toggle:hover {
             background: #e68900;
@@ -613,7 +645,77 @@
         .favorites-toggle.active {
             background: #e68900;
         }
-        /* ========== CONTENT ========== */
+        
+        /* ========== FAVORITEN-LISTE ========== */
+        .favorites-list {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 152, 0, 0.1);
+            border-radius: 8px;
+            border: 2px solid rgba(255, 152, 0, 0.3);
+            display: none;
+        }
+        
+        .favorites-list.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .favorites-list-header {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .favorites-list-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .favorite-list-item {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        
+        .favorite-list-item:hover {
+            border-color: var(--warning);
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+        }
+        
+        .favorite-list-item-name {
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .favorite-list-item-distance {
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .favorites-empty {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        /* CONTENT */
         .content {
             padding: 30px;
         }
@@ -739,7 +841,6 @@
             border: 2px solid #ce93d8;
         }
         
-        /* Webcam Gallery in Trail Card */
         .trail-webcams {
             margin-top: 20px;
         }
@@ -791,7 +892,6 @@
             font-weight: 600;
         }
         
-        /* ========== LOIPEN-ABSCHNITTE ========== */
         .sections-container {
             margin-top: 25px;
             padding: 20px;
@@ -960,15 +1060,6 @@
         .fog-icon {
             font-size: 2.5em;
         }
-        .webcam-preview {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            border-radius: var(--border-radius);
-            margin-top: 20px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
         .data-sources {
             display: flex;
             flex-wrap: wrap;
@@ -1043,7 +1134,7 @@
             background: var(--light);
         }
         
-        /* ========== RESPONSIVE & MOBILE OPTIMIZATION ========== */
+        /* RESPONSIVE */
         @media (max-width: 992px) {
             .webcam-container {
                 grid-template-columns: repeat(2, 1fr);
@@ -1113,10 +1204,6 @@
                 padding: 10px 18px;
             }
             
-            .map-section.collapsed .map-header {
-                position: relative;
-            }
-            
             .content {
                 padding: 15px;
             }
@@ -1134,20 +1221,35 @@
                 justify-content: center;
             }
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .trail-card {
-            animation: fadeIn 0.5s ease-out;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
+            <!-- ❄️ SCHNEEFLOCKEN -->
+            <div class="snowflakes" aria-hidden="true">
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+                <div class="snowflake">❄</div>
+            </div>
+            
             <div class="header-content">
                 <div class="header-top">
                     <h1>Loipen Finder</h1>
@@ -1158,7 +1260,6 @@
                 </div>
                 <p class="subtitle">Schweiz • Deutschland • Österreich</p>
                 
-                <!-- Standort-Eingabe -->
                 <div class="location-input-container">
                     <div class="location-input-wrapper">
                         <label>📍 Dein Standort:</label>
@@ -1177,7 +1278,7 @@
                     </div>
                     <div class="current-location-display" id="currentLocationDisplay"></div>
                     <div class="location-warning" id="locationWarning">
-                        ⚠️ <strong>Hinweis:</strong> Bitte setze deinen Standort, um die Anreisedistanz und Routenplanung zu nutzen.
+                        ⚠️ <strong>Hinweis:</strong> Setze deinen Standort für Distanzberechnung und Routenplanung.
                     </div>
                 </div>
                 
@@ -1206,9 +1307,7 @@
             <div class="map-header" onclick="toggleMap()">
                 <div class="map-title-wrapper">
                     <h2><span>🗺️</span><span>Interaktive Karte</span></h2>
-                    <button class="map-toggle-btn" id="mapToggleBtn" onclick="event.stopPropagation(); toggleMap()">
-                        ▼
-                    </button>
+                    <button class="map-toggle-btn" id="mapToggleBtn" onclick="event.stopPropagation(); toggleMap()">▼</button>
                 </div>
                 <div class="map-controls">
                     <button class="map-btn active" id="btnShowAll" onclick="event.stopPropagation(); showAllTrailsOnMap()">📍 Alle</button>
@@ -1220,9 +1319,10 @@
         </div>
 
         <div class="filters">
+            <!-- ✅ ANREISEDISTANZ AUF 50KM -->
             <div class="filter-group">
-                <label><span>🚗 Anreisedistanz (ab Standort)</span><span class="slider-value" id="distanceValue">500 km</span></label>
-                <input type="range" id="distance" min="0" max="500" value="500" step="10">
+                <label><span>🚗 Max. Anreisedistanz</span><span class="slider-value" id="distanceValue">50 km</span></label>
+                <input type="range" id="distance" min="0" max="500" value="50" step="10">
                 <div class="slider-labels"><span>0</span><span>250</span><span>500 km</span></div>
             </div>
             <div class="filter-group">
@@ -1230,8 +1330,9 @@
                 <input type="range" id="technique" min="0" max="3" value="0" step="1">
                 <div class="slider-labels"><span>Alle</span><span>Skating</span><span>Klassisch</span><span>Beides</span></div>
             </div>
+            <!-- ✅ MINDEST-SCHNEEHÖHE -->
             <div class="filter-group">
-                <label><span>❄️ Schneehöhe</span><span class="slider-value" id="snowValue">0 cm</span></label>
+                <label><span>❄️ Min. Schneehöhe</span><span class="slider-value" id="snowValue">mind. 0 cm</span></label>
                 <input type="range" id="snowHeight" min="0" max="200" value="0" step="10">
                 <div class="slider-labels"><span>0</span><span>100</span><span>200 cm</span></div>
             </div>
@@ -1245,8 +1346,19 @@
                 <input type="range" id="weather" min="0" max="3" value="0" step="1">
                 <div class="slider-labels"><span>Alle</span><span>☀️</span><span>⛅</span><span>🌨️</span></div>
             </div>
+            <!-- ✅ FAVORITEN MIT LISTE -->
             <div class="filter-group">
                 <button class="favorites-toggle" onclick="toggleFavoritesOnly()">⭐ Nur Favoriten</button>
+                <div class="favorites-list" id="favoritesList">
+                    <div class="favorites-list-header">
+                        <span>⭐</span>
+                        <span>Deine Favoriten</span>
+                        <span id="favoritesCount">(0)</span>
+                    </div>
+                    <div class="favorites-list-items" id="favoritesListItems">
+                        <div class="favorites-empty">Noch keine Favoriten gespeichert</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1266,15 +1378,23 @@
     <script>
         'use strict';
         
+        // ========================================
+        // KONFIGURATION
+        // ========================================
         const CONFIG = {
-            version: '3.1.0',
+            version: '3.4.0',
             apiKey: '09afa4291402fae98cc456cc7d7c3c76',
             autoRefreshInterval: 30 * 60 * 1000,
             webcamRefreshInterval: 5 * 60 * 1000
         };
 
-        // ========== TRAILS DATABASE MIT WEBCAMS ==========
+        // ========================================
+        // LOIPEN & SCHNEEBERICHTE - LINK DATENBANK
+        // Hier kannst du einfach neue Einträge hinzufügen!
+        // ========================================
+        
         const TRAILS_DATABASE = [
+            // ===== SCHWEIZ =====
             {
                 id: 1,
                 name: "Davos Nordic",
@@ -1285,12 +1405,18 @@
                 distance: 45,
                 elevation: 1560,
                 techniques: ["skating", "classic"],
+                
+                // 🔗 LINKS
                 officialUrl: "https://www.davos.ch/winter/langlaufen/",
                 bergfexUrl: "https://www.bergfex.ch/davos-klosters/langlaufen/",
+                snowReportUrl: "https://www.davos.ch/winter/schneebericht/",
+                
+                // 📷 WEBCAMS
                 webcams: [
                     { name: "Davos Dorf", url: "https://www.foto-webcam.eu/webcam/davos-dorf/current/400.jpg" },
                     { name: "Parsenn", url: "https://www.foto-webcam.eu/webcam/davos-parsenn/current/400.jpg" }
                 ],
+                
                 sections: [
                     {
                         name: "Flüelatrack",
@@ -1318,38 +1444,9 @@
                     }
                 ]
             },
+            
             {
                 id: 2,
-                name: "Ramsau am Dachstein",
-                country: "AT",
-                flag: "🇦🇹",
-                lat: 47.4272,
-                lon: 13.6572,
-                distance: 220,
-                elevation: 1135,
-                techniques: ["skating", "classic"],
-                officialUrl: "https://www.ramsau.com/winter/langlaufen",
-                bergfexUrl: "https://www.bergfex.at/ramsau-dachstein/langlaufen/",
-                webcams: [
-                    { name: "Ramsau Hauptplatz", url: "https://www.foto-webcam.eu/webcam/ramsau/current/400.jpg" }
-                ],
-                sections: [
-                    {
-                        name: "Hauptloipe Ramsau",
-                        length: 18.0,
-                        technique: ["skating", "classic"],
-                        difficulty: "easy",
-                        status: "open",
-                        elevation: 1135,
-                        elevationGain: 95,
-                        lastPreparation: "Heute, 05:00",
-                        condition: "excellent",
-                        description: "Die berühmte Hauptloipe durch das Ramsauer Plateau."
-                    }
-                ]
-            },
-            {
-                id: 3,
                 name: "Engadin - St. Moritz",
                 country: "CH",
                 flag: "🇨🇭",
@@ -1358,12 +1455,16 @@
                 distance: 200,
                 elevation: 1822,
                 techniques: ["skating", "classic"],
+                
                 officialUrl: "https://www.engadin.ch/langlaufen",
                 bergfexUrl: "https://www.bergfex.ch/engadin-st-moritz/langlaufen/",
+                snowReportUrl: "https://www.engadin.ch/winter/schneebericht/",
+                
                 webcams: [
                     { name: "St. Moritz Dorf", url: "https://www.foto-webcam.eu/webcam/stmoritz/current/400.jpg" },
                     { name: "Corviglia", url: "https://www.foto-webcam.eu/webcam/stmoritz-corviglia/current/400.jpg" }
                 ],
+                
                 sections: [
                     {
                         name: "Engadiner Ski Marathon Strecke",
@@ -1379,8 +1480,116 @@
                     }
                 ]
             },
+            
+            {
+                id: 3,
+                name: "Goms - Obergoms",
+                country: "CH",
+                flag: "🇨🇭",
+                lat: 46.4806,
+                lon: 8.2336,
+                distance: 95,
+                elevation: 1400,
+                techniques: ["skating", "classic"],
+                
+                officialUrl: "https://www.obergoms.ch/langlaufen",
+                bergfexUrl: "https://www.bergfex.ch/obergoms/langlaufen/",
+                snowReportUrl: "https://www.obergoms.ch/schneebericht",
+                
+                webcams: [
+                    { name: "Münster Goms", url: "https://www.foto-webcam.eu/webcam/muenster-goms/current/400.jpg" }
+                ],
+                
+                sections: [
+                    {
+                        name: "Gommer Höhenloipe",
+                        length: 26.0,
+                        technique: ["skating", "classic"],
+                        difficulty: "medium",
+                        status: "open",
+                        elevation: 1400,
+                        elevationGain: 210,
+                        lastPreparation: "Heute, 05:00",
+                        condition: "excellent",
+                        description: "Die Krönung: Höhenloipe durch das gesamte Goms."
+                    }
+                ]
+            },
+            
+            // ===== ÖSTERREICH =====
             {
                 id: 4,
+                name: "Ramsau am Dachstein",
+                country: "AT",
+                flag: "🇦🇹",
+                lat: 47.4272,
+                lon: 13.6572,
+                distance: 220,
+                elevation: 1135,
+                techniques: ["skating", "classic"],
+                
+                officialUrl: "https://www.ramsau.com/winter/langlaufen",
+                bergfexUrl: "https://www.bergfex.at/ramsau-dachstein/langlaufen/",
+                snowReportUrl: "https://www.ramsau.com/schneebericht",
+                
+                webcams: [
+                    { name: "Ramsau Hauptplatz", url: "https://www.foto-webcam.eu/webcam/ramsau/current/400.jpg" }
+                ],
+                
+                sections: [
+                    {
+                        name: "Hauptloipe Ramsau",
+                        length: 18.0,
+                        technique: ["skating", "classic"],
+                        difficulty: "easy",
+                        status: "open",
+                        elevation: 1135,
+                        elevationGain: 95,
+                        lastPreparation: "Heute, 05:00",
+                        condition: "excellent",
+                        description: "Die berühmte Hauptloipe durch das Ramsauer Plateau."
+                    }
+                ]
+            },
+            
+            {
+                id: 5,
+                name: "Seefeld in Tirol",
+                country: "AT",
+                flag: "🇦🇹",
+                lat: 47.3297,
+                lon: 11.1877,
+                distance: 245,
+                elevation: 1200,
+                techniques: ["skating", "classic"],
+                
+                officialUrl: "https://www.seefeld.com/de/langlaufen",
+                bergfexUrl: "https://www.bergfex.at/seefeld/langlaufen/",
+                snowReportUrl: "https://www.seefeld.com/schneebericht",
+                
+                webcams: [
+                    { name: "Seefeld Zentrum", url: "https://www.foto-webcam.eu/webcam/seefeld/current/400.jpg" }
+                ],
+                
+                sections: [
+                    {
+                        name: "Olympia Loipe",
+                        length: 25.0,
+                        technique: ["skating", "classic"],
+                        difficulty: "medium",
+                        status: "open",
+                        elevation: 1200,
+                        elevationGain: 180,
+                        lastPreparation: "Heute, 05:00",
+                        condition: "excellent",
+                        description: "Die historische Olympia-Strecke von 1964 und 1976."
+                    }
+                ]
+            },
+            
+            // ===== DEUTSCHLAND =====
+            {
+                id: 6,
                 name: "Oberstdorf Nordic",
                 country: "DE",
                 flag: "🇩🇪",
@@ -1389,12 +1598,16 @@
                 distance: 180,
                 elevation: 813,
                 techniques: ["skating", "classic"],
+                
                 officialUrl: "https://www.oberstdorf.de/langlaufen",
                 bergfexUrl: "https://www.bergfex.de/oberstdorf/langlaufen/",
+                snowReportUrl: "https://www.oberstdorf.de/schneebericht",
+                
                 webcams: [
                     { name: "Oberstdorf Ortsmitte", url: "https://www.foto-webcam.eu/webcam/oberstdorf/current/400.jpg" },
                     { name: "Nebelhorn", url: "https://www.foto-webcam.eu/webcam/oberstdorf-nebelhorn/current/400.jpg" }
                 ],
+                
                 sections: [
                     {
                         name: "Skating-Arena Oberstdorf",
@@ -1410,39 +1623,44 @@
                     }
                 ]
             },
+            
             {
-                id: 5,
-                name: "Goms - Obergoms",
-                country: "CH",
-                flag: "🇨🇭",
-                lat: 46.4806,
-                lon: 8.2336,
-                distance: 95,
-                elevation: 1400,
+                id: 7,
+                name: "Feldberg Schwarzwald",
+                country: "DE",
+                flag: "🇩🇪",
+                lat: 47.8744,
+                lon: 8.0044,
+                distance: 55,
+                elevation: 1450,
                 techniques: ["skating", "classic"],
-                officialUrl: "https://www.obergoms.ch/langlaufen",
-                bergfexUrl: "https://www.bergfex.ch/obergoms/langlaufen/",
-                webcams: [
-                    { name: "Münster Goms", url: "https://www.foto-webcam.eu/webcam/muenster-goms/current/400.jpg" }
-                ],
+                
+                officialUrl: "https://www.hochschwarzwald.de/erleben/langlauf",
+                bergfexUrl: "https://www.bergfex.de/feldberg/langlaufen/",
+                snowReportUrl: "https://www.hochschwarzwald.de/schneebericht",
+                
+                webcams: [],
+                
                 sections: [
                     {
-                        name: "Gommer Höhenloipe",
-                        length: 26.0,
+                        name: "Feldberg Höhenloipe",
+                        length: 18.0,
                         technique: ["skating", "classic"],
                         difficulty: "medium",
                         status: "open",
-                        elevation: 1400,
-                        elevationGain: 210,
-                        lastPreparation: "Heute, 05:00",
-                        condition: "excellent",
-                        description: "Die Krönung: Höhenloipe durch das gesamte Goms."
+                        elevation: 1450,
+                        elevationGain: 185,
+                        lastPreparation: "Heute, 06:00",
+                        condition: "good",
+                        description: "Höchstgelegene Loipe im Schwarzwald."
                     }
                 ]
             }
         ];
 
-        // ========== GLOBAL VARIABLES ==========
+        // ========================================
+        // GLOBALE VARIABLEN
+        // ========================================
         let allTrails = [];
         let filteredTrails = [];
         let favorites = JSON.parse(localStorage.getItem('trailFavorites')) || [];
@@ -1452,9 +1670,11 @@
         let markerCluster = null;
         let userCoordinates = null;
 
-        // ========== INITIALIZATION ==========
+        // ========================================
+        // INITIALIZATION
+        // ========================================
         document.addEventListener('DOMContentLoaded', function() {
-            console.log(`🎿 Loipen Finder v${CONFIG.version} - Distanzbasierte Suche`);
+            console.log(`🎿 Loipen Finder v${CONFIG.version} - ${TRAILS_DATABASE.length} Gebiete`);
             initDateTime();
             initMap();
             setupFilterListeners();
@@ -1463,14 +1683,16 @@
             restoreMapState();
             setupResizeHandler();
             loadUserLocation();
+            updateFavoritesList(); // ✅ Favoriten-Liste initialisieren
             
-            // Warnung anzeigen wenn kein Standort gesetzt
             if (!userCoordinates) {
                 document.getElementById('locationWarning').classList.add('active');
             }
         });
 
-        // ========== DATUM & UHRZEIT ==========
+        // ========================================
+        // DATUM & UHRZEIT
+        // ========================================
         function initDateTime() {
             updateDateTime();
             setInterval(updateDateTime, 1000);
@@ -1489,7 +1711,9 @@
             document.getElementById('currentTime').textContent = timeStr;
         }
 
-        // ========== STANDORT-FUNKTIONEN ==========
+        // ========================================
+        // STANDORT-FUNKTIONEN
+        // ========================================
         function loadUserLocation() {
             const saved = localStorage.getItem('userLocation');
             if (saved) {
@@ -1501,10 +1725,9 @@
         async function setUserLocation() {
             const input = document.getElementById('userLocation').value.trim();
             if (!input) {
-                alert('Bitte gib einen Standort ein (z.B. 8001 Zürich oder Zürich, CH)');
+                alert('Bitte gib einen Standort ein (z.B. 8001 Zürich)');
                 return;
             }
-            
             localStorage.setItem('userLocation', input);
             await geocodeLocation(input);
         }
@@ -1531,7 +1754,7 @@
                     
                     console.log('📍 Standort gesetzt:', userCoordinates);
                 } else {
-                    alert('Standort nicht gefunden. Versuche es mit einem anderen Format.');
+                    alert('Standort nicht gefunden. Versuche: PLZ Ort oder Stadt, Land');
                 }
             } catch (error) {
                 console.error('Geocoding Fehler:', error);
@@ -1541,7 +1764,7 @@
 
         function getUserGeolocation() {
             if (!navigator.geolocation) {
-                alert('Geolocation wird von deinem Browser nicht unterstützt.');
+                alert('Geolocation wird nicht unterstützt.');
                 return;
             }
             
@@ -1571,16 +1794,16 @@
                     calculateAllDistances();
                     applyFilters();
                     
-                    console.log('📱 GPS-Standort ermittelt:', userCoordinates);
+                    console.log('📱 GPS ermittelt:', userCoordinates);
                 },
                 (error) => {
-                    alert('Fehler beim Abrufen des GPS-Standorts: ' + error.message);
+                    alert('GPS-Fehler: ' + error.message);
                 }
             );
         }
 
         function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Erdradius in km
+            const R = 6371;
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = 
@@ -1604,10 +1827,9 @@
                 trail.drivingTime = Math.round(trail.actualDistance / 80 * 60);
             });
             
-            // ✅ Trails nach Distanz sortieren
             allTrails.sort((a, b) => (a.actualDistance || 999999) - (b.actualDistance || 999999));
             
-            console.log('📏 Distanzen berechnet und sortiert:', allTrails.map(t => `${t.name}: ${Math.round(t.actualDistance)}km`));
+            updateFavoritesList(); // ✅ Liste aktualisieren
         }
 
         function getGoogleMapsLink(trail) {
@@ -1615,7 +1837,45 @@
             return `https://www.google.com/maps/dir/${userCoordinates.lat},${userCoordinates.lon}/${trail.lat},${trail.lon}`;
         }
 
-        // ========== MAP FUNCTIONS ==========
+        // ========================================
+        // ✅ FAVORITEN-LISTE
+        // ========================================
+        function updateFavoritesList() {
+            const listContainer = document.getElementById('favoritesListItems');
+            const countBadge = document.getElementById('favoritesCount');
+            const favoritesList = document.getElementById('favoritesList');
+            
+            // Zähler aktualisieren
+            countBadge.textContent = `(${favorites.length})`;
+            
+            if (favorites.length === 0) {
+                listContainer.innerHTML = '<div class="favorites-empty">Noch keine Favoriten gespeichert.<br>Klicke auf ⭐ bei einer Loipe!</div>';
+                return;
+            }
+            
+            // Favoriten-Liste anzeigen
+            favoritesList.classList.add('active');
+            
+            // Favoriten-Items rendern
+            const favTrails = allTrails.filter(t => favorites.includes(t.id));
+            listContainer.innerHTML = favTrails.map(trail => `
+                <div class="favorite-list-item" onclick="scrollToTrail(${trail.id}); highlightTrail(${trail.id})">
+                    <div class="favorite-list-item-name">
+                        <span>${trail.flag}</span>
+                        <span>${trail.name}</span>
+                    </div>
+                    <div class="favorite-list-item-distance">
+                        ${trail.actualDistance ? `${Math.round(trail.actualDistance)} km` : '📍'}
+                    </div>
+                </div>
+            `).join('');
+            
+            console.log('⭐ Favoriten-Liste aktualisiert:', favorites.length);
+        }
+
+        // ========================================
+        // MAP FUNCTIONS
+        // ========================================
         function initMap() {
             map = L.map('map').setView([47.0, 9.0], 7);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -1661,15 +1921,15 @@
                 <div class="popup-content">
                     <div class="popup-title">${trail.flag} ${trail.name}</div>
                     <div class="popup-info">
-                        <div><strong>Distanz:</strong> ${trail.distance} km</div>
+                        <div><strong>Loipennetz:</strong> ${trail.distance} km</div>
                         <div><strong>Höhe:</strong> ${trail.elevation} m</div>
                         <div><strong>Schneehöhe:</strong> ${trail.snowHeight || '?'} cm</div>
                         <div><strong>Abschnitte:</strong> ${trail.sections.length}</div>
                     </div>
                     ${trail.actualDistance ? `
                         <div style="margin-top: 10px; padding: 10px; background: #e8f5e9; border-radius: 6px;">
-                            <strong>🚗 Anfahrt ab Standort:</strong> ${Math.round(trail.actualDistance)} km<br>
-                            <strong>⏱️ Fahrzeit:</strong> ca. ${trail.drivingTime} Min.
+                            <strong>🚗 Ab deinem Standort:</strong><br>
+                            ${Math.round(trail.actualDistance)} km | ca. ${trail.drivingTime} Min.
                         </div>
                     ` : ''}
                     <div class="popup-actions">
@@ -1729,7 +1989,9 @@
             }
         }
 
-        // ========== ZUKLAPPBARE KARTE ==========
+        // ========================================
+        // MAP TOGGLE
+        // ========================================
         function toggleMap() {
             const mapSection = document.getElementById('mapSection');
             const toggleBtn = document.getElementById('mapToggleBtn');
@@ -1764,13 +2026,7 @@
             const isMobile = window.innerWidth <= 768;
             const savedState = localStorage.getItem('mapCollapsed');
             
-            let shouldCollapse = false;
-            
-            if (savedState !== null) {
-                shouldCollapse = savedState === 'true';
-            } else if (isMobile) {
-                shouldCollapse = true;
-            }
+            let shouldCollapse = savedState !== null ? savedState === 'true' : isMobile;
             
             if (shouldCollapse) {
                 const mapSection = document.getElementById('mapSection');
@@ -1842,7 +2098,9 @@
             });
         }
 
-        // ========== DATA LOADING ==========
+        // ========================================
+        // DATA LOADING
+        // ========================================
         async function loadAllData() {
             try {
                 const container = document.getElementById('trailsContainer');
@@ -1875,13 +2133,14 @@
                 );
 
                 allTrails = enrichedTrails;
-                calculateAllDistances(); // ✅ Distanzen berechnen
+                calculateAllDistances();
                 createMarkers(allTrails);
                 fitMapBounds();
                 applyFilters();
                 updateLastUpdated();
+                updateFavoritesList(); // ✅ Favoriten aktualisieren
             } catch (error) {
-                console.error('Fehler beim Laden:', error);
+                console.error('Fehler:', error);
                 document.getElementById('trailsContainer').innerHTML = 
                     '<div class="error-message"><span style="font-size: 2em;">❌</span><div>Fehler beim Laden der Daten.</div></div>';
             }
@@ -1925,8 +2184,6 @@
                     days.push({
                         day: dayNames[date.getDay()],
                         temp: Math.round(item.main.temp),
-                        temp_min: Math.round(item.main.temp_min),
-                        temp_max: Math.round(item.main.temp_max),
                         snow: snow,
                         icon: getWeatherIcon(item.weather[0].main, snow > 0),
                         condition: item.weather[0].main
@@ -1978,12 +2235,12 @@
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
 
-        // ========== FILTERS (ANGEPASST FÜR STANDORT-BASIERTE SUCHE) ==========
+        // ========================================
+        // FILTERS
+        // ========================================
         function setupFilterListeners() {
             document.getElementById('distance').addEventListener('input', function(e) {
-                const label = userCoordinates ? 'ab Standort' : '(Standort setzen!)';
                 document.getElementById('distanceValue').textContent = e.target.value + ' km';
-                document.querySelector('#distance').previousElementSibling.querySelector('span').textContent = `🚗 Anreisedistanz ${label}`;
                 updateSliderBackground('distance');
                 applyFilters();
             });
@@ -1993,8 +2250,9 @@
                 updateSliderBackground('technique');
                 applyFilters();
             });
+            // ✅ MINDEST-SCHNEEHÖHE
             document.getElementById('snowHeight').addEventListener('input', function(e) {
-                document.getElementById('snowValue').textContent = e.target.value + ' cm';
+                document.getElementById('snowValue').textContent = `mind. ${e.target.value} cm`;
                 updateSliderBackground('snowHeight');
                 applyFilters();
             });
@@ -2023,7 +2281,6 @@
             ['distance', 'technique', 'snowHeight', 'condition', 'weather'].forEach(updateSliderBackground);
         }
 
-        // ✅ ANGEPASSTE FILTER-FUNKTION - NUR STANDORT-BASIERTE DISTANZ
         function applyFilters() {
             const distance = parseInt(document.getElementById('distance').value);
             const techniqueValue = parseInt(document.getElementById('technique').value);
@@ -2040,18 +2297,15 @@
             const weather = weatherMap[weatherValue];
 
             let filtered = allTrails.filter(trail => {
-                // ✅ WICHTIG: Distanzfilter NUR wenn Standort gesetzt ist
                 if (userCoordinates && trail.actualDistance !== undefined) {
-                    if (trail.actualDistance > distance) {
-                        return false; // Trail zu weit entfernt
-                    }
+                    if (trail.actualDistance > distance) return false;
                 }
-                // Wenn kein Standort gesetzt: Distanzfilter ignorieren und alle Trails anzeigen
                 
                 if (technique !== 'all') {
                     if (technique === 'both' && trail.techniques.length < 2) return false;
                     if (technique !== 'both' && !trail.techniques.includes(technique)) return false;
                 }
+                // ✅ MINDEST-Schneehöhe
                 if (trail.snowHeight < snowHeight) return false;
                 if (condition !== 'all' && trail.condition !== condition) return false;
                 if (weather !== 'all' && trail.weather) {
@@ -2064,7 +2318,6 @@
                 filtered = filtered.filter(trail => favorites.includes(trail.id));
             }
 
-            // ✅ Nach Distanz sortieren wenn Standort gesetzt
             if (userCoordinates) {
                 filtered.sort((a, b) => {
                     const distA = a.actualDistance || 999999;
@@ -2075,9 +2328,6 @@
 
             filteredTrails = filtered;
             renderTrails(filtered);
-            
-            console.log(`🔍 Gefiltert: ${filtered.length}/${allTrails.length} Trails` + 
-                       (userCoordinates ? ` (sortiert nach Entfernung ab ${userCoordinates.display})` : ' (kein Standort gesetzt)'));
         }
 
         function mapWeatherCondition(condition) {
@@ -2097,6 +2347,7 @@
             favorites.includes(id) ? favorites.splice(favorites.indexOf(id), 1) : favorites.push(id);
             localStorage.setItem('trailFavorites', JSON.stringify(favorites));
             showAllTrailsOnMap();
+            updateFavoritesList(); // ✅ Liste aktualisieren
             applyFilters();
         }
 
@@ -2107,19 +2358,19 @@
             icon.classList.toggle('rotated');
         }
 
-        // ========== RENDERING (gekürzt, Rest bleibt identisch) ==========
+        // ========================================
+        // RENDERING
+        // ========================================
         function renderTrails(trails) {
             const container = document.getElementById('trailsContainer');
             if (trails.length === 0) {
                 const message = userCoordinates 
-                    ? 'Keine Loipen in dieser Entfernung gefunden. Erhöhe den Distanz-Filter.'
-                    : 'Setze deinen Standort, um Trails nach Entfernung zu filtern.';
-                container.innerHTML = `<div class="info-message"><span style="font-size: 2em;">🔍</span><div>${message}</div></div>`;
+                    ? '🔍 Keine Loipen in dieser Entfernung gefunden. Erhöhe den Distanz-Filter.'
+                    : '📍 Setze deinen Standort für Distanzfilter und Sortierung.';
+                container.innerHTML = `<div class="info-message"><span style="font-size: 2em;">ℹ️</span><div>${message}</div></div>`;
                 return;
             }
             
-            // Rendering-Code bleibt identisch wie vorher...
-            // (zu lang für diese Antwort, aber keine Änderungen nötig)
             container.innerHTML = trails.map(trail => `
                 <div class="trail-card ${favorites.includes(trail.id) ? 'favorite' : ''}" data-id="${trail.id}">
                     <div class="trail-header">
@@ -2129,45 +2380,199 @@
                             ${trail.actualDistance ? `<span style="font-size: 0.7em; color: #4CAF50; margin-left: 10px;">📍 ${Math.round(trail.actualDistance)} km</span>` : ''}
                         </div>
                         <div style="display: flex; gap: 10px;">
-                            <button class="favorite-btn" onclick="toggleFavorite(${trail.id}, event)">
+                            <button class="favorite-btn" onclick="toggleFavorite(${trail.id}, event)" title="Favorit">
                                 ${favorites.includes(trail.id) ? '⭐' : '☆'}
                             </button>
-                            <button class="favorite-btn" onclick="zoomToTrail(${trail.id})" style="font-size: 1.4em;">🗺️</button>
+                            <button class="favorite-btn" onclick="zoomToTrail(${trail.id})" title="Karte" style="font-size: 1.4em;">🗺️</button>
                         </div>
                     </div>
                     
                     ${trail.actualDistance ? `
                         <div class="route-info">
                             <div class="route-info-item">
-                                <span class="route-info-label">🚗 Entfernung ab Standort</span>
+                                <span class="route-info-label">🚗 Entfernung</span>
                                 <span class="route-info-value">${Math.round(trail.actualDistance)} km</span>
                             </div>
                             <div class="route-info-item">
-                                <span class="route-info-label">⏱️ Geschätzte Fahrzeit</span>
+                                <span class="route-info-label">⏱️ Fahrzeit</span>
                                 <span class="route-info-value">ca. ${trail.drivingTime} Min.</span>
                             </div>
                             <a href="${getGoogleMapsLink(trail)}" target="_blank" class="route-button">
                                 <span>🗺️</span>
-                                <span>Route in Google Maps öffnen</span>
+                                <span>Route in Google Maps</span>
                             </a>
                         </div>
                     ` : ''}
                     
-                    <!-- Rest des Trail-Card Codes bleibt identisch -->
+                    <div class="technique-badges">
+                        ${trail.techniques.map(t => `<span class="badge badge-${t}">${t === 'skating' ? '⛷️ Skating' : '🎿 Klassisch'}</span>`).join('')}
+                    </div>
+                    
+                    <div class="trail-info">
+                        <div class="info-box clickable" onclick="window.open('${trail.officialUrl}', '_blank')">
+                            <div class="info-label">📏 Loipennetz</div>
+                            <div class="info-value">${trail.distance} km</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">🏔️ Höhe</div>
+                            <div class="info-value">${trail.elevation} m</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">🎯 Zustand</div>
+                            <div class="info-value">
+                                <span class="status-indicator status-${trail.condition}"></span>
+                                ${getConditionText(trail.condition)}
+                            </div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">❄️ Schneehöhe</div>
+                            <div class="info-value">${trail.snowHeight} cm</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">🎿 Abschnitte</div>
+                            <div class="info-value">${trail.sections ? trail.sections.length : 0}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">🏗️ Präparation</div>
+                            <div class="info-value" style="font-size: 1em;">${trail.lastPreparation}</div>
+                        </div>
+                    </div>
+                    
+                    ${trail.webcams && trail.webcams.length > 0 ? `
+                        <div class="trail-webcams">
+                            <h4>📷 Live Webcams (${trail.webcams.length})</h4>
+                            <div class="trail-webcam-grid">
+                                ${trail.webcams.map(webcam => `
+                                    <div class="trail-webcam-item" onclick="window.open('${webcam.url}', '_blank')">
+                                        <img src="${webcam.url}?t=${Date.now()}" alt="${webcam.name}" onerror="handleWebcamError(this)" loading="lazy"/>
+                                        <div class="trail-webcam-label">${webcam.name}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${trail.sections ? renderSections(trail) : ''}
+                    
+                    <div class="fog-indicator">
+                        <span class="fog-icon">${getFogIcon(trail.fogStatus)}</span>
+                        <div class="fog-content">
+                            <strong>Nebelprognose</strong>
+                            <div>${getFogStatusText(trail.fogStatus)}</div>
+                        </div>
+                    </div>
+                    
+                    ${trail.weather ? `
+                        <div class="weather-forecast">
+                            <h4>🌡️ Wetter & 7-Tage-Prognose</h4>
+                            <div style="margin-bottom: 15px;">
+                                <strong>Aktuell:</strong> ${trail.weather.current.temp}°C (gefühlt ${trail.weather.current.feels_like}°C)<br>
+                                <strong>Bedingungen:</strong> ${trail.weather.current.description}<br>
+                                <strong>Wind:</strong> ${trail.weather.current.wind} km/h | <strong>Luftfeuchtigkeit:</strong> ${trail.weather.current.humidity}%
+                            </div>
+                            <div class="forecast-days">
+                                ${trail.weather.forecast.map(day => `
+                                    <div class="forecast-day">
+                                        <div style="font-size: 2em;">${day.icon}</div>
+                                        <div style="font-weight: 600;">${day.day}</div>
+                                        <div style="font-size: 1.1em;">${day.temp}°C</div>
+                                        ${day.snow > 0 ? `<div style="color: #e3f2fd;">❄️ ${day.snow}cm</div>` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="data-sources">
+                        <strong>🔗 Wichtige Links:</strong>
+                        <a href="${trail.officialUrl}" target="_blank" class="source-link">📍 Offizielle Website</a>
+                        ${trail.bergfexUrl ? `<a href="${trail.bergfexUrl}" target="_blank" class="source-link">🏔️ Bergfex Loipenbericht</a>` : ''}
+                        ${trail.snowReportUrl ? `<a href="${trail.snowReportUrl}" target="_blank" class="source-link">❄️ Schneebericht</a>` : ''}
+                        ${trail.actualDistance ? `<a href="${getGoogleMapsLink(trail)}" target="_blank" class="source-link">🗺️ Google Maps Route</a>` : ''}
+                        <span class="source-link" style="cursor: default;">🌤️ Wetter: OpenWeatherMap</span>
+                    </div>
                 </div>
             `).join('');
         }
 
         function renderSections(trail) {
-            // Bleibt unverändert...
-            return '';
+            if (!trail.sections || trail.sections.length === 0) return '';
+            return `
+                <div class="sections-container">
+                    <div class="sections-header" onclick="toggleSections(${trail.id})">
+                        <h3><span>🎿</span><span>Loipen-Abschnitte (${trail.sections.length})</span></h3>
+                        <span class="toggle-icon" id="toggle-icon-${trail.id}">▼</span>
+                    </div>
+                    <div class="sections-list" id="sections-${trail.id}">
+                        ${trail.sections.map((section, index) => `
+                            <div class="section-item">
+                                <div class="section-header">
+                                    <div class="section-name">
+                                        <span>${index + 1}.</span>
+                                        <span>${section.name}</span>
+                                    </div>
+                                    <div class="section-badges">
+                                        <span class="section-badge badge-${section.status}">${section.status === 'open' ? '✅ Geöffnet' : '❌ Geschlossen'}</span>
+                                        <span class="section-badge badge-difficulty-${section.difficulty}">
+                                            ${section.difficulty === 'easy' ? '🟢 Leicht' : section.difficulty === 'medium' ? '🟡 Mittel' : '🔴 Schwer'}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 8px; margin: 10px 0;">
+                                    ${section.technique.map(t => `
+                                        <span class="badge badge-${t}" style="font-size: 0.8em; padding: 4px 12px;">
+                                            ${t === 'skating' ? '⛷️ Skating' : '🎿 Klassisch'}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                                <div class="section-details">
+                                    <div class="section-detail">
+                                        <span class="section-detail-label">📏 Länge</span>
+                                        <span class="section-detail-value">${section.length} km</span>
+                                    </div>
+                                    <div class="section-detail">
+                                        <span class="section-detail-label">🏔️ Höhe</span>
+                                        <span class="section-detail-value">${section.elevation} m</span>
+                                    </div>
+                                    <div class="section-detail">
+                                        <span class="section-detail-label">📈 Höhenmeter</span>
+                                        <span class="section-detail-value">+${section.elevationGain} m</span>
+                                    </div>
+                                    <div class="section-detail">
+                                        <span class="section-detail-label">❄️ Schnee</span>
+                                        <span class="section-detail-value">${section.snowHeight || trail.snowHeight} cm</span>
+                                    </div>
+                                    <div class="section-detail">
+                                        <span class="section-detail-label">🏗️ Präpariert</span>
+                                        <span class="section-detail-value" style="font-size: 0.85em;">${section.lastPreparation}</span>
+                                    </div>
+                                    <div class="section-detail">
+                                        <span class="section-detail-label">🎯 Zustand</span>
+                                        <span class="section-detail-value">
+                                            <span class="status-indicator status-${section.condition}"></span>
+                                            ${getConditionText(section.condition)}
+                                        </span>
+                                    </div>
+                                </div>
+                                ${section.description ? `
+                                    <div class="section-description">
+                                        💬 ${section.description}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
         }
 
         function getConditionText(condition) {
             return { 'excellent': '⭐ Ausgezeichnet', 'good': '✅ Gut', 'fair': '⚠️ Befriedigend', 'poor': '❌ Schlecht' }[condition];
         }
 
-        // ========== WEBCAM ==========
+        // ========================================
+        // WEBCAM
+        // ========================================
         function refreshWebcam(id) {
             const img = document.getElementById(id);
             if (!img) return;
@@ -2181,7 +2586,9 @@
             img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect fill='%23e0e0e0' width='800' height='600'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='%23999' font-size='24'%3EOffline%3C/text%3E%3C/svg%3E";
         }
 
-        // ========== UTILITIES ==========
+        // ========================================
+        // UTILITIES
+        // ========================================
         function updateLastUpdated() {
             const location = userCoordinates ? ` | 📍 ${userCoordinates.display.split(',')[0]}` : ' | ⚠️ Kein Standort';
             document.getElementById('lastUpdated').textContent =
@@ -2193,76 +2600,21 @@
             setInterval(loadAllData, CONFIG.autoRefreshInterval);
         }
 
-        console.log(`✅ Loipen Finder v${CONFIG.version} - Standort-basierte Distanzsuche aktiviert`);
+        console.log(`✅ Loipen Finder v${CONFIG.version} vollständig geladen ❄️`);
     </script>
 </body>
 </html>
 
+<input type="range" id="distance" min="0" max="500" value="50" step="10">
+
+<div class="favorites-list" id="favoritesList">
+    <div class="favorites-list-items">
+        <!-- Hier erscheinen die Favoriten -->
+    </div>
+</div>
+
 							<script>
-                            	// ========== ANGEPASSTE FILTER-FUNKTION ==========
-function applyFilters() {
-    const distance = parseInt(document.getElementById('distance').value);
-    const techniqueValue = parseInt(document.getElementById('technique').value);
-    const snowHeight = parseInt(document.getElementById('snowHeight').value);
-    const conditionValue = parseInt(document.getElementById('condition').value);
-    const weatherValue = parseInt(document.getElementById('weather').value);
-
-    const techniqueMap = ['all', 'skating', 'classic', 'both'];
-    const conditionMap = ['all', 'excellent', 'good', 'fair', 'poor'];
-    const weatherMap = ['all', 'sunny', 'cloudy', 'snowy'];
-
-    const technique = techniqueMap[techniqueValue];
-    const condition = conditionMap[conditionValue];
-    const weather = weatherMap[weatherValue];
-
-    let filtered = allTrails.filter(trail => {
-        // ✅ WICHTIG: Distanzfilter NUR wenn Standort gesetzt ist
-        if (userCoordinates && trail.actualDistance !== undefined) {
-            if (trail.actualDistance > distance) {
-                return false; // Trail zu weit entfernt
-            }
-        }
-        // Wenn kein Standort gesetzt: Distanzfilter ignorieren
-        
-        if (technique !== 'all') {
-            if (technique === 'both' && trail.techniques.length < 2) return false;
-            if (technique !== 'both' && !trail.techniques.includes(technique)) return false;
-        }
-        if (trail.snowHeight < snowHeight) return false;
-        if (condition !== 'all' && trail.condition !== condition) return false;
-        if (weather !== 'all' && trail.weather) {
-            if (weather !== mapWeatherCondition(trail.weather.current.condition)) return false;
-        }
-        return true;
-    });
-
-    if (showOnlyFavorites) {
-        filtered = filtered.filter(trail => favorites.includes(trail.id));
-    }
-
-    // ✅ Nach Distanz sortieren wenn Standort gesetzt
-    if (userCoordinates) {
-        filtered.sort((a, b) => {
-            const distA = a.actualDistance || 999999;
-            const distB = b.actualDistance || 999999;
-            return distA - distB;
-        });
-    }
-
-    filteredTrails = filtered;
-    renderTrails(filtered);
-}
-
-if (userCoordinates && trail.actualDistance !== undefined) {
-    if (trail.actualDistance > distance) {
-        return false; // Trail zu weit weg
-    }
-}
-// Wenn kein Standort: Zeige alle Trails
-
-if (userCoordinates) {
-    filtered.sort((a, b) => distA - distB);
-}
+                            	document.getElementById('snowValue').textContent = `mind. ${e.target.value} cm`;
 							</script>
                         </body>
                         </html>
