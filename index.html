@@ -18,7 +18,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🇨🇭 Loipen Finder Schweiz - Complete</title>
+    <title>🇨🇭 Loipen Finder Schweiz</title>
     <style>
         * {
             margin: 0;
@@ -30,99 +30,169 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Schneefall Animation */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 9999;
+            user-select: none;
+            cursor: default;
+            animation-name: snowfall;
+            animation-duration: 10s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            color: white;
+            font-size: 1em;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+        
+        @keyframes snowfall {
+            0% {
+                transform: translateY(0vh) translateX(0);
+            }
+            100% {
+                transform: translateY(100vh) translateX(30px);
+            }
         }
         
         .container {
             max-width: 1800px;
             margin: 0 auto;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
             overflow: hidden;
+            position: relative;
+            z-index: 1;
         }
         
         header {
             background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
             color: white;
-            padding: 40px 30px;
+            padding: 20px 25px;
             text-align: center;
         }
         
         header h1 {
-            font-size: 2.8em;
-            margin-bottom: 10px;
+            font-size: 2em;
+            margin-bottom: 6px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
         header p {
-            font-size: 1.1em;
+            font-size: 0.85em;
             opacity: 0.9;
+            margin-bottom: 15px;
         }
         
+        /* Webcam Section - kompakter */
+        .webcam-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+        
+        .webcam-item {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+        
+        .webcam-item:hover {
+            transform: scale(1.03);
+        }
+        
+        .webcam-item img, .webcam-item iframe {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+            border: none;
+        }
+        
+        .webcam-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 5px;
+            font-size: 0.65em;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        /* Stats Bar - sehr kompakt */
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px 30px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            padding: 10px 20px;
             background: #f8f9fa;
             border-bottom: 2px solid #e0e0e0;
         }
         
         .stat-item {
             text-align: center;
-            padding: 15px;
+            padding: 8px;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
         }
         
         .stat-value {
-            font-size: 2em;
+            font-size: 1.3em;
             font-weight: 700;
             color: #3498db;
             display: block;
         }
         
         .stat-label {
-            font-size: 0.9em;
+            font-size: 0.7em;
             color: #7f8c8d;
-            margin-top: 5px;
+            margin-top: 2px;
         }
         
-        /* Favoriten Sektion */
+        /* Favoriten Sektion - kompakt */
         .favorites-section {
-            padding: 20px 30px;
+            padding: 12px 20px;
             background: #fff9e6;
-            border-bottom: 3px solid #f39c12;
+            border-bottom: 2px solid #f39c12;
         }
         
         .favorites-section h2 {
             color: #e67e22;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        
-        .favorites-empty {
-            color: #7f8c8d;
-            font-style: italic;
-            padding: 20px;
-            text-align: center;
+            gap: 6px;
+            font-size: 1.2em;
         }
         
         .favorites-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px;
         }
         
         .favorite-card {
             background: white;
             border: 2px solid #f39c12;
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 6px;
+            padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -130,8 +200,8 @@
         }
         
         .favorite-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+            transform: translateX(3px);
+            box-shadow: 0 3px 10px rgba(243, 156, 18, 0.3);
         }
         
         .favorite-info {
@@ -141,11 +211,12 @@
         .favorite-name {
             font-weight: 700;
             color: #2c3e50;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
+            font-size: 0.85em;
         }
         
         .favorite-location {
-            font-size: 0.85em;
+            font-size: 0.7em;
             color: #7f8c8d;
         }
         
@@ -153,10 +224,10 @@
             background: #e74c3c;
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 5px 8px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 0.7em;
             transition: background 0.3s;
         }
         
@@ -164,50 +235,45 @@
             background: #c0392b;
         }
         
+        /* Ultra-kompakte Filter Section */
         .filter-section {
-            padding: 30px;
+            padding: 12px 20px;
             background: #f8f9fa;
             border-bottom: 2px solid #e0e0e0;
         }
         
         .filter-section h2 {
             color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 1.8em;
+            margin-bottom: 10px;
+            font-size: 1.2em;
         }
         
         .filter-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
         }
         
         .filter-item {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-        
-        .filter-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
         }
         
         .filter-item label {
             display: block;
             font-weight: 600;
             color: #2c3e50;
-            margin-bottom: 12px;
-            font-size: 0.95em;
+            margin-bottom: 6px;
+            font-size: 0.75em;
         }
         
         input[type="range"] {
             width: 100%;
-            height: 8px;
-            border-radius: 5px;
+            height: 5px;
+            border-radius: 3px;
             background: #d3d3d3;
             outline: none;
             -webkit-appearance: none;
@@ -216,46 +282,47 @@
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 22px;
-            height: 22px;
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
             background: #3498db;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
         
         input[type="range"]::-moz-range-thumb {
-            width: 22px;
-            height: 22px;
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
             background: #3498db;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
         
         .value-display {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 4px;
             font-weight: 600;
             color: #3498db;
-            font-size: 1.15em;
+            font-size: 0.8em;
         }
         
         .checkbox-group {
             display: flex;
-            gap: 15px;
+            gap: 8px;
             flex-wrap: wrap;
         }
         
         .checkbox-group label {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             font-weight: 500;
             cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 4px 6px;
+            border-radius: 4px;
             transition: background 0.2s;
+            font-size: 0.75em;
         }
         
         .checkbox-group label:hover {
@@ -263,18 +330,18 @@
         }
         
         input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+            width: 14px;
+            height: 14px;
             cursor: pointer;
             accent-color: #3498db;
         }
         
         input[type="text"], select {
             width: 100%;
-            padding: 12px;
+            padding: 6px 8px;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
+            border-radius: 5px;
+            font-size: 0.8em;
             transition: border-color 0.3s;
         }
         
@@ -290,18 +357,18 @@
         .region-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 6px;
+            margin-top: 6px;
         }
         
         .region-tag {
-            padding: 8px 15px;
+            padding: 5px 10px;
             background: #ecf0f1;
-            border: 2px solid #bdc3c7;
-            border-radius: 20px;
+            border: 1px solid #bdc3c7;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.9em;
+            font-size: 0.75em;
             font-weight: 600;
         }
         
@@ -316,27 +383,27 @@
         }
         
         .results-section {
-            padding: 30px;
+            padding: 20px;
         }
         
         .results-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
         }
         
         .results-count {
-            font-size: 1.4em;
+            font-size: 1.2em;
             font-weight: 700;
             color: #2c3e50;
         }
         
         .sort-controls {
             display: flex;
-            gap: 10px;
+            gap: 6px;
             align-items: center;
             flex-wrap: wrap;
         }
@@ -344,19 +411,20 @@
         .sort-controls label {
             font-weight: 600;
             color: #2c3e50;
+            font-size: 0.85em;
         }
         
         .loipen-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 18px;
         }
         
         .loipe-card {
             background: white;
             border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: 12px;
+            padding: 18px;
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
@@ -367,7 +435,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 5px;
+            width: 4px;
             height: 100%;
             background: linear-gradient(to bottom, #3498db, #2ecc71);
             opacity: 0;
@@ -375,8 +443,8 @@
         }
         
         .loipe-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
             border-color: #3498db;
         }
         
@@ -390,7 +458,7 @@
         }
         
         .loipe-header {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             position: relative;
         }
         
@@ -400,38 +468,38 @@
             right: -5px;
             background: transparent;
             border: none;
-            font-size: 2em;
+            font-size: 1.6em;
             cursor: pointer;
             transition: transform 0.2s;
-            padding: 5px;
+            padding: 4px;
             z-index: 10;
         }
         
         .favorite-btn:hover {
-            transform: scale(1.2);
+            transform: scale(1.15);
         }
         
         .favorite-btn.active {
-            filter: drop-shadow(0 0 8px rgba(243, 156, 18, 0.8));
+            filter: drop-shadow(0 0 6px rgba(243, 156, 18, 0.8));
         }
         
         .loipe-name {
-            font-size: 1.4em;
+            font-size: 1.2em;
             font-weight: 700;
             color: #2c3e50;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             line-height: 1.3;
-            padding-right: 40px;
+            padding-right: 35px;
         }
         
         .loipe-link {
             color: #3498db;
             text-decoration: none;
-            font-size: 0.85em;
+            font-size: 0.75em;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            margin-bottom: 10px;
+            gap: 3px;
+            margin-bottom: 6px;
         }
         
         .loipe-link:hover {
@@ -440,64 +508,64 @@
         
         .loipe-location {
             color: #7f8c8d;
-            font-size: 0.95em;
-            margin-bottom: 5px;
+            font-size: 0.85em;
+            margin-bottom: 3px;
         }
         
         .region-badge {
             display: inline-block;
-            padding: 4px 10px;
+            padding: 2px 6px;
             background: #9b59b6;
             color: white;
-            border-radius: 12px;
-            font-size: 0.8em;
+            border-radius: 8px;
+            font-size: 0.7em;
             font-weight: 600;
-            margin-top: 5px;
+            margin-top: 3px;
         }
         
         .last-update {
             color: #95a5a6;
-            font-size: 0.85em;
+            font-size: 0.75em;
             font-style: italic;
         }
         
-        /* Navigation Box */
+        /* Navigation Box - kompakter */
         .navigation-box {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 15px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         
         .nav-title {
             font-weight: 700;
-            font-size: 1.1em;
-            margin-bottom: 15px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
         }
         
         .nav-details {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
         
         .nav-item {
             background: rgba(255,255,255,0.2);
-            padding: 12px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
         }
         
         .nav-icon {
-            font-size: 1.5em;
+            font-size: 1.2em;
         }
         
         .nav-value {
@@ -506,41 +574,41 @@
         }
         
         .nav-label {
-            font-size: 0.75em;
+            font-size: 0.65em;
             opacity: 0.9;
         }
         
         .nav-number {
-            font-size: 1.3em;
+            font-size: 1.1em;
             font-weight: 700;
         }
         
         .nav-buttons {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            gap: 6px;
         }
         
         .nav-btn {
             background: white;
             color: #667eea;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 8px 12px;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.95em;
+            font-size: 0.8em;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 5px;
             text-decoration: none;
         }
         
         .nav-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             background: #f0f0f0;
         }
         
@@ -553,62 +621,62 @@
             background: #27ae60;
         }
         
-        /* Wetter Widget */
+        /* Wetter Widget - kompakter */
         .weather-widget {
             background: linear-gradient(135deg, #5fc3e4 0%, #e55d87 100%);
             color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 15px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         
         .weather-current {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
             border-bottom: 2px solid rgba(255,255,255,0.3);
         }
         
         .weather-temp {
-            font-size: 2.5em;
+            font-size: 2em;
             font-weight: 700;
         }
         
         .weather-icon {
-            font-size: 3em;
+            font-size: 2.2em;
         }
         
         .weather-info {
-            font-size: 0.9em;
+            font-size: 0.8em;
             opacity: 0.95;
         }
         
         .weather-forecast {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            margin-top: 10px;
+            gap: 5px;
+            margin-top: 8px;
         }
         
         .forecast-day {
             text-align: center;
-            padding: 8px 4px;
+            padding: 5px 2px;
             background: rgba(255,255,255,0.2);
-            border-radius: 8px;
-            font-size: 0.75em;
+            border-radius: 5px;
+            font-size: 0.65em;
         }
         
         .forecast-date {
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
         
         .forecast-icon {
-            font-size: 1.8em;
-            margin: 5px 0;
+            font-size: 1.4em;
+            margin: 3px 0;
         }
         
         .forecast-temp {
@@ -617,17 +685,17 @@
         
         .forecast-snow {
             color: #e8f8ff;
-            font-size: 0.85em;
-            margin-top: 3px;
+            font-size: 0.75em;
+            margin-top: 2px;
         }
         
         .nebel-status {
             display: inline-block;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
             font-weight: 600;
-            margin-top: 10px;
+            margin-top: 6px;
         }
         
         .nebel-über {
@@ -647,31 +715,32 @@
         
         .weather-loading {
             text-align: center;
-            padding: 20px;
+            padding: 12px;
             color: white;
             font-style: italic;
+            font-size: 0.8em;
         }
         
         .loipe-details {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin: 20px 0;
-            padding: 15px;
+            gap: 8px;
+            margin: 12px 0;
+            padding: 10px;
             background: #f8f9fa;
-            border-radius: 10px;
+            border-radius: 6px;
         }
         
         .detail-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.9em;
+            gap: 5px;
+            font-size: 0.8em;
         }
         
         .detail-icon {
-            font-size: 1.3em;
-            width: 25px;
+            font-size: 1.1em;
+            width: 20px;
             text-align: center;
         }
         
@@ -682,31 +751,31 @@
         
         .hoehenprofil-box {
             background: #ecf0f1;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-size: 0.9em;
+            padding: 8px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 0.8em;
         }
         
         .hoehenprofil-box strong {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             color: #2c3e50;
         }
         
         .hoehen-detail {
             display: flex;
             justify-content: space-between;
-            margin: 5px 0;
+            margin: 3px 0;
         }
         
         .status-badge {
             display: inline-block;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85em;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
             font-weight: 600;
-            margin: 5px 5px 5px 0;
+            margin: 3px 3px 3px 0;
         }
         
         .status-gut {
@@ -729,19 +798,19 @@
             color: white;
         }
         
-        .technik-badges, .schwierigkeit-badge {
+        .technik-badges {
             display: flex;
-            gap: 8px;
-            margin: 10px 0;
+            gap: 5px;
+            margin: 8px 0;
             flex-wrap: wrap;
         }
         
-        .technik-badge, .difficulty-badge {
-            padding: 5px 12px;
+        .technik-badge {
+            padding: 3px 8px;
             background: #3498db;
             color: white;
-            border-radius: 15px;
-            font-size: 0.8em;
+            border-radius: 10px;
+            font-size: 0.7em;
             font-weight: 600;
         }
         
@@ -758,65 +827,79 @@
         }
         
         .beschreibung {
-            font-size: 0.9em;
+            font-size: 0.8em;
             color: #555;
-            line-height: 1.5;
-            margin: 10px 0;
-            padding: 10px;
+            line-height: 1.4;
+            margin: 8px 0;
+            padding: 8px;
             background: #f8f9fa;
-            border-radius: 8px;
+            border-radius: 5px;
             border-left: 3px solid #3498db;
         }
         
         .besonderheiten {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 10px;
+            gap: 4px;
+            margin-top: 8px;
         }
         
         .besonderheit-tag {
-            padding: 4px 10px;
+            padding: 2px 6px;
             background: #ecf0f1;
-            border-radius: 12px;
-            font-size: 0.75em;
+            border-radius: 8px;
+            font-size: 0.65em;
             color: #2c3e50;
         }
         
         .no-results {
             text-align: center;
-            padding: 80px 20px;
+            padding: 50px 20px;
             color: #7f8c8d;
         }
         
         .no-results h3 {
-            font-size: 2em;
-            margin-bottom: 15px;
+            font-size: 1.6em;
+            margin-bottom: 10px;
         }
         
         button {
             background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
             border: none;
-            padding: 12px 28px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.85em;
             font-weight: 600;
             transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
         }
         
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
         }
         
         button:active {
             transform: translateY(0);
         }
         
+        @media (max-width: 1024px) {
+            .webcam-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .webcam-item img, .webcam-item iframe {
+                height: 200px;
+            }
+        }
+        
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
             .loipen-grid {
                 grid-template-columns: 1fr;
             }
@@ -830,7 +913,7 @@
             }
             
             header h1 {
-                font-size: 2em;
+                font-size: 1.6em;
             }
             
             .loipe-details {
@@ -848,6 +931,10 @@
             .nav-buttons {
                 grid-template-columns: 1fr;
             }
+            
+            .stats-bar {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
     </style>
 </head>
@@ -855,17 +942,33 @@
     <div class="container">
         <header>
             <h1>🇨🇭 Loipen Finder Schweiz</h1>
-            <p>Alle Langlaufloipen mit Live-Wetter, Navigation & Favoriten</p>
+            <p>Langlaufloipen mit Live-Wetter, Navigation & Favoriten</p>
+            
+            <!-- Live Webcams -->
+            <div class="webcam-section">
+                <div class="webcam-item">
+                    <img src="https://lws-sport.ch/webcam/lwscam.jpg" alt="LWS Sport Webcam" loading="lazy">
+                    <div class="webcam-label">📹 LWS Sport</div>
+                </div>
+                <div class="webcam-item">
+                    <img src="https://lws-sport.ch/webcamrandenhaus/randenhauscam.jpg" alt="Randenhaus Webcam" loading="lazy">
+                    <div class="webcam-label">📹 Randenhaus</div>
+                </div>
+                <div class="webcam-item">
+                    <iframe src="https://hagenturm.roundshot.com/#/" title="Hagenturm Panorama" loading="lazy"></iframe>
+                    <div class="webcam-label">📹 Hagenturm</div>
+                </div>
+            </div>
         </header>
         
         <div class="stats-bar">
             <div class="stat-item">
                 <span class="stat-value" id="total-loipen">0</span>
-                <span class="stat-label">Loipen total</span>
+                <span class="stat-label">Loipen</span>
             </div>
             <div class="stat-item">
                 <span class="stat-value" id="total-km">0</span>
-                <span class="stat-label">Kilometer total</span>
+                <span class="stat-label">Kilometer</span>
             </div>
             <div class="stat-item">
                 <span class="stat-value" id="total-regionen">0</span>
@@ -877,54 +980,56 @@
             </div>
             <div class="stat-item">
                 <span class="stat-value" id="avg-distance">0</span>
-                <span class="stat-label">Ø Anfahrt (km)</span>
+                <span class="stat-label">Ø Anfahrt</span>
             </div>
             <div class="stat-item">
                 <span class="stat-value" id="last-update">-</span>
-                <span class="stat-label">Letztes Update</span>
+                <span class="stat-label">Update</span>
             </div>
         </div>
         
         <!-- Favoriten Sektion -->
         <div class="favorites-section" id="favorites-section" style="display: none;">
-            <h2>⭐ Meine Favoriten</h2>
-            <div class="favorites-grid" id="favorites-container">
-                <!-- Favoriten werden hier dynamisch eingefügt -->
-            </div>
+            <h2>⭐ Favoriten</h2>
+            <div class="favorites-grid" id="favorites-container"></div>
         </div>
         
         <div class="filter-section">
-            <h2>🔍 Filter & Suche</h2>
+            <h2>🔍 Filter</h2>
             
             <div class="filter-grid">
                 <div class="filter-item region-filter">
                     <label>🏔️ Regionen</label>
-                    <div class="region-tags" id="region-tags">
-                        <!-- Wird dynamisch gefüllt -->
-                    </div>
+                    <div class="region-tags" id="region-tags"></div>
                 </div>
                 
                 <div class="filter-item">
-                    <label>📍 Deine Postleitzahl</label>
+                    <label>📍 PLZ</label>
                     <input type="text" id="plz-input" value="8824" placeholder="z.B. 8824">
                 </div>
                 
                 <div class="filter-item">
-                    <label>📏 Loipen-Distanz (km)</label>
+                    <label>📏 Loipen-Distanz</label>
                     <input type="range" id="distanz-slider" min="0" max="50" value="50" step="1">
                     <div class="value-display">0 - <span id="distanz-value">50</span> km</div>
                 </div>
                 
                 <div class="filter-item">
-                    <label>🚗 Max. Anfahrt (km)</label>
-                    <input type="range" id="anfahrt-slider" min="0" max="200" value="200" step="5">
-                    <div class="value-display">0 - <span id="anfahrt-value">200</span> km</div>
+                    <label>🚗 Max. Anfahrt</label>
+                    <input type="range" id="anfahrt-slider" min="0" max="300" value="100" step="5">
+                    <div class="value-display">0 - <span id="anfahrt-value">100</span> km</div>
                 </div>
                 
                 <div class="filter-item">
-                    <label>⛰️ Höhenmeter (max)</label>
+                    <label>⛰️ Höhenmeter</label>
                     <input type="range" id="hoehenmeter-slider" min="0" max="1000" value="1000" step="50">
                     <div class="value-display">0 - <span id="hoehenmeter-value">1000</span> Hm</div>
+                </div>
+                
+                <div class="filter-item">
+                    <label>📅 Update (Tage)</label>
+                    <input type="range" id="update-slider" min="1" max="30" value="2" step="1">
+                    <div class="value-display"><span id="update-value">2</span> Tage</div>
                 </div>
                 
                 <div class="filter-item">
@@ -954,7 +1059,7 @@
                         </label>
                         <label>
                             <input type="checkbox" id="geschlossen">
-                            Geschlossen
+                            Zu
                         </label>
                     </div>
                 </div>
@@ -978,8 +1083,8 @@
                 </div>
                 
                 <div class="filter-item">
-                    <label>🔤 Suche nach Name/Ort</label>
-                    <input type="text" id="search-input" placeholder="z.B. Arosa, Davos, Engadin...">
+                    <label>🔤 Suche</label>
+                    <input type="text" id="search-input" placeholder="Name/Ort...">
                 </div>
             </div>
         </div>
@@ -987,7 +1092,7 @@
         <div class="results-section">
             <div class="results-header">
                 <div class="results-count">
-                    <span id="results-count">0</span> Loipen gefunden
+                    <span id="results-count">0</span> Loipen
                 </div>
                 <div class="sort-controls">
                     <label for="sort-select">Sortieren:</label>
@@ -997,29 +1102,49 @@
                         <option value="distanz">Distanz</option>
                         <option value="hoehe">Höhenmeter</option>
                         <option value="region">Region</option>
-                        <option value="update">Letztes Update</option>
+                        <option value="update">Update</option>
                     </select>
-                    <button onclick="window.loipenApp.loadData()">🔄 Aktualisieren</button>
-                    <button onclick="window.loipenApp.exportFavorites()">📥 Favoriten exportieren</button>
+                    <button onclick="window.loipenApp.loadData()">🔄</button>
+                    <button onclick="window.loipenApp.exportFavorites()">📥</button>
                 </div>
             </div>
             
-            <div class="loipen-grid" id="loipen-container">
-                <!-- Loipen werden hier dynamisch eingefügt -->
-            </div>
+            <div class="loipen-grid" id="loipen-container"></div>
             
             <div class="no-results" id="no-results" style="display: none;">
                 <h3>😔 Keine Loipen gefunden</h3>
-                <p>Versuche die Filter anzupassen oder eine andere Region zu wählen</p>
+                <p>Filter anpassen</p>
             </div>
         </div>
     </div>
     
     <script>
         // ====================================
-        // MOCK DATA GENERATOR (Demo-Daten)
+        // SCHNEEFALL ANIMATION
+        // ====================================
+        function createSnowflakes() {
+            const snowflakeCount = 50;
+            const snowflakes = ['❄', '❅', '❆'];
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 3 + 7) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+                
+                document.body.appendChild(snowflake);
+            }
+        }
+        
+        // ====================================
+        // MOCK DATA GENERATOR
         // ====================================
         function generateMockLoipenData() {
+            const today = new Date();
             const loipen = [
                 {
                     name: "Rinerhorn Panoramaloipe",
@@ -1031,7 +1156,7 @@
                     anfahrt_km: 85,
                     hoehenmeter: 150,
                     link: "https://www.bergfex.ch/arosa/langlaufen/",
-                    letztes_update: "2024-01-20",
+                    letztes_update: new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1800,
                         max_hoehe: 1950,
@@ -1039,7 +1164,7 @@
                         abstieg: 150
                     },
                     schwierigkeit: "Mittel",
-                    beschreibung: "Wunderschöne Panoramaloipe mit herrlicher Aussicht auf die Aroser Bergwelt. Perfekt präpariert für Skating und Klassisch.",
+                    beschreibung: "Wunderschöne Panoramaloipe mit herrlicher Aussicht auf die Aroser Bergwelt.",
                     besonderheiten: ["Beschneiung", "Beleuchtung", "Hundeloipe"],
                     region: "Graubünden",
                     latitude: 46.7833,
@@ -1055,7 +1180,7 @@
                     anfahrt_km: 95,
                     hoehenmeter: 80,
                     link: "https://www.bergfex.ch/davos/langlaufen/",
-                    letztes_update: "2024-01-21",
+                    letztes_update: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1560,
                         max_hoehe: 1640,
@@ -1063,7 +1188,7 @@
                         abstieg: 80
                     },
                     schwierigkeit: "Leicht",
-                    beschreibung: "Ideale Einsteigerloipe mit sanften Steigungen. Familienfreundlich und gut ausgeschildert.",
+                    beschreibung: "Ideale Einsteigerloipe mit sanften Steigungen.",
                     besonderheiten: ["Anfängerfreundlich", "Parkplätze"],
                     region: "Graubünden",
                     latitude: 46.8028,
@@ -1079,7 +1204,7 @@
                     anfahrt_km: 65,
                     hoehenmeter: 200,
                     link: "https://www.bergfex.ch/flims/langlaufen/",
-                    letztes_update: "2024-01-19",
+                    letztes_update: new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1100,
                         max_hoehe: 1300,
@@ -1087,8 +1212,8 @@
                         abstieg: 200
                     },
                     schwierigkeit: "Schwer",
-                    beschreibung: "Anspruchsvolle Waldloipe durch herrliche Natur. Für sportliche Langläufer.",
-                    besonderheiten: ["Wettkampfstrecke", "FIS homologiert"],
+                    beschreibung: "Anspruchsvolle Waldloipe durch herrliche Natur.",
+                    besonderheiten: ["Wettkampfstrecke", "FIS"],
                     region: "Graubünden",
                     latitude: 46.8333,
                     longitude: 9.2833
@@ -1103,7 +1228,7 @@
                     anfahrt_km: 145,
                     hoehenmeter: 350,
                     link: "https://www.bergfex.ch/engadin/langlaufen/",
-                    letztes_update: "2024-01-21",
+                    letztes_update: new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1600,
                         max_hoehe: 1950,
@@ -1111,8 +1236,8 @@
                         abstieg: 350
                     },
                     schwierigkeit: "Schwer",
-                    beschreibung: "Die legendäre Engadin Marathon Strecke. Ein Muss für jeden ambitionierten Langläufer.",
-                    besonderheiten: ["Marathon", "Weltcup", "Beschneiung"],
+                    beschreibung: "Die legendäre Engadin Marathon Strecke.",
+                    besonderheiten: ["Marathon", "Weltcup"],
                     region: "Graubünden",
                     latitude: 46.4969,
                     longitude: 9.8355
@@ -1127,7 +1252,7 @@
                     anfahrt_km: 78,
                     hoehenmeter: 120,
                     link: "https://www.bergfex.ch/lenzerheide/langlaufen/",
-                    letztes_update: "2024-01-20",
+                    letztes_update: new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1450,
                         max_hoehe: 1570,
@@ -1135,8 +1260,8 @@
                         abstieg: 120
                     },
                     schwierigkeit: "Mittel",
-                    beschreibung: "Abwechslungsreiche Rundloipe mit Seeblick. Täglich frisch präpariert.",
-                    besonderheiten: ["Seeblick", "Restaurant", "Parkplatz"],
+                    beschreibung: "Abwechslungsreiche Rundloipe mit Seeblick.",
+                    besonderheiten: ["Seeblick", "Restaurant"],
                     region: "Graubünden",
                     latitude: 46.7167,
                     longitude: 9.5667
@@ -1151,7 +1276,7 @@
                     anfahrt_km: 125,
                     hoehenmeter: 250,
                     link: "https://www.bergfex.ch/gstaad/langlaufen/",
-                    letztes_update: "2024-01-21",
+                    letztes_update: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1100,
                         max_hoehe: 1350,
@@ -1159,8 +1284,8 @@
                         abstieg: 250
                     },
                     schwierigkeit: "Mittel",
-                    beschreibung: "Sonnige Höhenloipe mit Alpenpanorama. Beliebtes Trainingsgebiet.",
-                    besonderheiten: ["Sonnig", "Alpenpanorama", "Gastronomie"],
+                    beschreibung: "Sonnige Höhenloipe mit Alpenpanorama.",
+                    besonderheiten: ["Sonnig", "Panorama"],
                     region: "Bern",
                     latitude: 46.4750,
                     longitude: 7.2867
@@ -1175,7 +1300,7 @@
                     anfahrt_km: 110,
                     hoehenmeter: 60,
                     link: "https://www.bergfex.ch/adelboden/langlaufen/",
-                    letztes_update: "2024-01-20",
+                    letztes_update: new Date(today.getTime() - 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1320,
                         max_hoehe: 1380,
@@ -1183,8 +1308,8 @@
                         abstieg: 60
                     },
                     schwierigkeit: "Leicht",
-                    beschreibung: "Gemütliche Dorfloipe, ideal für Familien und Einsteiger.",
-                    besonderheiten: ["Familienfreundlich", "Dorfnähe"],
+                    beschreibung: "Gemütliche Dorfloipe für Familien.",
+                    besonderheiten: ["Familie", "Dorfnähe"],
                     region: "Bern",
                     latitude: 46.4925,
                     longitude: 7.5597
@@ -1199,7 +1324,7 @@
                     anfahrt_km: 115,
                     hoehenmeter: 180,
                     link: "https://www.bergfex.ch/kandersteg/langlaufen/",
-                    letztes_update: "2024-01-19",
+                    letztes_update: new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1170,
                         max_hoehe: 1350,
@@ -1207,7 +1332,7 @@
                         abstieg: 180
                     },
                     schwierigkeit: "Mittel",
-                    beschreibung: "Vielseitige Loipe durch das UNESCO Weltnaturerbe.",
+                    beschreibung: "Loipe durch das UNESCO Weltnaturerbe.",
                     besonderheiten: ["UNESCO", "Naturpark"],
                     region: "Bern",
                     latitude: 46.4875,
@@ -1223,7 +1348,7 @@
                     anfahrt_km: 165,
                     hoehenmeter: 100,
                     link: "https://www.bergfex.ch/zermatt/langlaufen/",
-                    letztes_update: "2024-01-21",
+                    letztes_update: new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1620,
                         max_hoehe: 1720,
@@ -1231,8 +1356,8 @@
                         abstieg: 100
                     },
                     schwierigkeit: "Leicht",
-                    beschreibung: "Spektakuläre Loipe mit Matterhorn-Blick. Ein absolutes Highlight!",
-                    besonderheiten: ["Matterhorn-Blick", "Hochalpin"],
+                    beschreibung: "Spektakuläre Loipe mit Matterhorn-Blick.",
+                    besonderheiten: ["Matterhorn", "Hochalpin"],
                     region: "Wallis",
                     latitude: 46.0207,
                     longitude: 7.7491
@@ -1247,7 +1372,7 @@
                     anfahrt_km: 170,
                     hoehenmeter: 140,
                     link: "https://www.bergfex.ch/saas-fee/langlaufen/",
-                    letztes_update: "2024-01-20",
+                    letztes_update: new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1800,
                         max_hoehe: 1940,
@@ -1255,8 +1380,8 @@
                         abstieg: 140
                     },
                     schwierigkeit: "Mittel",
-                    beschreibung: "Hochalpine Loipe umgeben von 4000ern. Schneesicher bis Frühling.",
-                    besonderheiten: ["Gletschernähe", "18 Viertausender"],
+                    beschreibung: "Hochalpine Loipe umgeben von 4000ern.",
+                    besonderheiten: ["Gletscher", "4000er"],
                     region: "Wallis",
                     latitude: 46.1097,
                     longitude: 7.9286
@@ -1271,7 +1396,7 @@
                     anfahrt_km: 92,
                     hoehenmeter: 170,
                     link: "https://www.bergfex.ch/engelberg/langlaufen/",
-                    letztes_update: "2024-01-21",
+                    letztes_update: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1250,
                         max_hoehe: 1420,
@@ -1279,8 +1404,8 @@
                         abstieg: 170
                     },
                     schwierigkeit: "Mittel",
-                    beschreibung: "Abwechslungsreiche Loipe mit Klosterblick und Alpenpanorama.",
-                    besonderheiten: ["Klosterblick", "Bergbahn"],
+                    beschreibung: "Abwechslungsreiche Loipe mit Klosterblick.",
+                    besonderheiten: ["Kloster", "Bergbahn"],
                     region: "Zentralschweiz",
                     latitude: 46.8233,
                     longitude: 8.4050
@@ -1295,7 +1420,7 @@
                     anfahrt_km: 88,
                     hoehenmeter: 220,
                     link: "https://www.bergfex.ch/andermatt/langlaufen/",
-                    letztes_update: "2024-01-19",
+                    letztes_update: new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1440,
                         max_hoehe: 1660,
@@ -1303,7 +1428,7 @@
                         abstieg: 220
                     },
                     schwierigkeit: "Schwer",
-                    beschreibung: "Anspruchsvolle Strecke durch das Urserental. Für trainierte Läufer.",
+                    beschreibung: "Anspruchsvolle Strecke durch das Urserental.",
                     besonderheiten: ["Hochtal", "Wildromantisch"],
                     region: "Zentralschweiz",
                     latitude: 46.6333,
@@ -1319,7 +1444,7 @@
                     anfahrt_km: 52,
                     hoehenmeter: 90,
                     link: "https://www.bergfex.ch/wildhaus/langlaufen/",
-                    letztes_update: "2024-01-20",
+                    letztes_update: new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1080,
                         max_hoehe: 1170,
@@ -1327,8 +1452,8 @@
                         abstieg: 90
                     },
                     schwierigkeit: "Leicht",
-                    beschreibung: "Sonnige Panoramaloipe im Toggenburg. Perfekt für Genießer.",
-                    besonderheiten: ["Sonnig", "Aussichtsreich"],
+                    beschreibung: "Sonnige Panoramaloipe im Toggenburg.",
+                    besonderheiten: ["Sonnig", "Aussicht"],
                     region: "Ostschweiz",
                     latitude: 47.2019,
                     longitude: 9.3489
@@ -1343,7 +1468,7 @@
                     anfahrt_km: 45,
                     hoehenmeter: 50,
                     link: "https://www.bergfex.ch/appenzell/langlaufen/",
-                    letztes_update: "2024-01-21",
+                    letztes_update: new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 780,
                         max_hoehe: 830,
@@ -1351,8 +1476,8 @@
                         abstieg: 50
                     },
                     schwierigkeit: "Leicht",
-                    beschreibung: "Gemütliche Loipe durch typische Appenzeller Landschaft.",
-                    besonderheiten: ["Kulturlandschaft", "Nähe Dorf"],
+                    beschreibung: "Gemütliche Loipe durch Appenzeller Landschaft.",
+                    besonderheiten: ["Kulturlandschaft", "Dorf"],
                     region: "Ostschweiz",
                     latitude: 47.3319,
                     longitude: 9.4094
@@ -1367,7 +1492,7 @@
                     anfahrt_km: 98,
                     hoehenmeter: 180,
                     link: "https://www.bergfex.ch/jura/langlaufen/",
-                    letztes_update: "2024-01-20",
+                    letztes_update: new Date(today.getTime() - 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 1000,
                         max_hoehe: 1180,
@@ -1375,8 +1500,8 @@
                         abstieg: 180
                     },
                     schwierigkeit: "Mittel",
-                    beschreibung: "Weitläufiges Loipennetz im Neuenburger Jura. Ideal für lange Touren.",
-                    besonderheiten: ["Weitläufig", "Verbindungen"],
+                    beschreibung: "Weitläufiges Loipennetz im Jura.",
+                    besonderheiten: ["Weitläufig", "Netz"],
                     region: "Jura",
                     latitude: 47.0993,
                     longitude: 6.8269
@@ -1391,7 +1516,7 @@
                     anfahrt_km: 145,
                     hoehenmeter: 80,
                     link: "https://www.bergfex.ch/diablerets/langlaufen/",
-                    letztes_update: "2024-01-21",
+                    letztes_update: new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
                         min_hoehe: 2920,
                         max_hoehe: 3000,
@@ -1399,8 +1524,8 @@
                         abstieg: 80
                     },
                     schwierigkeit: "Mittel",
-                    beschreibung: "Die höchstgelegene Loipe der Schweiz auf dem Gletscher!",
-                    besonderheiten: ["Gletscher", "3000m", "Ganzjährig"],
+                    beschreibung: "Höchstgelegene Loipe der Schweiz!",
+                    besonderheiten: ["Gletscher", "3000m"],
                     region: "Waadt",
                     latitude: 46.3525,
                     longitude: 7.2042
@@ -1409,7 +1534,7 @@
             
             return {
                 scraping_datum: new Date().toISOString(),
-                quelle: "Demo-Daten (Mock)",
+                quelle: "Demo-Daten",
                 statistiken: {
                     anzahl_total: loipen.length,
                     mit_details: loipen.length,
@@ -1423,7 +1548,7 @@
         }
         
         // ====================================
-        // HAUPTANWENDUNG - als globales Objekt
+        // HAUPTANWENDUNG
         // ====================================
         
         window.loipenApp = {
@@ -1432,20 +1557,15 @@
             activeRegions: new Set(),
             favorites: new Set(),
             weatherCache: {},
-            userStartLocation: null,
             
-            // Open-Meteo API für Wetter (kostenlos, keine API-Key nötig)
             WEATHER_API_URL: 'https://api.open-meteo.com/v1/forecast',
-            NEBELGRENZE: 1200, // Meter über Meer
+            NEBELGRENZE: 1200,
             
-            // Berechne Anfahrtszeit
             calculateTravelTime(distanceKm) {
                 if (!distanceKm) return null;
-                
                 const avgSpeed = 60;
                 const hours = distanceKm / avgSpeed;
                 const minutes = Math.round(hours * 60);
-                
                 if (minutes < 60) {
                     return `${minutes} Min`;
                 } else {
@@ -1455,29 +1575,24 @@
                 }
             },
             
-            // Generiere Google Maps Link
             generateGoogleMapsLink(loipe, startPLZ = '8824') {
                 if (!loipe.latitude || !loipe.longitude) {
                     const destination = encodeURIComponent(`${loipe.ort}, Schweiz`);
                     return `https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=driving`;
                 }
-                
                 const origin = encodeURIComponent(`${startPLZ}, Schweiz`);
                 const destination = `${loipe.latitude},${loipe.longitude}`;
                 return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
             },
             
-            // Apple Maps Link
             generateAppleMapsLink(loipe, startPLZ = '8824') {
                 if (!loipe.latitude || !loipe.longitude) {
                     const destination = encodeURIComponent(`${loipe.ort}, Schweiz`);
                     return `http://maps.apple.com/?daddr=${destination}&dirflg=d`;
                 }
-                
                 return `http://maps.apple.com/?daddr=${loipe.latitude},${loipe.longitude}&dirflg=d`;
             },
             
-            // Favoriten aus LocalStorage laden
             loadFavorites() {
                 const saved = localStorage.getItem('loipen_favorites');
                 if (saved) {
@@ -1486,13 +1601,11 @@
                 this.updateFavoritesDisplay();
             },
             
-            // Favoriten speichern
             saveFavorites() {
                 localStorage.setItem('loipen_favorites', JSON.stringify([...this.favorites]));
                 this.updateFavoritesDisplay();
             },
             
-            // Favorit hinzufügen/entfernen
             toggleFavorite(loipeId) {
                 if (this.favorites.has(loipeId)) {
                     this.favorites.delete(loipeId);
@@ -1503,7 +1616,6 @@
                 this.filterLoipen();
             },
             
-            // Favoriten anzeigen
             updateFavoritesDisplay() {
                 const section = document.getElementById('favorites-section');
                 const container = document.getElementById('favorites-container');
@@ -1529,12 +1641,11 @@
                             <div class="favorite-location">📍 ${loipe.ort} • ${loipe.distanz_km} km</div>
                         </div>
                         <button class="remove-favorite-btn" data-loipe-id="${this.getLoipeId(loipe)}">
-                            Entfernen
+                            ✕
                         </button>
                     </div>
                 `).join('');
                 
-                // Event Listeners für Entfernen-Buttons hinzufügen
                 container.querySelectorAll('.remove-favorite-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         const loipeId = e.target.getAttribute('data-loipe-id');
@@ -1543,19 +1654,17 @@
                 });
             },
             
-            // Generiere eindeutige Loipen-ID
             getLoipeId(loipe) {
                 return `${loipe.name}_${loipe.ort}`.replace(/[^a-zA-Z0-9]/g, '_');
             },
             
-            // Favoriten exportieren
             exportFavorites() {
                 const favoriteLoipen = this.loipenData.filter(l => 
                     this.favorites.has(this.getLoipeId(l))
                 );
                 
                 if (favoriteLoipen.length === 0) {
-                    alert('Du hast noch keine Favoriten gespeichert!');
+                    alert('Keine Favoriten vorhanden!');
                     return;
                 }
                 
@@ -1577,7 +1686,6 @@
                 URL.revokeObjectURL(url);
             },
             
-            // Wetter-Daten holen
             async getWeatherData(latitude, longitude) {
                 const cacheKey = `${latitude.toFixed(2)}_${longitude.toFixed(2)}`;
                 
@@ -1606,7 +1714,6 @@
                 }
             },
             
-            // Wetter-Icon
             getWeatherIcon(code) {
                 const icons = {
                     0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
@@ -1619,29 +1726,27 @@
                 return icons[code] || '🌡️';
             },
             
-            // Nebel-Status
             getNebelStatus(hoehe) {
                 if (!hoehe) return null;
                 
                 if (hoehe > this.NEBELGRENZE + 200) {
-                    return { text: '☀️ Über dem Nebel', class: 'nebel-über' };
+                    return { text: '☀️ Über Nebel', class: 'nebel-über' };
                 } else if (hoehe < this.NEBELGRENZE - 200) {
-                    return { text: '🌫️ Unter dem Nebel', class: 'nebel-unter' };
+                    return { text: '🌫️ Unter Nebel', class: 'nebel-unter' };
                 } else {
                     return { text: '😶‍🌫️ Im Nebel', class: 'nebel-im' };
                 }
             },
             
-            // Wetter-Widget erstellen
             async createWeatherWidget(loipe) {
                 if (!loipe.latitude || !loipe.longitude) {
-                    return '<div class="weather-loading">Keine Koordinaten verfügbar</div>';
+                    return '<div class="weather-loading">Keine Koordinaten</div>';
                 }
                 
                 const weather = await this.getWeatherData(loipe.latitude, loipe.longitude);
                 
                 if (!weather || !weather.current_weather) {
-                    return '<div class="weather-loading">Wetterdaten nicht verfügbar</div>';
+                    return '<div class="weather-loading">Wetter nicht verfügbar</div>';
                 }
                 
                 const current = weather.current_weather;
@@ -1675,7 +1780,7 @@
                             <div>
                                 <div class="weather-temp">${Math.round(current.temperature)}°C</div>
                                 <div class="weather-info">
-                                    💨 Wind: ${Math.round(current.windspeed)} km/h
+                                    💨 ${Math.round(current.windspeed)} km/h
                                 </div>
                             </div>
                             <div class="weather-icon">
@@ -1687,7 +1792,7 @@
                                 ${nebelStatus.text}
                             </div>
                         ` : ''}
-                        <div style="margin-top: 15px; font-weight: 600; font-size: 0.9em;">
+                        <div style="margin-top: 10px; font-weight: 600; font-size: 0.8em;">
                             📅 7-Tage Vorhersage
                         </div>
                         <div class="weather-forecast">
@@ -1697,7 +1802,6 @@
                 `;
             },
             
-            // Navigation Box erstellen
             createNavigationBox(loipe) {
                 const startPLZ = document.getElementById('plz-input').value || '8824';
                 const travelTime = this.calculateTravelTime(loipe.anfahrt_km);
@@ -1705,14 +1809,12 @@
                 const appleMapsLink = this.generateAppleMapsLink(loipe, startPLZ);
                 
                 if (!loipe.anfahrt_km) {
-                    return '<div class="navigation-box"><div style="text-align: center; opacity: 0.7;">Keine Anfahrtsinformationen verfügbar</div></div>';
+                    return '<div class="navigation-box"><div style="text-align: center; opacity: 0.7; font-size: 0.8em;">Keine Anfahrtsdaten</div></div>';
                 }
                 
                 return `
                     <div class="navigation-box">
-                        <div class="nav-title">
-                            🧭 Anfahrt & Navigation
-                        </div>
+                        <div class="nav-title">🧭 Anfahrt</div>
                         <div class="nav-details">
                             <div class="nav-item">
                                 <span class="nav-icon">🚗</span>
@@ -1731,17 +1833,16 @@
                         </div>
                         <div class="nav-buttons">
                             <a href="${googleMapsLink}" target="_blank" class="nav-btn primary">
-                                📍 Google Maps
+                                📍 Google
                             </a>
                             <a href="${appleMapsLink}" target="_blank" class="nav-btn">
-                                🍎 Apple Maps
+                                🍎 Apple
                             </a>
                         </div>
                     </div>
                 `;
             },
             
-            // Daten laden
             loadData() {
                 const data = generateMockLoipenData();
                 this.loipenData = data.loipen;
@@ -1752,7 +1853,6 @@
                 this.filterLoipen();
             },
             
-            // Region Filter initialisieren
             initializeRegionFilter() {
                 const regionen = [...new Set(this.loipenData.map(l => l.region || 'Unbekannt'))].sort();
                 const container = document.getElementById('region-tags');
@@ -1761,7 +1861,7 @@
                 
                 const alleTag = document.createElement('div');
                 alleTag.className = 'region-tag active';
-                alleTag.textContent = 'Alle Regionen';
+                alleTag.textContent = 'Alle';
                 alleTag.onclick = () => {
                     this.activeRegions.clear();
                     document.querySelectorAll('.region-tag').forEach(tag => {
@@ -1797,7 +1897,6 @@
                 });
             },
             
-            // Statistiken aktualisieren
             updateStatistics(data) {
                 const loipen = data.loipen || data;
                 
@@ -1817,15 +1916,15 @@
                 
                 if (data.scraping_datum) {
                     document.getElementById('last-update').textContent = 
-                        new Date(data.scraping_datum).toLocaleDateString('de-CH');
+                        new Date(data.scraping_datum).toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit' });
                 }
             },
             
-            // Loipen filtern
             filterLoipen() {
                 const maxDistanz = parseFloat(document.getElementById('distanz-slider').value);
                 const maxAnfahrt = parseFloat(document.getElementById('anfahrt-slider').value);
                 const maxHoehenmeter = parseFloat(document.getElementById('hoehenmeter-slider').value);
+                const maxUpdateDays = parseInt(document.getElementById('update-slider').value);
                 const searchText = document.getElementById('search-input').value.toLowerCase();
                 
                 const klassisch = document.getElementById('klassisch').checked;
@@ -1838,6 +1937,9 @@
                 const schwierMittel = document.getElementById('schwier-mittel').checked;
                 const schwer = document.getElementById('schwier-schwer').checked;
                 
+                const today = new Date();
+                const maxUpdateDate = new Date(today.getTime() - maxUpdateDays * 24 * 60 * 60 * 1000);
+                
                 this.filteredData = this.loipenData.filter(loipe => {
                     if (this.activeRegions.size > 0 && !this.activeRegions.has(loipe.region)) {
                         return false;
@@ -1848,6 +1950,11 @@
                     
                     const hoehe = loipe.hoehenprofil?.aufstieg || loipe.hoehenmeter || 0;
                     if (hoehe > maxHoehenmeter) return false;
+                    
+                    if (loipe.letztes_update) {
+                        const updateDate = new Date(loipe.letztes_update);
+                        if (updateDate < maxUpdateDate) return false;
+                    }
                     
                     if (searchText) {
                         const searchString = `${loipe.name} ${loipe.ort} ${loipe.region}`.toLowerCase();
@@ -1885,7 +1992,6 @@
                 this.updateFavoritesDisplay();
             },
             
-            // Sortieren und anzeigen
             sortAndDisplay(loipen) {
                 const sortBy = document.getElementById('sort-select').value;
                 
@@ -1913,7 +2019,6 @@
                 this.displayLoipen(sorted);
             },
             
-            // Loipen anzeigen
             async displayLoipen(loipen) {
                 const container = document.getElementById('loipen-container');
                 const noResults = document.getElementById('no-results');
@@ -1932,7 +2037,6 @@
                 
                 container.innerHTML = loipen.map(loipe => this.createLoipeCard(loipe, null)).join('');
                 
-                // Event Listeners für Favoriten-Buttons hinzufügen
                 container.querySelectorAll('.favorite-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -1942,7 +2046,6 @@
                     });
                 });
                 
-                // Wetter asynchron laden
                 const loipenMitKoordinaten = loipen.filter(l => l.latitude && l.longitude).slice(0, 20);
                 
                 for (const loipe of loipenMitKoordinaten) {
@@ -1958,7 +2061,6 @@
                 }
             },
             
-            // Loipen-Karte erstellen
             createLoipeCard(loipe, weatherHTML) {
                 const loipeId = this.getLoipeId(loipe);
                 const isFavorite = this.favorites.has(loipeId);
@@ -1973,7 +2075,7 @@
                             <div class="loipe-name">${loipe.name}</div>
                             ${loipe.link ? `
                                 <a href="${loipe.link}" target="_blank" class="loipe-link">
-                                    🔗 Details auf Bergfex
+                                    🔗 Bergfex
                                 </a>
                             ` : ''}
                             <div class="loipe-location">
@@ -1982,7 +2084,7 @@
                             </div>
                             ${loipe.letztes_update ? `
                                 <div class="last-update">
-                                    📅 Aktualisiert: ${this.formatDate(loipe.letztes_update)}
+                                    📅 ${this.formatDate(loipe.letztes_update)}
                                 </div>
                             ` : ''}
                         </div>
@@ -2003,7 +2105,7 @@
                         ${this.createNavigationBox(loipe)}
                         
                         <div class="weather-container">
-                            ${weatherHTML || '<div class="weather-loading">⏳ Lade Wetterdaten...</div>'}
+                            ${weatherHTML || '<div class="weather-loading">⏳ Lade Wetter...</div>'}
                         </div>
                         
                         ${loipe.hoehenprofil && loipe.hoehenprofil.max_hoehe ? `
@@ -2052,7 +2154,6 @@
                 `;
             },
             
-            // Status-Klasse ermitteln
             getStatusClass(zustand) {
                 const z = zustand.toLowerCase();
                 if (z.includes('gut') || z.includes('gespurt') || z.includes('geöffnet')) return 'status-gut';
@@ -2061,19 +2162,18 @@
                 return 'status-unbekannt';
             },
             
-            // Datum formatieren
             formatDate(dateString) {
                 if (!dateString) return '-';
                 const date = new Date(dateString);
                 return date.toLocaleDateString('de-CH', { 
-                    year: 'numeric', 
-                    month: '2-digit', 
-                    day: '2-digit' 
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit'
                 });
             }
         };
         
-        // Event Listeners für Filter
+        // Event Listeners
         document.getElementById('distanz-slider').addEventListener('input', function() {
             document.getElementById('distanz-value').textContent = this.value;
             window.loipenApp.filterLoipen();
@@ -2086,6 +2186,11 @@
         
         document.getElementById('hoehenmeter-slider').addEventListener('input', function() {
             document.getElementById('hoehenmeter-value').textContent = this.value;
+            window.loipenApp.filterLoipen();
+        });
+        
+        document.getElementById('update-slider').addEventListener('input', function() {
+            document.getElementById('update-value').textContent = this.value;
             window.loipenApp.filterLoipen();
         });
         
@@ -2102,8 +2207,18 @@
             window.loipenApp.sortAndDisplay(window.loipenApp.filteredData);
         });
         
-        // Initial laden beim Seitenaufruf
+        // Webcam Auto-Refresh alle 5 Minuten
+        setInterval(() => {
+            const webcams = document.querySelectorAll('.webcam-item img');
+            webcams.forEach(img => {
+                const src = img.src;
+                img.src = src.split('?')[0] + '?t=' + new Date().getTime();
+            });
+        }, 5 * 60 * 1000);
+        
+        // Initial laden
         window.addEventListener('DOMContentLoaded', () => {
+            createSnowflakes();
             window.loipenApp.loadData();
         });
     </script>
