@@ -54,10 +54,10 @@
         
         @keyframes snowfall {
             0% {
-                transform: translateY(0vh) translateX(0);
+                transform: translateY(0vh) translateX(0) rotate(0deg);
             }
             100% {
-                transform: translateY(100vh) translateX(30px);
+                transform: translateY(100vh) translateX(30px) rotate(360deg);
             }
         }
         
@@ -91,7 +91,7 @@
             margin-bottom: 15px;
         }
         
-        /* Webcam Section - kompakter */
+        /* Webcam Section - Originalformat beibehalten */
         .webcam-section {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -108,16 +108,23 @@
             overflow: hidden;
             box-shadow: 0 3px 10px rgba(0,0,0,0.3);
             transition: transform 0.3s;
+            background: #000;
         }
         
         .webcam-item:hover {
             transform: scale(1.03);
         }
         
-        .webcam-item img, .webcam-item iframe {
+        .webcam-item img {
             width: 100%;
-            height: 120px;
-            object-fit: cover;
+            height: auto;
+            display: block;
+            border: none;
+        }
+        
+        .webcam-item iframe {
+            width: 100%;
+            height: 150px;
             display: block;
             border: none;
         }
@@ -133,6 +140,66 @@
             font-size: 0.65em;
             font-weight: 600;
             text-align: center;
+        }
+        
+        /* Loipen Webcam in Card */
+        .loipe-webcam {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 10px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            background: #000;
+        }
+        
+        .loipe-webcam img {
+            width: 100%;
+            height: auto;
+            max-height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .loipe-webcam-label {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .live-indicator {
+            width: 8px;
+            height: 8px;
+            background: #e74c3c;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+        
+        .webcam-unavailable {
+            padding: 20px;
+            text-align: center;
+            background: #ecf0f1;
+            border-radius: 8px;
+            color: #7f8c8d;
+            font-size: 0.8em;
+            font-style: italic;
         }
         
         /* Stats Bar - sehr kompakt */
@@ -721,6 +788,28 @@
             font-size: 0.8em;
         }
         
+        /* Schneehöhe Anzeige */
+        .schneehoehe-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 8px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 0.8em;
+            border: 2px solid #2196f3;
+        }
+        
+        .schneehoehe-box strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #1976d2;
+        }
+        
+        .schnee-detail {
+            display: flex;
+            justify-content: space-between;
+            margin: 3px 0;
+        }
+        
         .loipe-details {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -889,10 +978,6 @@
             .webcam-section {
                 grid-template-columns: 1fr;
             }
-            
-            .webcam-item img, .webcam-item iframe {
-                height: 200px;
-            }
         }
         
         @media (max-width: 768px) {
@@ -1033,6 +1118,30 @@
                 </div>
                 
                 <div class="filter-item">
+                    <label>❄️ Min. Schneehöhe</label>
+                    <input type="range" id="schnee-slider" min="0" max="200" value="0" step="10">
+                    <div class="value-display"><span id="schnee-value">0</span> cm</div>
+                </div>
+                
+                <div class="filter-item">
+                    <label>🌤️ Wetterprognose</label>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" id="wetter-sonnig" checked>
+                            Sonnig
+                        </label>
+                        <label>
+                            <input type="checkbox" id="wetter-schnee" checked>
+                            Schnee
+                        </label>
+                        <label>
+                            <input type="checkbox" id="wetter-bewoelkt" checked>
+                            Bewölkt
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="filter-item">
                     <label>⛷️ Technik</label>
                     <div class="checkbox-group">
                         <label>
@@ -1120,6 +1229,39 @@
     
     <script>
         // ====================================
+        // WEBCAM DATABASE
+        // ====================================
+        const WEBCAM_DATABASE = {
+            // Graubünden
+            'arosa': 'https://www.arosa.swiss/webcams/arosa-innerarosa/',
+            'davos': 'https://www.davos.ch/sommer/service/webcams/',
+            'flims': 'https://www.flims.com/de/webcams',
+            'st. moritz': 'https://www.engadin.stmoritz.ch/winter/de/webcams/',
+            'lenzerheide': 'https://www.lenzerheide.com/de/informationen/webcams',
+            
+            // Bern
+            'gstaad': 'https://www.gstaad.ch/de/winter/webcams/',
+            'adelboden': 'https://www.adelboden.ch/de/webcams',
+            'kandersteg': 'https://www.kandersteg.ch/de/winter/webcams',
+            
+            // Wallis
+            'zermatt': 'https://www.zermatt.ch/de/Media/Webcams',
+            'saas-fee': 'https://www.saas-fee.ch/de/webcams/',
+            
+            // Zentralschweiz
+            'engelberg': 'https://www.engelberg.ch/de/winter/webcams/',
+            'andermatt': 'https://www.andermatt.ch/de/Winter/Webcams',
+            
+            // Ostschweiz
+            'wildhaus': 'https://www.wildhaus.ch/de/winter/service-info/webcams',
+            'appenzell': 'https://www.appenzell.ch/de/erleben/webcams.html',
+            
+            // Andere
+            'la chaux-de-fonds': 'https://www.j3l.ch/de/webcams-P26803',
+            'les diablerets': 'https://www.diablerets.ch/de/S106/webcams'
+        };
+        
+        // ====================================
         // SCHNEEFALL ANIMATION
         // ====================================
         function createSnowflakes() {
@@ -1141,7 +1283,7 @@
         }
         
         // ====================================
-        // MOCK DATA GENERATOR
+        // MOCK DATA GENERATOR mit Schneehöhen & Webcams
         // ====================================
         function generateMockLoipenData() {
             const today = new Date();
@@ -1155,6 +1297,8 @@
                     technik: ["Klassisch", "Skating"],
                     anfahrt_km: 85,
                     hoehenmeter: 150,
+                    schneehoehe: 85,
+                    webcam_url: 'https://www.arosa.swiss/webcams/arosa-innerarosa/',
                     link: "https://www.bergfex.ch/arosa/langlaufen/",
                     letztes_update: new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1179,6 +1323,8 @@
                     technik: ["Klassisch"],
                     anfahrt_km: 95,
                     hoehenmeter: 80,
+                    schneehoehe: 120,
+                    webcam_url: 'https://www.davos.ch/sommer/service/webcams/',
                     link: "https://www.bergfex.ch/davos/langlaufen/",
                     letztes_update: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1203,6 +1349,8 @@
                     technik: ["Skating", "Klassisch"],
                     anfahrt_km: 65,
                     hoehenmeter: 200,
+                    schneehoehe: 45,
+                    webcam_url: 'https://www.flims.com/de/webcams',
                     link: "https://www.bergfex.ch/flims/langlaufen/",
                     letztes_update: new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1227,6 +1375,8 @@
                     technik: ["Skating", "Klassisch"],
                     anfahrt_km: 145,
                     hoehenmeter: 350,
+                    schneehoehe: 150,
+                    webcam_url: 'https://www.engadin.stmoritz.ch/winter/de/webcams/',
                     link: "https://www.bergfex.ch/engadin/langlaufen/",
                     letztes_update: new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1251,6 +1401,8 @@
                     technik: ["Klassisch", "Skating"],
                     anfahrt_km: 78,
                     hoehenmeter: 120,
+                    schneehoehe: 95,
+                    webcam_url: 'https://www.lenzerheide.com/de/informationen/webcams',
                     link: "https://www.bergfex.ch/lenzerheide/langlaufen/",
                     letztes_update: new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1275,6 +1427,8 @@
                     technik: ["Skating", "Klassisch"],
                     anfahrt_km: 125,
                     hoehenmeter: 250,
+                    schneehoehe: 110,
+                    webcam_url: 'https://www.gstaad.ch/de/winter/webcams/',
                     link: "https://www.bergfex.ch/gstaad/langlaufen/",
                     letztes_update: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1299,6 +1453,8 @@
                     technik: ["Klassisch"],
                     anfahrt_km: 110,
                     hoehenmeter: 60,
+                    schneehoehe: 75,
+                    webcam_url: 'https://www.adelboden.ch/de/webcams',
                     link: "https://www.bergfex.ch/adelboden/langlaufen/",
                     letztes_update: new Date(today.getTime() - 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1323,6 +1479,8 @@
                     technik: ["Skating", "Klassisch"],
                     anfahrt_km: 115,
                     hoehenmeter: 180,
+                    schneehoehe: 55,
+                    webcam_url: 'https://www.kandersteg.ch/de/winter/webcams',
                     link: "https://www.bergfex.ch/kandersteg/langlaufen/",
                     letztes_update: new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1347,6 +1505,8 @@
                     technik: ["Skating"],
                     anfahrt_km: 165,
                     hoehenmeter: 100,
+                    schneehoehe: 180,
+                    webcam_url: 'https://www.zermatt.ch/de/Media/Webcams',
                     link: "https://www.bergfex.ch/zermatt/langlaufen/",
                     letztes_update: new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1371,6 +1531,8 @@
                     technik: ["Klassisch", "Skating"],
                     anfahrt_km: 170,
                     hoehenmeter: 140,
+                    schneehoehe: 200,
+                    webcam_url: 'https://www.saas-fee.ch/de/webcams/',
                     link: "https://www.bergfex.ch/saas-fee/langlaufen/",
                     letztes_update: new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1395,6 +1557,8 @@
                     technik: ["Klassisch", "Skating"],
                     anfahrt_km: 92,
                     hoehenmeter: 170,
+                    schneehoehe: 105,
+                    webcam_url: 'https://www.engelberg.ch/de/winter/webcams/',
                     link: "https://www.bergfex.ch/engelberg/langlaufen/",
                     letztes_update: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1419,6 +1583,8 @@
                     technik: ["Klassisch"],
                     anfahrt_km: 88,
                     hoehenmeter: 220,
+                    schneehoehe: 65,
+                    webcam_url: 'https://www.andermatt.ch/de/Winter/Webcams',
                     link: "https://www.bergfex.ch/andermatt/langlaufen/",
                     letztes_update: new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1443,6 +1609,8 @@
                     technik: ["Skating", "Klassisch"],
                     anfahrt_km: 52,
                     hoehenmeter: 90,
+                    schneehoehe: 30,
+                    webcam_url: 'https://www.wildhaus.ch/de/winter/service-info/webcams',
                     link: "https://www.bergfex.ch/wildhaus/langlaufen/",
                     letztes_update: new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1467,6 +1635,8 @@
                     technik: ["Klassisch"],
                     anfahrt_km: 45,
                     hoehenmeter: 50,
+                    schneehoehe: 25,
+                    webcam_url: 'https://www.appenzell.ch/de/erleben/webcams.html',
                     link: "https://www.bergfex.ch/appenzell/langlaufen/",
                     letztes_update: new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1491,6 +1661,8 @@
                     technik: ["Skating", "Klassisch"],
                     anfahrt_km: 98,
                     hoehenmeter: 180,
+                    schneehoehe: 40,
+                    webcam_url: 'https://www.j3l.ch/de/webcams-P26803',
                     link: "https://www.bergfex.ch/jura/langlaufen/",
                     letztes_update: new Date(today.getTime() - 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1515,6 +1687,8 @@
                     technik: ["Skating"],
                     anfahrt_km: 145,
                     hoehenmeter: 80,
+                    schneehoehe: 250,
+                    webcam_url: 'https://www.diablerets.ch/de/S106/webcams',
                     link: "https://www.bergfex.ch/diablerets/langlaufen/",
                     letztes_update: new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     hoehenprofil: {
@@ -1591,6 +1765,32 @@
                     return `http://maps.apple.com/?daddr=${destination}&dirflg=d`;
                 }
                 return `http://maps.apple.com/?daddr=${loipe.latitude},${loipe.longitude}&dirflg=d`;
+            },
+            
+            // Webcam-Widget für Loipe erstellen
+            createWebcamWidget(loipe) {
+                if (!loipe.webcam_url) {
+                    return '';
+                }
+                
+                // Versuche, Ort zu extrahieren für Webcam-Suche
+                const ortLower = loipe.ort.toLowerCase();
+                
+                // Prüfe ob es eine direkte Webcam-URL gibt
+                return `
+                    <div class="loipe-webcam">
+                        <a href="${loipe.webcam_url}" target="_blank" style="position: relative; display: block;">
+                            <div class="loipe-webcam-label">
+                                <span class="live-indicator"></span>
+                                📹 Live Webcam
+                            </div>
+                            <div class="webcam-unavailable">
+                                🎥 Klicken für Live-Webcam<br>
+                                <small>${loipe.ort}</small>
+                            </div>
+                        </a>
+                    </div>
+                `;
             },
             
             loadFavorites() {
@@ -1726,6 +1926,12 @@
                 return icons[code] || '🌡️';
             },
             
+            categorizeWeather(weathercode) {
+                if ([0, 1].includes(weathercode)) return 'sonnig';
+                if ([71, 73, 75, 77, 85, 86].includes(weathercode)) return 'schnee';
+                return 'bewoelkt';
+            },
+            
             getNebelStatus(hoehe) {
                 if (!hoehe) return null;
                 
@@ -1751,6 +1957,8 @@
                 
                 const current = weather.current_weather;
                 const daily = weather.daily;
+                
+                loipe.wetter_kategorie = this.categorizeWeather(current.weathercode);
                 
                 const mittlereHoehe = loipe.hoehenprofil?.max_hoehe || 
                                      loipe.hoehenprofil?.min_hoehe || 1500;
@@ -1843,6 +2051,43 @@
                 `;
             },
             
+            createSchneehoheBox(schneehoehe) {
+                if (!schneehoehe) return '';
+                
+                let status = '';
+                let statusClass = '';
+                
+                if (schneehoehe >= 80) {
+                    status = 'Ausgezeichnet';
+                    statusClass = 'status-gut';
+                } else if (schneehoehe >= 40) {
+                    status = 'Gut';
+                    statusClass = 'status-mittel';
+                } else if (schneehoehe >= 20) {
+                    status = 'Knapp';
+                    statusClass = 'status-schlecht';
+                } else {
+                    status = 'Wenig';
+                    statusClass = 'status-schlecht';
+                }
+                
+                return `
+                    <div class="schneehoehe-box">
+                        <strong>❄️ Schneehöhe</strong>
+                        <div class="schnee-detail">
+                            <span>Aktuell:</span>
+                            <span style="font-weight: 700;">${schneehoehe} cm</span>
+                        </div>
+                        <div class="schnee-detail">
+                            <span>Status:</span>
+                            <span class="status-badge ${statusClass}" style="margin: 0; padding: 2px 6px;">
+                                ${status}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            },
+            
             loadData() {
                 const data = generateMockLoipenData();
                 this.loipenData = data.loipen;
@@ -1925,6 +2170,7 @@
                 const maxAnfahrt = parseFloat(document.getElementById('anfahrt-slider').value);
                 const maxHoehenmeter = parseFloat(document.getElementById('hoehenmeter-slider').value);
                 const maxUpdateDays = parseInt(document.getElementById('update-slider').value);
+                const minSchneehoehe = parseInt(document.getElementById('schnee-slider').value);
                 const searchText = document.getElementById('search-input').value.toLowerCase();
                 
                 const klassisch = document.getElementById('klassisch').checked;
@@ -1936,6 +2182,10 @@
                 const leicht = document.getElementById('schwier-leicht').checked;
                 const schwierMittel = document.getElementById('schwier-mittel').checked;
                 const schwer = document.getElementById('schwier-schwer').checked;
+                
+                const wetterSonnig = document.getElementById('wetter-sonnig').checked;
+                const wetterSchnee = document.getElementById('wetter-schnee').checked;
+                const wetterBewoelkt = document.getElementById('wetter-bewoelkt').checked;
                 
                 const today = new Date();
                 const maxUpdateDate = new Date(today.getTime() - maxUpdateDays * 24 * 60 * 60 * 1000);
@@ -1950,6 +2200,14 @@
                     
                     const hoehe = loipe.hoehenprofil?.aufstieg || loipe.hoehenmeter || 0;
                     if (hoehe > maxHoehenmeter) return false;
+                    
+                    if (loipe.schneehoehe && loipe.schneehoehe < minSchneehoehe) return false;
+                    
+                    if (loipe.wetter_kategorie) {
+                        if (loipe.wetter_kategorie === 'sonnig' && !wetterSonnig) return false;
+                        if (loipe.wetter_kategorie === 'schnee' && !wetterSchnee) return false;
+                        if (loipe.wetter_kategorie === 'bewoelkt' && !wetterBewoelkt) return false;
+                    }
                     
                     if (loipe.letztes_update) {
                         const updateDate = new Date(loipe.letztes_update);
@@ -2102,7 +2360,11 @@
                             ` : ''}
                         </div>
                         
+                        ${this.createWebcamWidget(loipe)}
+                        
                         ${this.createNavigationBox(loipe)}
+                        
+                        ${this.createSchneehoheBox(loipe.schneehoehe)}
                         
                         <div class="weather-container">
                             ${weatherHTML || '<div class="weather-loading">⏳ Lade Wetter...</div>'}
@@ -2194,6 +2456,11 @@
             window.loipenApp.filterLoipen();
         });
         
+        document.getElementById('schnee-slider').addEventListener('input', function() {
+            document.getElementById('schnee-value').textContent = this.value;
+            window.loipenApp.filterLoipen();
+        });
+        
         document.getElementById('search-input').addEventListener('input', () => window.loipenApp.filterLoipen());
         document.getElementById('klassisch').addEventListener('change', () => window.loipenApp.filterLoipen());
         document.getElementById('skating').addEventListener('change', () => window.loipenApp.filterLoipen());
@@ -2203,13 +2470,16 @@
         document.getElementById('schwier-leicht').addEventListener('change', () => window.loipenApp.filterLoipen());
         document.getElementById('schwier-mittel').addEventListener('change', () => window.loipenApp.filterLoipen());
         document.getElementById('schwier-schwer').addEventListener('change', () => window.loipenApp.filterLoipen());
+        document.getElementById('wetter-sonnig').addEventListener('change', () => window.loipenApp.filterLoipen());
+        document.getElementById('wetter-schnee').addEventListener('change', () => window.loipenApp.filterLoipen());
+        document.getElementById('wetter-bewoelkt').addEventListener('change', () => window.loipenApp.filterLoipen());
         document.getElementById('sort-select').addEventListener('change', () => {
             window.loipenApp.sortAndDisplay(window.loipenApp.filteredData);
         });
         
-        // Webcam Auto-Refresh alle 5 Minuten
+        // Webcam Auto-Refresh alle 5 Minuten (nur Header-Webcams)
         setInterval(() => {
-            const webcams = document.querySelectorAll('.webcam-item img');
+            const webcams = document.querySelectorAll('header .webcam-item img');
             webcams.forEach(img => {
                 const src = img.src;
                 img.src = src.split('?')[0] + '?t=' + new Date().getTime();
